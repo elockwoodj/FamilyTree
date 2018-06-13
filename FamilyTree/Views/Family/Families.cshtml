@@ -1,0 +1,38 @@
+﻿@model IEnumerable<FamilyTree.Data.Family>
+
+@{
+    ViewBag.Title = "Families";
+}
+
+<h2>Families</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.headofFamilyID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.familyName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.headofFamilyID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.familyName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit Family Name", "Edit", new { id=item.familyID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.familyID })
+        </td>
+    </tr>
+}
+
+</table>
