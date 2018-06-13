@@ -17,7 +17,9 @@ namespace FamilyTree.Data.DAO
             _context = new b7039648Entities();
         }
 
-        
+        // might need to bean everything, using the AspNetUsers table for the usernames - they're all individual so it shouldn't affect the rest of the application
+        // If I bean everything, linq statements change but everything else should be more or less fine
+        // Check Butcher work to get an example
 
         public IList<Family> GetFamilies(string userEmail)
         {
