@@ -1,0 +1,63 @@
+﻿@model IEnumerable<FamilyTree.Data.Individual>
+
+@{
+    ViewBag.Title = "GetIndividuals";
+}
+
+<h2>Your Family Members</h2>
+
+<p>
+    @Html.ActionLink("Add New Family Member Record", "AddIndividual")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.firstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dateOfBirth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dateOfDeath)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.placeOfBirth)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.firstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dateOfBirth)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dateOfDeath)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.placeOfBirth)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.individualID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.individualID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.individualID })
+        </td>
+    </tr>
+}
+
+</table>

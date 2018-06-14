@@ -4,14 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5d2aee59bb414213a99ca0ae89163025" Name="Diagram1">
-        <EntityTypeShape EntityType="b7039648Model.Individual" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+      <Diagram DiagramId="8bfeef1dd7b048a5baa4bb1f0790ab32" Name="Diagram1">
+        <EntityTypeShape EntityType="b7039648Model.AspNetUser" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="b7039648Model.Family" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="b7039648Model.Individual" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="b7039648Model.Relationship" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="b7039648Model.RelationshipType" Width="1.5" PointX="0.625" PointY="2.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="b7039648Model.Role" Width="1.5" PointX="2.75" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="b7039648Model.User" Width="1.5" PointX="4.75" PointY="4" IsExpanded="true" />
-        <EntityTypeShape EntityType="b7039648Model.AspNetUser" Width="1.5" PointX="6.5" PointY="0.75" />
-        <EntityTypeShape EntityType="b7039648Model.Family" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="b7039648Model.RelationshipType" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="b7039648Model.Role" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

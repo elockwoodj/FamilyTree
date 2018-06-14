@@ -1,0 +1,34 @@
+﻿@model FamilyTree.Data.Family
+
+@{
+    ViewBag.Title = "GetFamily";
+}
+
+<h2>GetFamily</h2>
+
+<div>
+    <h4>Family</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ownerUserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ownerUserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.familyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.familyName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.familyID }) |
+    @Html.ActionLink("Back to List", "Families", new { controller = "Family" })
+</p>

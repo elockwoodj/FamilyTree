@@ -7,7 +7,7 @@
 <h2>Families</h2>
 
 <p>
-    @Html.ActionLink("Create New Family", "AddFamilyName",new { controller = "Family"})
+    @Html.ActionLink("Create New Family", "AddFamilyName",new { ownerUserName = ViewBag.ownerUserName, controller = "FamilyAdmin"})
 </p>
 <table class="table">
     <tr>
@@ -26,10 +26,11 @@
             @Html.DisplayFor(modelItem => item.ownerUserName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.familyName)
+            @Html.ActionLink(item.familyName, "GetIndividuals", new { fid = item.familyID, controller = "Family" })
+            @*Html.DisplayFor(modelItem => item.familyName)*@
         </td>
         <td>
-            @Html.ActionLink("Edit Family Name", "Edit", new { id=item.familyID }) |
+            @Html.ActionLink("Edit Family Name", "EditFamilyName", new { id=item.familyID, controller = "FamilyAdmin" }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.familyID })
         </td>
     </tr>

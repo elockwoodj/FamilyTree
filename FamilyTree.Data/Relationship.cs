@@ -17,7 +17,6 @@ namespace FamilyTree.Data
         public int relationshipID { get; set; }
         public int individualOneID { get; set; }
         public int individualTwoID { get; set; }
-        public Nullable<int> famID { get; set; }
         public int relationshipTypeID { get; set; }
         public int individualOneRole { get; set; }
         public int individualTwoRole { get; set; }

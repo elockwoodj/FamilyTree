@@ -21,5 +21,6 @@ namespace FamilyTree.Data
         public Nullable<System.DateTime> dateOfDeath { get; set; }
         public string gender { get; set; }
         public string placeOfBirth { get; set; }
+        public int familyID { get; set; }
     }
 }

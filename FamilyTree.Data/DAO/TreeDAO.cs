@@ -10,11 +10,11 @@ namespace FamilyTree.Data.DAO
 {
     public class TreeDAO : TreeIDAO
     {
-        private b7039648Entities _context;
+        private b7039648Entities1 _context;
         public int userID;
         public TreeDAO()
         {
-            _context = new b7039648Entities();
+            _context = new b7039648Entities1();
         }
 
         // might need to bean everything, using the AspNetUsers table for the usernames - they're all individual so it shouldn't affect the rest of the application
@@ -33,22 +33,45 @@ namespace FamilyTree.Data.DAO
                         
         }
 
-        public int GetUserID(string email)
+        public Family GetFamily(int fid)
         {
-            IQueryable<FamilyTree.Data.User> _ID;
-            _ID = from use 
-                  in _context.Users
-                  where use.userEmail == email
-                  select use;
-            User checker = _ID.ToList().First();
-            userID = checker.userID;
+            IQueryable<Family> _fam;
+            _fam = from fam
+                   in _context.Families
+                   where fam.familyID == fid
+                   select fam;
 
-            return userID;
+            return _fam.First();
         }
+
+        //public int GetUserID(string email)
+        //{
+        //    IQueryable<FamilyTree.Data.AspNetUser> _ID;
+        //    _ID = from use 
+        //          in _context.AspNetUsers
+        //          where use.userEmail == email
+        //          select use;
+        //    User checker = _ID.ToList().First();
+        //    userID = checker.userID;
+
+        //    return userID;
+        //}
 
         public void AddFamilyName(Family familyName)
         {
             _context.Families.Add(familyName);
+            _context.SaveChanges();
+        }
+        public void EditFamilyName(Family famObject)
+        {
+            IQueryable<Family> _famEdit;
+            _famEdit = from fEdit in _context.Families
+                       where fEdit.familyID == famObject.familyID
+                       select fEdit;
+            Family famEdit = _famEdit.First();
+
+            famEdit.familyName = famObject.familyName;
+
             _context.SaveChanges();
         }
 
@@ -56,6 +79,17 @@ namespace FamilyTree.Data.DAO
         {
             _context.Individuals.Add(individual);
             _context.SaveChanges();
+        }
+
+        public IList<Individual> GetIndividuals(int fid)
+        {
+            IQueryable<Individual> _indiv;
+            _indiv = from ind
+                     in _context.Individuals
+                     where ind.familyID == fid
+                     select ind;
+
+            return _indiv.ToList<Individual>();
         }
     }
 }

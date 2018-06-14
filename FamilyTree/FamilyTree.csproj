@@ -294,7 +294,10 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Family\Families.cshtml" />
     <Content Include="Views\FamilyAdmin\AddFamilyName.cshtml" />
-    <Content Include="Views\Family\AddFamilyName.cshtml" />
+    <Content Include="Views\Family\GetIndividuals.cshtml" />
+    <Content Include="Views\Family\AddIndividual.cshtml" />
+    <Content Include="Views\Family\GetFamily.cshtml" />
+    <Content Include="Views\FamilyAdmin\EditFamilyName.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -23,17 +23,29 @@ namespace FamilyTree.Services.DAO
         {
             return _treeDAO.GetFamilies(uid);
         }
-        public int GetUserID(string email)
+        public Family GetFamily(int fid)
         {
-            return _treeDAO.GetUserID(email);
+            return _treeDAO.GetFamily(fid);
         }
+        //public int GetUserID(string email)
+        //{
+        //    return _treeDAO.GetUserID(email);
+        //}
         public void AddFamilyName(Family familyName)
         {
             _treeDAO.AddFamilyName(familyName);
         }
+        public void EditFamilyName(Family famObject)
+        {
+            _treeDAO.EditFamilyName(famObject);
+        }
         public void AddIndividual(Individual individual)
         {
             _treeDAO.AddIndividual(individual);
+        }
+        public IList<Individual>GetIndividuals(int fid)
+        {
+            return _treeDAO.GetIndividuals(fid);
         }
     }
 }

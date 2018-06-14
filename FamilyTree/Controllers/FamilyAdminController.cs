@@ -5,15 +5,22 @@ using System.Web;
 using System.Web.Mvc;
 using FamilyTree.Data;
 using FamilyTree.Services;
+using Microsoft.AspNet.Identity;
 
 namespace FamilyTree.Controllers
 {
-    public class FamilyAdminController : ApplicationController
+    public class FamilyAdminController : Controller
     {
-        public FamilyAdminController() { }
+        private Services.DAO.TreeService _treeService;
+        public FamilyAdminController()
+        {
+            _treeService = new Services.DAO.TreeService();
+        }
         // GET: FamilyAdmin
+        
         public ActionResult Index()
         {
+
             return View();
         }
 
@@ -33,11 +40,11 @@ namespace FamilyTree.Controllers
 
         // POST: FamilyAdmin/Create
         [HttpPost]
-        public ActionResult AddFamilyName(Family familyName)
+        public ActionResult AddFamilyName(Family familyObject)
         {
             try
             {
-                _treeService.AddFamilyName(familyName);
+                _treeService.AddFamilyName(familyObject);
                 return RedirectToAction("Families", "Family");
             }
             catch
@@ -46,25 +53,25 @@ namespace FamilyTree.Controllers
             }
         }
 
+
         // GET: FamilyAdmin/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet]
+        public ActionResult EditFamilyName(int fid)
         {
-            return View();
+            return View(_treeService.GetFamily(fid));
         }
 
-        // POST: FamilyAdmin/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult EditFamilyName(int fid, Family famObject)
         {
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                _treeService.EditFamilyName(famObject);
+                return RedirectToAction("GetFamily", "Family", fid);
             }
             catch
             {
-                return View();
+                return RedirectToAction("Families", "Family");
             }
         }
 

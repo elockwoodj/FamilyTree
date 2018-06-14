@@ -87,35 +87,29 @@
     <Compile Include="Role.cs">
       <DependentUpon>FamilyTree.tt</DependentUpon>
     </Compile>
-    <Compile Include="User.cs">
-      <DependentUpon>FamilyTree.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <EntityDeploy Include="FamilyTree.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>FamilyTree.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
-    <None Include="FamilyTree.edmx.diagram">
-      <DependentUpon>FamilyTree.edmx</DependentUpon>
-    </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FamilyTree.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>FamilyTree.Context.cs</LastGenOutput>
       <DependentUpon>FamilyTree.edmx</DependentUpon>
+      <LastGenOutput>FamilyTree.Context.cs</LastGenOutput>
     </Content>
     <Content Include="FamilyTree.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>FamilyTree.edmx</DependentUpon>
       <LastGenOutput>FamilyTree.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="FamilyTree.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>FamilyTree.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="FamilyTree.edmx.diagram">
+      <DependentUpon>FamilyTree.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
