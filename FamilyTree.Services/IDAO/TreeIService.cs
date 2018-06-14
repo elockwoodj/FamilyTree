@@ -9,7 +9,7 @@ namespace FamilyTree.Services.IDAO
 {
     public interface TreeIService
     {
-        IList<FamilyTree.Data.Family> GetFamilies(string email);
+        IList<FamilyTree.Data.Family> GetFamilies(string uid);
 
         int GetUserID(string email);
         void AddFamilyName(Family familyName);

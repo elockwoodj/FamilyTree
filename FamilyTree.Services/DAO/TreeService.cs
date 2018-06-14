@@ -19,9 +19,9 @@ namespace FamilyTree.Services.DAO
             _treeDAO = new TreeDAO();
         }
 
-        public IList<Family> GetFamilies(string email)
+        public IList<Family> GetFamilies(string uid)
         {
-            return _treeDAO.GetFamilies(email);
+            return _treeDAO.GetFamilies(uid);
         }
         public int GetUserID(string email)
         {

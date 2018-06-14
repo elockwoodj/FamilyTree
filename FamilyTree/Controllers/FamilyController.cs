@@ -23,8 +23,28 @@ namespace FamilyTree.Controllers
 
         public ActionResult Families()
         {
-            string userEmail = User.Identity.GetUserId();
-            return View(_treeService.GetFamilies(userEmail));
+            string uid = User.Identity.GetUserId();
+            return View(_treeService.GetFamilies(uid));
+        }
+
+        [HttpGet]
+        public ActionResult AddFamilyName()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddFamilyName(Family familyName)
+        {
+            try
+            {
+                _treeService.AddFamilyName(familyName);
+                return RedirectToAction("Families");
+            }
+            catch
+            {
+                return View();
+            }
         }
             
         
@@ -42,7 +62,7 @@ namespace FamilyTree.Controllers
             {
                 // TODO: Add insert logic here
                 _treeService.AddIndividual(individual);
-                return RedirectToAction("Family",Families,new { });
+                return RedirectToAction("Family","Families",new { });
             }
             catch
             {

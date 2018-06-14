@@ -15,7 +15,7 @@ namespace FamilyTree.Data
     public partial class Family
     {
         public int familyID { get; set; }
-        public int headofFamilyID { get; set; }
+        public string ownerUserName { get; set; }
         public string familyName { get; set; }
     }
 }

@@ -27,6 +27,7 @@ namespace FamilyTree.Controllers
         [HttpGet]
         public ActionResult AddFamilyName()
         {
+            ViewBag.ownerUserName = User.Identity.Name;
             return View();
         }
 

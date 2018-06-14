@@ -5,12 +5,29 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="b7039648Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
         <EntityType Name="Families">
           <Key>
             <PropertyRef Name="familyID" />
           </Key>
           <Property Name="familyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="headofFamilyID" Type="int" Nullable="false" />
+          <Property Name="ownerUserName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="familyName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Individuals">
@@ -63,6 +80,7 @@
           <Property Name="userEmail" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityContainer Name="b7039648ModelStoreContainer">
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Families" EntityType="Self.Families" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Individuals" EntityType="Self.Individuals" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Relationships" EntityType="Self.Relationships" Schema="dbo" store:Type="Tables" />
@@ -74,14 +92,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="b7039648Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Family">
-          <Key>
-            <PropertyRef Name="familyID" />
-          </Key>
-          <Property Name="familyID" Type="Int32" Nullable="false" />
-          <Property Name="headofFamilyID" Type="Int32" Nullable="false" />
-          <Property Name="familyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
         <EntityType Name="Individual">
           <Key>
             <PropertyRef Name="individualID" />
@@ -132,28 +142,45 @@
           <Property Name="userEmail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityContainer Name="b7039648Entities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Families" EntityType="Self.Family" />
           <EntitySet Name="Individuals" EntityType="Self.Individual" />
           <EntitySet Name="Relationships" EntityType="Self.Relationship" />
           <EntitySet Name="RelationshipTypes" EntityType="Self.RelationshipType" />
           <EntitySet Name="Roles" EntityType="Self.Role" />
           <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="AspNetUsers" EntityType="b7039648Model.AspNetUser" />
+          <EntitySet Name="Families" EntityType="b7039648Model.Family" />
         </EntityContainer>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Family">
+          <Key>
+            <PropertyRef Name="familyID" />
+          </Key>
+          <Property Name="familyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ownerUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="familyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="b7039648ModelStoreContainer" CdmEntityContainer="b7039648Entities">
-          <EntitySetMapping Name="Families">
-            <EntityTypeMapping TypeName="b7039648Model.Family">
-              <MappingFragment StoreEntitySet="Families">
-                <ScalarProperty Name="familyID" ColumnName="familyID" />
-                <ScalarProperty Name="headofFamilyID" ColumnName="headofFamilyID" />
-                <ScalarProperty Name="familyName" ColumnName="familyName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Individuals">
             <EntityTypeMapping TypeName="b7039648Model.Individual">
               <MappingFragment StoreEntitySet="Individuals">
@@ -205,6 +232,33 @@
                 <ScalarProperty Name="userEmail" ColumnName="userEmail" />
                 <ScalarProperty Name="userID" ColumnName="userID" />
                 <ScalarProperty Name="address" ColumnName="address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="b7039648Model.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Families">
+            <EntityTypeMapping TypeName="b7039648Model.Family">
+              <MappingFragment StoreEntitySet="Families">
+                <ScalarProperty Name="familyName" ColumnName="familyName" />
+                <ScalarProperty Name="ownerUserName" ColumnName="ownerUserName" />
+                <ScalarProperty Name="familyID" ColumnName="familyID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

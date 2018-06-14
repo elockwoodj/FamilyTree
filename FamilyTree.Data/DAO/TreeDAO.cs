@@ -19,13 +19,12 @@ namespace FamilyTree.Data.DAO
 
         
 
-        public IList<Family> GetFamilies(string userEmail)
+        public IList<Family> GetFamilies(string uid)
         {
-            int famCheck = GetUserID(userEmail);
             IQueryable<FamilyTree.Data.Family> _families;
             _families = from fam
                         in _context.Families
-                        where fam.headofFamilyID == famCheck
+                        where fam.ownerUserName == uid
                         select fam;
 
             return _families.ToList<Family>();

@@ -8,10 +8,9 @@ namespace FamilyTree.Data.IDAO
 {
     public interface TreeIDAO
     {
-        IList<FamilyTree.Data.Family> GetFamilies(string userEmail);
+        IList<FamilyTree.Data.Family> GetFamilies(string uid);
         int GetUserID(string email);
         void AddFamilyName(Family familyName);
-
         void AddIndividual(Individual individual);
 
     }

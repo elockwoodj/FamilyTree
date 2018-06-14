@@ -152,11 +152,7 @@ namespace FamilyTree.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                b7039648Entities _context = new b7039648Entities();
-                User use = new User();
-                use.userEmail = model.Email;
-                
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };             
                 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -168,8 +164,6 @@ namespace FamilyTree.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                    _context.Users.Add(use);
-                    _context.SaveChanges();
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);

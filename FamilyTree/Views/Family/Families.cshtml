@@ -7,12 +7,12 @@
 <h2>Families</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New Family", "AddFamilyName",new { controller = "Family"})
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.headofFamilyID)
+            @Html.DisplayNameFor(model => model.ownerUserName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.familyName)
@@ -23,7 +23,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.headofFamilyID)
+            @Html.DisplayFor(modelItem => item.ownerUserName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.familyName)
