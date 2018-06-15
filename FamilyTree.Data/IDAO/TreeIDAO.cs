@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FamilyTree.Data.BEANS;
 
 namespace FamilyTree.Data.IDAO
 {
@@ -15,6 +16,7 @@ namespace FamilyTree.Data.IDAO
         void EditFamilyName(Family familyName);
         void AddIndividual(Individual individual);
         IList<Individual> GetIndividuals(int fid);
+        IList<RelationshipBEAN> GetRelationships(int fid);
 
     }
 }

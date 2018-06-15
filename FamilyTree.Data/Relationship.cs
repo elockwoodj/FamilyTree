@@ -23,5 +23,6 @@ namespace FamilyTree.Data
         public Nullable<System.DateTime> relationshipStartDate { get; set; }
         public Nullable<System.DateTime> relationshipEndDate { get; set; }
         public string notableInformation { get; set; }
+        public int familyID { get; set; }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="b7039648Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="b7039648Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AspNetUsers">
           <Key>
             <PropertyRef Name="Id" />
@@ -56,20 +56,21 @@
           <Property Name="relationshipStartDate" Type="date" />
           <Property Name="relationshipEndDate" Type="date" />
           <Property Name="notableInformation" Type="varchar(max)" />
+          <Property Name="familyID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="RelationshipTypes">
           <Key>
             <PropertyRef Name="typeID" />
           </Key>
           <Property Name="typeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="typeDescription" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
             <PropertyRef Name="roleID" />
           </Key>
           <Property Name="roleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="roleDescription" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityContainer Name="b7039648ModelStoreContainer">
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
@@ -79,8 +80,7 @@
           <EntitySet Name="RelationshipTypes" EntityType="Self.RelationshipTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="b7039648Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -135,29 +135,30 @@
           <Property Name="relationshipStartDate" Type="DateTime" Precision="0" />
           <Property Name="relationshipEndDate" Type="DateTime" Precision="0" />
           <Property Name="notableInformation" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="RelationshipType">
-          <Key>
-            <PropertyRef Name="typeID" />
-          </Key>
-          <Property Name="typeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Role">
-          <Key>
-            <PropertyRef Name="roleID" />
-          </Key>
-          <Property Name="roleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="familyID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityContainer Name="b7039648Entities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
           <EntitySet Name="Families" EntityType="Self.Family" />
           <EntitySet Name="Individuals" EntityType="Self.Individual" />
           <EntitySet Name="Relationships" EntityType="Self.Relationship" />
-          <EntitySet Name="RelationshipTypes" EntityType="Self.RelationshipType" />
-          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="RelationshipTypes" EntityType="b7039648Model.RelationshipType" />
+          <EntitySet Name="Roles" EntityType="b7039648Model.Role" />
         </EntityContainer>
+        <EntityType Name="RelationshipType">
+          <Key>
+            <PropertyRef Name="typeID" />
+          </Key>
+          <Property Name="typeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="typeDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="roleID" />
+          </Key>
+          <Property Name="roleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="roleDescription" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -208,6 +209,7 @@
           <EntitySetMapping Name="Relationships">
             <EntityTypeMapping TypeName="b7039648Model.Relationship">
               <MappingFragment StoreEntitySet="Relationships">
+                <ScalarProperty Name="familyID" ColumnName="familyID" />
                 <ScalarProperty Name="relationshipID" ColumnName="relationshipID" />
                 <ScalarProperty Name="individualOneID" ColumnName="individualOneID" />
                 <ScalarProperty Name="individualTwoID" ColumnName="individualTwoID" />
@@ -223,16 +225,16 @@
           <EntitySetMapping Name="RelationshipTypes">
             <EntityTypeMapping TypeName="b7039648Model.RelationshipType">
               <MappingFragment StoreEntitySet="RelationshipTypes">
+                <ScalarProperty Name="typeDescription" ColumnName="typeDescription" />
                 <ScalarProperty Name="typeID" ColumnName="typeID" />
-                <ScalarProperty Name="description" ColumnName="description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Roles">
             <EntityTypeMapping TypeName="b7039648Model.Role">
               <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="roleDescription" ColumnName="roleDescription" />
                 <ScalarProperty Name="roleID" ColumnName="roleID" />
-                <ScalarProperty Name="description" ColumnName="description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -53,7 +53,8 @@ namespace FamilyTree.Controllers
             }
         }
 
-
+        
+        //Needs Finishing, doesn't work properly, possibly the get action as doesn't retrieve the information
         // GET: FamilyAdmin/Edit/5
         [HttpGet]
         public ActionResult EditFamilyName(int fid)

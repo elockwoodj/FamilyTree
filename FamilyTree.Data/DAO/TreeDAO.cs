@@ -91,5 +91,34 @@ namespace FamilyTree.Data.DAO
 
             return _indiv.ToList<Individual>();
         }
+        //VVV List all information out of _relationship required, this will all be displayed VVV
+        public IList<RelationshipBEAN> GetRelationships(int fid)
+        {
+            IQueryable<RelationshipBEAN> _relaBEAN;
+            _relaBEAN = from _relationship in _context.Relationships
+                        from _individualOne in _context.Individuals
+                        from _individualTwo in _context.Individuals
+                        from _rolesOne in _context.Roles
+                        from _rolesTwo in _context.Roles
+                        from _type in _context.RelationshipTypes
+                        where _relationship.familyID == fid
+                        where _relationship.individualOneID == _individualOne.individualID
+                        where _relationship.individualTwoID == _individualTwo.individualID
+                        where _relationship.individualOneRole == _rolesOne.roleID
+                        where _relationship.individualTwoRole == _rolesTwo.roleID
+                        where _relationship.relationshipTypeID == _type.typeID
+                        select new RelationshipBEAN
+                        {
+                            firstNameOne = _individualOne.firstName,
+                            lastNameOne = _individualOne.lastName,
+                            firstNameTwo = _individualTwo.firstName,
+                            lastNameTwo = _individualTwo.lastName,
+                            iOneRole = _rolesOne.roleDescription,
+                            iTwoRole = _rolesTwo.roleDescription,
+                            typeDescription = _type.typeDescription
+                        };
+            return _relaBEAN.ToList<RelationshipBEAN>();
+                        
+        }
     }
 }

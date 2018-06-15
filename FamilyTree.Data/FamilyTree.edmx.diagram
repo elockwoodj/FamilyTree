@@ -9,8 +9,8 @@
         <EntityTypeShape EntityType="b7039648Model.Family" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="b7039648Model.Individual" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="b7039648Model.Relationship" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="b7039648Model.RelationshipType" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="b7039648Model.Role" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="b7039648Model.RelationshipType" Width="1.5" PointX="5.375" PointY="4.75" />
+        <EntityTypeShape EntityType="b7039648Model.Role" Width="1.5" PointX="6.5" PointY="2.125" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

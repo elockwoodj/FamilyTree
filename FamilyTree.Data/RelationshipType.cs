@@ -15,6 +15,6 @@ namespace FamilyTree.Data
     public partial class RelationshipType
     {
         public int typeID { get; set; }
-        public string description { get; set; }
+        public string typeDescription { get; set; }
     }
 }

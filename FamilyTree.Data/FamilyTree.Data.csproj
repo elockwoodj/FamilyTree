@@ -52,8 +52,8 @@
     <Compile Include="AspNetUser.cs">
       <DependentUpon>FamilyTree.tt</DependentUpon>
     </Compile>
+    <Compile Include="BEANS\RelationshipBEAN.cs" />
     <Compile Include="BEANS\TreeBEAN.cs" />
-    <Compile Include="BEANS\userBEAN.cs" />
     <Compile Include="DAO\TreeDAO.cs" />
     <Compile Include="Family.cs">
       <DependentUpon>FamilyTree.tt</DependentUpon>

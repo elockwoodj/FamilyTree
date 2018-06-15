@@ -15,6 +15,6 @@ namespace FamilyTree.Data
     public partial class Role
     {
         public int roleID { get; set; }
-        public string description { get; set; }
+        public string roleDescription { get; set; }
     }
 }
