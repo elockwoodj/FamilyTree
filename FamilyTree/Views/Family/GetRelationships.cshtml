@@ -1,0 +1,87 @@
+﻿@model IEnumerable<FamilyTree.Data.BEANS.RelationshipBEAN>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.individualID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.iOneRole)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.iTwoRole)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.relationshipStartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.relationshipEndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.notableInformation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.typeDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.firstNameOne)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.firstNameTwo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lastNameOne)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lastNameTwo)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.individualID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.iOneRole)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.iTwoRole)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.relationshipStartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.relationshipEndDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.notableInformation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.typeDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.firstNameOne)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.firstNameTwo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lastNameOne)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lastNameTwo)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

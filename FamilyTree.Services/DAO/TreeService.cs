@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FamilyTree.Services.IDAO;
 using FamilyTree.Data;
+using FamilyTree.Data.BEANS;
 using FamilyTree.Data.DAO;
 using FamilyTree.Data.IDAO;
 
@@ -46,6 +47,10 @@ namespace FamilyTree.Services.DAO
         public IList<Individual>GetIndividuals(int fid)
         {
             return _treeDAO.GetIndividuals(fid);
+        }
+        public IList<RelationshipBEAN> GetRelationships(int fid)
+        {
+            return _treeDAO.GetRelationships(fid);
         }
     }
 }

@@ -7,7 +7,7 @@
 <h2>Your Family Members</h2>
 
 <p>
-    @Html.ActionLink("Add New Family Member Record", "AddIndividual")
+    @Html.ActionLink("Add New Family Member Record", "AddIndividual",new { fid = })@*WORK OUT HOW TO PASS familyID HERE*@
 </p>
 <table class="table">
     <tr>
@@ -54,7 +54,6 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.individualID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.individualID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.individualID })
         </td>
     </tr>

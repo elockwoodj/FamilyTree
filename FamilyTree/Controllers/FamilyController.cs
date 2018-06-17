@@ -56,11 +56,15 @@ namespace FamilyTree.Controllers
             return View(_treeService.GetIndividuals(fid));
         }
         
-
+        public ActionResult GetRelationships(int fid)
+        {
+            return View(_treeService.GetRelationships(fid));
+        }
 
         
         public ActionResult AddIndividual()
         {
+            
             return View();
         }
 
@@ -72,7 +76,7 @@ namespace FamilyTree.Controllers
             {
                 // TODO: Add insert logic here
                 _treeService.AddIndividual(individual);
-                return RedirectToAction("Family", "Families", new { User.Identity.Name });
+                return RedirectToAction("Families", "Family", new { User.Identity.Name });
             }
             catch
             {

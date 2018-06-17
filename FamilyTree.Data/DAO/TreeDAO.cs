@@ -91,7 +91,7 @@ namespace FamilyTree.Data.DAO
 
             return _indiv.ToList<Individual>();
         }
-        //VVV List all information out of _relationship required, this will all be displayed VVV
+        //VVV Speak to Dan about Partial Views etc, need to work out how this will work
         public IList<RelationshipBEAN> GetRelationships(int fid)
         {
             IQueryable<RelationshipBEAN> _relaBEAN;
@@ -115,7 +115,10 @@ namespace FamilyTree.Data.DAO
                             lastNameTwo = _individualTwo.lastName,
                             iOneRole = _rolesOne.roleDescription,
                             iTwoRole = _rolesTwo.roleDescription,
-                            typeDescription = _type.typeDescription
+                            typeDescription = _type.typeDescription,
+                            relationshipStartDate = _relationship.relationshipStartDate,
+                            relationshipEndDate = _relationship.relationshipEndDate,
+                            notableInformation = _relationship.notableInformation
                         };
             return _relaBEAN.ToList<RelationshipBEAN>();
                         
