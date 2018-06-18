@@ -15,11 +15,10 @@ namespace FamilyTree.Data
     public partial class Relationship
     {
         public int relationshipID { get; set; }
-        public int individualOneID { get; set; }
-        public int individualTwoID { get; set; }
+        public int personID { get; set; }
+        public int relativeID { get; set; }
         public int relationshipTypeID { get; set; }
-        public int individualOneRole { get; set; }
-        public int individualTwoRole { get; set; }
+        public int relativeRole { get; set; }
         public Nullable<System.DateTime> relationshipStartDate { get; set; }
         public Nullable<System.DateTime> relationshipEndDate { get; set; }
         public string notableInformation { get; set; }

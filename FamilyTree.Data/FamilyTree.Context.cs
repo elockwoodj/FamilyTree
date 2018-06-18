@@ -27,9 +27,9 @@ namespace FamilyTree.Data
     
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Family> Families { get; set; }
-        public virtual DbSet<Individual> Individuals { get; set; }
-        public virtual DbSet<Relationship> Relationships { get; set; }
         public virtual DbSet<RelationshipType> RelationshipTypes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Individual> Individuals { get; set; }
+        public virtual DbSet<Relationship> Relationships { get; set; }
     }
 }

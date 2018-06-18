@@ -74,10 +74,21 @@ namespace FamilyTree.Data.DAO
 
             _context.SaveChanges();
         }
+        public void DeleteFamilyName(Family famObject)
+        {
+            _context.Families.Remove(famObject);
+            _context.SaveChanges();
+        }
 
         public void AddIndividual(Individual individual)
         {
             _context.Individuals.Add(individual);
+            _context.SaveChanges();
+        }
+
+        public void DeleteIndividual(Individual indObject)
+        {
+            _context.Individuals.Remove(indObject);
             _context.SaveChanges();
         }
 
@@ -91,37 +102,117 @@ namespace FamilyTree.Data.DAO
 
             return _indiv.ToList<Individual>();
         }
-        //VVV Speak to Dan about Partial Views etc, need to work out how this will work
-        public IList<RelationshipBEAN> GetRelationships(int fid)
+
+        public Individual GetIndividual(int pid)
         {
-            IQueryable<RelationshipBEAN> _relaBEAN;
-            _relaBEAN = from _relationship in _context.Relationships
-                        from _individualOne in _context.Individuals
-                        from _individualTwo in _context.Individuals
-                        from _rolesOne in _context.Roles
-                        from _rolesTwo in _context.Roles
-                        from _type in _context.RelationshipTypes
-                        where _relationship.familyID == fid
-                        where _relationship.individualOneID == _individualOne.individualID
-                        where _relationship.individualTwoID == _individualTwo.individualID
-                        where _relationship.individualOneRole == _rolesOne.roleID
-                        where _relationship.individualTwoRole == _rolesTwo.roleID
-                        where _relationship.relationshipTypeID == _type.typeID
-                        select new RelationshipBEAN
-                        {
-                            firstNameOne = _individualOne.firstName,
-                            lastNameOne = _individualOne.lastName,
-                            firstNameTwo = _individualTwo.firstName,
-                            lastNameTwo = _individualTwo.lastName,
-                            iOneRole = _rolesOne.roleDescription,
-                            iTwoRole = _rolesTwo.roleDescription,
-                            typeDescription = _type.typeDescription,
-                            relationshipStartDate = _relationship.relationshipStartDate,
-                            relationshipEndDate = _relationship.relationshipEndDate,
-                            notableInformation = _relationship.notableInformation
-                        };
-            return _relaBEAN.ToList<RelationshipBEAN>();
-                        
+            IQueryable<Individual> _ind;
+            _ind = from ind in _context.Individuals
+                   where ind.individualID == pid
+                   select ind;
+
+            return _ind.ToList().First();
         }
+
+        public IList<relaBEAN> GetRelatives(int pid)
+        {
+            IQueryable<relaBEAN> _rel;
+            _rel = from rel_ in _context.Relationships
+                   from ind_ in _context.Individuals
+                   from rol_ in _context.Roles
+                   from typ_ in _context.RelationshipTypes
+                   where rel_.personID == pid && rel_.relativeID == ind_.individualID && rel_.relativeRole == rol_.roleID && rel_.relationshipTypeID == typ_.typeID
+                   select new relaBEAN
+                   {
+                       relationshipID = rel_.relationshipID,
+                       personID = pid,
+                       relativeID = ind_.individualID,
+                       relationshipStartDate = rel_.relationshipStartDate,
+                       relationshipEndDate = rel_.relationshipEndDate,
+                       notableInformation = rel_.notableInformation,
+                       fullName = ind_.fullName,
+                       dateOfBirth = ind_.dateOfBirth,
+                       dateOfDeath = ind_.dateOfDeath,
+                       gender = ind_.gender,
+                       placeOfBirth = ind_.placeOfBirth,
+                       relationshipType = typ_.typeDescription,
+                   };
+
+            return _rel.ToList<relaBEAN>();
+        }
+
+        public IList<relaBEAN> GetRelationships(int fid)
+        {
+            var _famLists = GetIndividuals(fid);
+            IList<relaBEAN> relatives;
+            foreach (var per in _famLists)
+            {
+                relatives = GetRelatives(per.individualID);
+
+                return relatives.ToList<relaBEAN>();
+            };
+            return null;
+        }
+        //VVV Speak to Dan about Partial Views etc, need to work out how this will work
+        //public IList<RelationshipBEAN> GetRelationships(int fid, int pid, int pName)
+        //{
+        //    IQueryable<RelationshipBEAN> _relaBEAN;
+        //    _relaBEAN = from _relationship in _context.Relationships
+        //                from _individual in _context.Individuals
+        //                from _type in _context.RelationshipTypes
+        //                    //from _rolesOne in _context.Roles
+        //                    //from _rolesTwo in _context.Roles
+        //                where _relationship.familyID == fid
+        //                && (_relationship.individualOneID == _individual.individualID && _relationship.individualTwoID == _individual.individualID)
+        //                && _relationship.relationshipTypeID == _type.typeID
+        //                //&& _relationship.individualOneRole == _rolesOne.roleID
+        //                //&& _relationship.individualTwoRole == _rolesTwo.roleID
+        //                select new RelationshipBEAN
+        //                {
+        //                    firstNameOne = _individual.firstName,
+        //                    lastNameOne = _individual.lastName,
+        //                    firstNameTwo = _individual.firstName,
+        //                    lastNameTwo = _individual.lastName,
+        //                    //iOneRole = _rolesOne.roleDescription,
+        //                    //iTwoRole = _rolesTwo.roleDescription,
+        //                    typeDescription = _type.typeDescription,
+        //                    relationshipStartDate = _relationship.relationshipStartDate,
+        //                    relationshipEndDate = _relationship.relationshipEndDate,
+        //                    notableInformation = _relationship.notableInformation
+        //                };
+        //    return _relaBEAN.ToList<RelationshipBEAN>();
+
+
+        //    IQueryable<RelationshipBEAN> _relaBEAN;
+        //    _relaBEAN = from _relationship in _context.Relationships
+        //                from _type in _context.RelationshipTypes
+        //                where _relationship.familyID == fid
+        //                && _relationship.relationshipTypeID == _type.typeID
+        //                select new RelationshipBEAN
+        //                {
+        //                    relationshipId = _relationship.relationshipID,
+
+        //                    Individuals
+        //                    individualOneID = pid,
+        //                    individualTwoID = _relationship.individualTwoID,
+        //                    individualTwoName = _relationship.individualTwoID,
+
+        //                    Relationship Type
+        //                    relationshipTypeId = _relationship.relationshipTypeID,
+        //                    typeDescription = _type.typeDescription,
+
+        //                    Roles
+        //                    iOneRole = _relationship.individualOneRole,
+        //                    iTwoRole = _relationship.individualTwoRole,
+
+        //                    Relationship Dates
+        //                    relationshipStartDate = _relationship.relationshipStartDate,
+        //                    relationshipEndDate = _relationship.relationshipEndDate,
+
+        //                    notableInformation = _relationship.notableInformation,
+
+        //                    familyId = _relationship.familyID
+        //                };
+        //    return _relaBEAN.ToList<RelationshipBEAN>();
+        //}
     }
 }

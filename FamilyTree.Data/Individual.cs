@@ -15,8 +15,7 @@ namespace FamilyTree.Data
     public partial class Individual
     {
         public int individualID { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
+        public string fullName { get; set; }
         public Nullable<System.DateTime> dateOfBirth { get; set; }
         public Nullable<System.DateTime> dateOfDeath { get; set; }
         public string gender { get; set; }

@@ -1,13 +1,7 @@
 ﻿@model IEnumerable<FamilyTree.Data.Individual>
 
-@{
-    ViewBag.Title = "GetIndividuals";
-}
-
-<h2>Your Family Members</h2>
-
 <p>
-    @Html.ActionLink("Add New Family Member Record", "AddIndividual")@*WORK OUT HOW TO PASS familyID HERE*@
+    @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
@@ -27,7 +21,9 @@
             @Html.DisplayNameFor(model => model.placeOfBirth)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.familyID)
         </th>
+        <th></th>
     </tr>
 
 @foreach (var item in Model) {
@@ -48,11 +44,12 @@
             @Html.DisplayFor(modelItem => item.placeOfBirth)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.individualID }) |
-            @Html.ActionLink("Delete", "DeleteIndividual", new { pid = item.individualID , controller="Family"}) |
-            @Html.ActionLink("Add New Family Member Record", "AddIndividual", new { fid = item.familyID })
-
-
+            @Html.DisplayFor(modelItem => item.familyID)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.individualID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.individualID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.individualID })
         </td>
     </tr>
 }

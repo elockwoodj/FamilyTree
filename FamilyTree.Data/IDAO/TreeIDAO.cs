@@ -14,9 +14,12 @@ namespace FamilyTree.Data.IDAO
         //int GetUserID(string email);
         void AddFamilyName(Family familyName);
         void EditFamilyName(Family familyName);
+        void DeleteFamilyName(Family familyName);
         void AddIndividual(Individual individual);
+        void DeleteIndividual(Individual individual);
         IList<Individual> GetIndividuals(int fid);
-        IList<RelationshipBEAN> GetRelationships(int fid);
+        IList<relaBEAN> GetRelationships(int fid);
+        Individual GetIndividual(int pid);
 
     }
 }

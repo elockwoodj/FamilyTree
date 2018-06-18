@@ -298,7 +298,9 @@
     <Content Include="Views\Family\AddIndividual.cshtml" />
     <Content Include="Views\Family\GetFamily.cshtml" />
     <Content Include="Views\FamilyAdmin\EditFamilyName.cshtml" />
-    <Content Include="Views\Family\GetRelationships.cshtml" />
+    <Content Include="Views\Family\DeleteFamilyName.cshtml" />
+    <Content Include="Views\Family\DeleteIndividual.cshtml" />
+    <Content Include="Views\Family\GetIndividual.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

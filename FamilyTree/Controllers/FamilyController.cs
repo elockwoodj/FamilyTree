@@ -32,6 +32,10 @@ namespace FamilyTree.Controllers
         {
             return View(_treeService.GetFamily(fid));
         }
+        public ActionResult GetIndividual(int pid)
+        {
+            return View(_treeService.GetIndividual(pid));
+        }
         //[HttpGet]
         //public ActionResult AddFamilyName()
         //{
@@ -55,13 +59,18 @@ namespace FamilyTree.Controllers
         {
             return View(_treeService.GetIndividuals(fid));
         }
-        
+
         public ActionResult GetRelationships(int fid)
         {
             return View(_treeService.GetRelationships(fid));
         }
 
-        
+        //public ActionResult GetFamily(int fid)
+        //{
+        //    return View(_treeService.GetFamilyMembers(fid));
+        //}
+
+        [HttpGet]
         public ActionResult AddIndividual()
         {
             
@@ -84,6 +93,49 @@ namespace FamilyTree.Controllers
             }
         }
 
+        // POST: Family/Delete/
+        [HttpGet]
+        public ActionResult DeleteFamilyName(int fid)
+        {
+            return View(_treeService.GetFamily(fid));
+        }
+        // POST: Family/Delete/
+        [HttpPost]
+        public ActionResult DeleteFamilyName(int fid, Family famObject)
+        {
+            try
+            {
+                Family _famObject = _treeService.GetFamily(fid);
+                _treeService.DeleteFamilyName(_famObject);
+                return RedirectToAction("Families", new { uid = User.Identity.Name, Controller = "Family" });
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public ActionResult DeleteIndividual(int pid)
+        {
+            return View(_treeService.GetIndividual(pid));
+        }
+
+        [HttpPost]
+        public ActionResult DeleteIndividual(int pid, Individual indObject)
+        {
+            try
+            {
+                Individual _indObject = _treeService.GetIndividual(pid);
+                _treeService.DeleteIndividual(_indObject);
+                return RedirectToAction("GetIndividuals", new { fid = _indObject.familyID, Controller = "Family" });
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
         // GET: Family/Edit/5
         public ActionResult Edit(int id)
         {
@@ -97,28 +149,6 @@ namespace FamilyTree.Controllers
             try
             {
                 // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Family/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Family/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
 
                 return RedirectToAction("Index");
             }

@@ -7,10 +7,10 @@
       <Diagram DiagramId="8bfeef1dd7b048a5baa4bb1f0790ab32" Name="Diagram1">
         <EntityTypeShape EntityType="b7039648Model.AspNetUser" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="b7039648Model.Family" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="b7039648Model.Individual" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="b7039648Model.Relationship" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="b7039648Model.RelationshipType" Width="1.5" PointX="5.375" PointY="4.75" />
-        <EntityTypeShape EntityType="b7039648Model.Role" Width="1.5" PointX="6.5" PointY="2.125" />
+        <EntityTypeShape EntityType="b7039648Model.RelationshipType" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="b7039648Model.Role" Width="1.5" PointX="6.5" PointY="0.75" />
+        <EntityTypeShape EntityType="b7039648Model.Individual" Width="1.5" PointX="2.75" PointY="2.5" />
+        <EntityTypeShape EntityType="b7039648Model.Relationship" Width="1.5" PointX="4.75" PointY="2.375" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

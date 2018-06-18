@@ -40,15 +40,27 @@ namespace FamilyTree.Services.DAO
         {
             _treeDAO.EditFamilyName(famObject);
         }
+        public void DeleteFamilyName(Family famObject)
+        {
+            _treeDAO.DeleteFamilyName(famObject);
+        }
         public void AddIndividual(Individual individual)
         {
             _treeDAO.AddIndividual(individual);
+        }
+        public void DeleteIndividual(Individual individual)
+        {
+            _treeDAO.DeleteIndividual(individual);
         }
         public IList<Individual>GetIndividuals(int fid)
         {
             return _treeDAO.GetIndividuals(fid);
         }
-        public IList<RelationshipBEAN> GetRelationships(int fid)
+        public Individual GetIndividual(int pid)
+        {
+            return _treeDAO.GetIndividual(pid);
+        }
+        public IList<relaBEAN> GetRelationships(int fid)
         {
             return _treeDAO.GetRelationships(fid);
         }
