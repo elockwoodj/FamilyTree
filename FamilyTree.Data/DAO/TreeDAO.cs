@@ -118,9 +118,9 @@ namespace FamilyTree.Data.DAO
             IQueryable<relaBEAN> _rel;
             _rel = from rel_ in _context.Relationships
                    from ind_ in _context.Individuals
-                   from rol_ in _context.Roles
-                   from typ_ in _context.RelationshipTypes
-                   where rel_.personID == pid && rel_.relativeID == ind_.individualID && rel_.relativeRole == rol_.roleID && rel_.relationshipTypeID == typ_.typeID
+                   //from rol_ in _context.Roles
+                   //from typ_ in _context.RelationshipTypes
+                   where rel_.personID == pid && rel_.relativeID == ind_.individualID //&& rel_.relativeRole == rol_.roleID //&& rel_.relationshipTypeID == typ_.typeID
                    select new relaBEAN
                    {
                        relationshipID = rel_.relationshipID,
@@ -134,7 +134,9 @@ namespace FamilyTree.Data.DAO
                        dateOfDeath = ind_.dateOfDeath,
                        gender = ind_.gender,
                        placeOfBirth = ind_.placeOfBirth,
-                       relationshipType = typ_.typeDescription,
+                       relativeRole = rel_.relativeRole,
+                       familyID = rel_.familyID
+                       //relationshipType = typ_.typeDescription,
                    };
 
             return _rel.ToList<relaBEAN>();
@@ -144,13 +146,23 @@ namespace FamilyTree.Data.DAO
         {
             var _famLists = GetIndividuals(fid);
             IList<relaBEAN> relatives;
+             
             foreach (var per in _famLists)
             {
-                relatives = GetRelatives(per.individualID);
+                    relatives = GetRelatives(per.individualID);
+                //if (relatives != null)
+                //{
+                //    return relatives.ToList<relaBEAN>();
+                //}
+                //else
+                //{
+                //    return null;
+                //};
+            }
 
-                return relatives.ToList<relaBEAN>();
-            };
             return null;
+            
+            
         }
         //VVV Speak to Dan about Partial Views etc, need to work out how this will work
         //public IList<RelationshipBEAN> GetRelationships(int fid, int pid, int pName)

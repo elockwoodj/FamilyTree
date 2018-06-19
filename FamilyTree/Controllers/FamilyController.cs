@@ -55,14 +55,16 @@ namespace FamilyTree.Controllers
         //        return View();
         //    }
         //}
+
+            //VVV
         public ActionResult GetIndividuals(int fid)
         {
             return View(_treeService.GetIndividuals(fid));
         }
-
-        public ActionResult GetRelationships(int fid)
+            //VVV
+        public ActionResult _GetRelationships(int fid)
         {
-            return View(_treeService.GetRelationships(fid));
+            return PartialView(_treeService.GetRelationships(fid));
         }
 
         //public ActionResult GetFamily(int fid)
