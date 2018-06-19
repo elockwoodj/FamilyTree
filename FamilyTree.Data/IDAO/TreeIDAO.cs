@@ -20,6 +20,9 @@ namespace FamilyTree.Data.IDAO
         IList<Individual> GetIndividuals(int fid);
         IList<relaBEAN> GetRelationships(int fid);
         Individual GetIndividual(int pid);
+        IList<relaBEAN> GetRelatives(int pid);
+        void EditIndividual(Individual individual);
+
 
     }
 }

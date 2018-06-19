@@ -18,7 +18,7 @@ namespace FamilyTree.Data.BEANS
         public int relativeRole { get; set; }
         public DateTime? relationshipStartDate { get; set; }
         public DateTime? relationshipEndDate { get; set; }
-        public string? notableInformation { get; set; }
+        public string notableInformation { get; set; }
         public int familyID { get; set; }
 
         //from Individuals
@@ -26,10 +26,13 @@ namespace FamilyTree.Data.BEANS
         public DateTime? dateOfBirth { get; set; }
         public DateTime? dateOfDeath { get; set; }
         public string gender { get; set; }
-        public string? placeOfBirth { get; set; }
+        public string placeOfBirth { get; set; }
 
         //from Type
-        public string relationshipType { get; set; }
+        public string typeDescription { get; set; }
+
+        //from Roles
+        public string roleDescription { get; set; }
 
     }
 }

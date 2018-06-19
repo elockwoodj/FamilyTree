@@ -59,12 +59,19 @@ namespace FamilyTree.Controllers
             //VVV
         public ActionResult GetIndividuals(int fid)
         {
+            ViewBag.familyID = fid;
             return View(_treeService.GetIndividuals(fid));
         }
             //VVV
         public ActionResult _GetRelationships(int fid)
         {
-            return PartialView(_treeService.GetRelationships(fid));
+            return PartialView(_treeService.GetRelatives(fid));
+        }
+
+        public ActionResult GetRelatives(int pid)
+        {
+            ViewBag.personID = pid;
+            return View(_treeService.GetRelatives(pid));
         }
 
         //public ActionResult GetFamily(int fid)
@@ -73,21 +80,21 @@ namespace FamilyTree.Controllers
         //}
 
         [HttpGet]
-        public ActionResult AddIndividual()
+        public ActionResult AddIndividual(int fid)
         {
-            
+            ViewBag.familyID = fid;
             return View();
         }
 
         // POST: Family/Create
         [HttpPost]
-        public ActionResult AddIndividual(Individual individual)
+        public ActionResult AddIndividual(int fid, Individual individual)
         {
             try
             {
                 // TODO: Add insert logic here
                 _treeService.AddIndividual(individual);
-                return RedirectToAction("Families", "Family", new { User.Identity.Name });
+                return RedirectToAction("GetIndividuals", "Family", new { fid = fid });
             }
             catch
             {

@@ -63,38 +63,34 @@ namespace FamilyTree.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditFamilyName(int fid, Family famObject)
+        public ActionResult EditFamilyName(Family famObject)
         {
             try
             {
                 _treeService.EditFamilyName(famObject);
-                return RedirectToAction("GetFamily", "Family", fid);
+                return RedirectToAction("Families", "Family");
             }
             catch
             {
                 return RedirectToAction("Families", "Family");
             }
         }
-
-        // GET: FamilyAdmin/Delete/5
-        public ActionResult Delete(int id)
+        [HttpGet]
+        public ActionResult EditIndividual(int pid)
         {
-            return View();
+            return View(_treeService.GetIndividual(pid));
         }
-
-        // POST: FamilyAdmin/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult EditIndividual(Individual individual)
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                _treeService.EditIndividual(individual);
+                return RedirectToAction("GetIndividuals", "Family", new { fid = individual.familyID });
             }
             catch
             {
-                return View();
+                return RedirectToAction("GetIndividuals", "Family", new { fid = individual.familyID });
             }
         }
     }

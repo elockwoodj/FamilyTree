@@ -26,12 +26,10 @@
             @Html.DisplayFor(modelItem => item.ownerUserName)
         </td>
         <td>
-            @Html.ActionLink(item.familyName,"GetRelationships",new { fid = item.familyID , controller="Family"})
             @Html.ActionLink(item.familyName, "GetIndividuals", new { fid = item.familyID, controller = "Family" })
-            @*Html.DisplayFor(modelItem => item.familyName)*@
         </td>
         <td>
-            @Html.ActionLink("Edit Family Name", "EditFamilyName", new { id=item.familyID, controller = "FamilyAdmin" }) |
+            @Html.ActionLink("Edit Family Name", "EditFamilyName", new { fid = item.familyID, controller = "FamilyAdmin" }) |
             @Html.ActionLink("Delete", "DeleteFamilyName", new { fid = item.familyID , controller = "Family" })
         </td>
     </tr>

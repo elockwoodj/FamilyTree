@@ -86,6 +86,22 @@ namespace FamilyTree.Data.DAO
             _context.SaveChanges();
         }
 
+        public void EditIndividual(Individual indObject)
+        {
+            IQueryable<Individual> _indEdit;
+            _indEdit = from iEdit in _context.Individuals
+                       where iEdit.individualID == indObject.individualID
+                       select iEdit;
+            Individual indEdit = _indEdit.First();
+
+            indEdit.fullName = indObject.fullName;
+            indEdit.gender = indObject.gender;
+            indEdit.placeOfBirth = indObject.placeOfBirth;
+            indEdit.dateOfBirth = indObject.dateOfBirth;
+            indEdit.dateOfDeath = indObject.dateOfDeath;
+            _context.SaveChanges();
+        }
+
         public void DeleteIndividual(Individual indObject)
         {
             _context.Individuals.Remove(indObject);
@@ -118,9 +134,12 @@ namespace FamilyTree.Data.DAO
             IQueryable<relaBEAN> _rel;
             _rel = from rel_ in _context.Relationships
                    from ind_ in _context.Individuals
-                   //from rol_ in _context.Roles
-                   //from typ_ in _context.RelationshipTypes
-                   where rel_.personID == pid && rel_.relativeID == ind_.individualID //&& rel_.relativeRole == rol_.roleID //&& rel_.relationshipTypeID == typ_.typeID
+                   from rol_ in _context.Roles
+                   from typ_ in _context.RelationshipTypes
+                   where rel_.personID == pid 
+                   && rel_.relativeID == ind_.individualID 
+                   && rel_.relativeRole == rol_.roleID 
+                   && rel_.relationshipTypeID == typ_.typeID
                    select new relaBEAN
                    {
                        relationshipID = rel_.relationshipID,
@@ -129,17 +148,18 @@ namespace FamilyTree.Data.DAO
                        relationshipStartDate = rel_.relationshipStartDate,
                        relationshipEndDate = rel_.relationshipEndDate,
                        notableInformation = rel_.notableInformation,
+                       roleDescription = rol_.roleDescription,
                        fullName = ind_.fullName,
                        dateOfBirth = ind_.dateOfBirth,
                        dateOfDeath = ind_.dateOfDeath,
                        gender = ind_.gender,
                        placeOfBirth = ind_.placeOfBirth,
                        relativeRole = rel_.relativeRole,
-                       familyID = rel_.familyID
-                       //relationshipType = typ_.typeDescription,
+                       familyID = rel_.familyID,
+                       typeDescription = typ_.typeDescription,
                    };
 
-            return _rel.ToList<relaBEAN>();
+            return _rel.ToList();
         }
 
         public IList<relaBEAN> GetRelationships(int fid)
@@ -149,7 +169,8 @@ namespace FamilyTree.Data.DAO
              
             foreach (var per in _famLists)
             {
-                    relatives = GetRelatives(per.individualID);
+                    relatives = (GetRelatives(per.individualID));
+                return relatives;
                 //if (relatives != null)
                 //{
                 //    return relatives.ToList<relaBEAN>();

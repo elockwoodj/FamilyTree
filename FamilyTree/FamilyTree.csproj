@@ -301,7 +301,8 @@
     <Content Include="Views\Family\DeleteFamilyName.cshtml" />
     <Content Include="Views\Family\DeleteIndividual.cshtml" />
     <Content Include="Views\Family\GetIndividual.cshtml" />
-    <Content Include="Views\Family\_GetRelationships.cshtml" />
+    <Content Include="Views\Family\GetRelatives.cshtml" />
+    <Content Include="Views\FamilyAdmin\EditIndividual.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

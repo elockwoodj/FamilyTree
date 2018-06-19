@@ -1,13 +1,6 @@
 ﻿@model FamilyTree.Data.Individual
 
-@{
-    ViewBag.Title = "AddIndividual";
-}
-
-<h2>AddIndividual</h2>
-
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
@@ -15,6 +8,8 @@
         <h4>Individual</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.individualID)
+
         <div class="form-group">
             @Html.LabelFor(model => model.fullName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -22,8 +17,6 @@
                 @Html.ValidationMessageFor(model => model.fullName, "", new { @class = "text-danger" })
             </div>
         </div>
-
-
 
         <div class="form-group">
             @Html.LabelFor(model => model.dateOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -44,20 +37,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.gender, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @*Html.EditorFor(model => model.gender, new { htmlAttributes = new { @class = "form-control" } })*@
-                @{ 
-                    List<SelectListItem> genderList = new List<SelectListItem>();
-                    genderList.Add(new SelectListItem
-                    {
-                        Text = "Male",
-                        Value = "Male"
-                    });
-                    genderList.Add(new SelectListItem{
-                        Text = "Female",
-                        Value = "Female"
-                    });
-                }
-                @Html.DropDownListFor(model => model.gender, genderList, "-- Select Gender --")
+                @Html.EditorFor(model => model.gender, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.gender, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -71,15 +51,19 @@
         </div>
 
         <div class="form-group">
+            @*@Html.LabelFor(model => model.familyID, htmlAttributes: new { @class = "control-label col-md-2" })*@
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.familyID, new { @Value = ViewBag.familyID , @type = "hidden" })
+                @Html.HiddenFor(model => model.familyID)
 
+
+                @*@Html.EditorFor(model => model.familyID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.familyID, "", new { @class = "text-danger" })*@
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -88,7 +72,3 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

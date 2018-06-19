@@ -18,8 +18,11 @@ namespace FamilyTree.Services.IDAO
         void DeleteFamilyName(Family famObject);
         void AddIndividual(Individual individual);
         void DeleteIndividual(Individual individual);
+        void EditIndividual(Individual individual);
         IList<Individual> GetIndividuals(int fid);
         IList<relaBEAN> GetRelationships(int fid);
         Individual GetIndividual(int pid);
+        IList<relaBEAN> GetRelatives(int pid);
+
     }
 }

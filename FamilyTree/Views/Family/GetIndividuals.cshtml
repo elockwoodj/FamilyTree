@@ -7,7 +7,7 @@
 <h2>Your Family Members</h2>
 
 <p>
-    @Html.ActionLink("Add New Family Member Record", "AddIndividual")@*WORK OUT HOW TO PASS familyID HERE*@
+    @Html.ActionLink("Add New Family Member Record", "AddIndividual", new { fid = ViewBag.familyID });
 </p>
 <table class="table">
     <tr>
@@ -48,9 +48,9 @@
             @Html.DisplayFor(modelItem => item.placeOfBirth)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.individualID }) |
+            @Html.ActionLink("Edit", "EditIndividual", new { pid = item.individualID, controller = "FamilyAdmin" }) |
             @Html.ActionLink("Delete", "DeleteIndividual", new { pid = item.individualID , controller="Family"}) |
-            @Html.ActionLink("Add New Family Member Record", "AddIndividual", new { fid = item.familyID })
+            @Html.ActionLink("Show Relatives", "GetRelatives", new { pid = item.individualID })
 
 
         </td>
@@ -58,4 +58,3 @@
 }
    
 </table>
-@{Html.RenderAction("_GetRelationships", "Family");}

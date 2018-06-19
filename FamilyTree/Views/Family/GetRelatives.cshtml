@@ -1,0 +1,62 @@
+﻿@model IEnumerable<FamilyTree.Data.BEANS.relaBEAN>
+
+<p>
+    @Html.ActionLink("Add New Relative", "AddRelative" , new { pid = ViewBag.personID })
+</p>
+<table class="table">
+    <tr>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.relationshipStartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.relationshipEndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.notableInformation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.typeDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.roleDescription)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.relationshipStartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.relationshipEndDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.notableInformation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.typeDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.roleDescription)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

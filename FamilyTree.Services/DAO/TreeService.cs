@@ -36,6 +36,11 @@ namespace FamilyTree.Services.DAO
         {
             _treeDAO.AddFamilyName(familyName);
         }
+        public IList<relaBEAN> GetRelatives(int pid)
+        {
+            return _treeDAO.GetRelatives(pid);
+        }
+
         public void EditFamilyName(Family famObject)
         {
             _treeDAO.EditFamilyName(famObject);
@@ -51,6 +56,10 @@ namespace FamilyTree.Services.DAO
         public void DeleteIndividual(Individual individual)
         {
             _treeDAO.DeleteIndividual(individual);
+        }
+        public void EditIndividual(Individual individual)
+        {
+            _treeDAO.EditIndividual(individual);
         }
         public IList<Individual>GetIndividuals(int fid)
         {
