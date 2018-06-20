@@ -23,6 +23,8 @@ namespace FamilyTree.Services.IDAO
         IList<relaBEAN> GetRelationships(int fid);
         Individual GetIndividual(int pid);
         IList<relaBEAN> GetRelatives(int pid);
-
+        void AddRelative(Relationship relaObject);
+        IList<relaBEAN> GetTypes();
+        IList<relaBEAN> GetRoles();
     }
 }

@@ -73,5 +73,20 @@ namespace FamilyTree.Services.DAO
         {
             return _treeDAO.GetRelationships(fid);
         }
+        public void AddRelative(Relationship relaObject)
+        {
+            _treeDAO.AddRelative(relaObject);
+        }
+        public IList<relaBEAN> GetTypes()
+        {
+            return _treeDAO.GetTypes();
+        }
+        public IList<relaBEAN> GetRoles()
+        {
+            return _treeDAO.GetRoles();
+        }
+
+        
+
     }
 }

@@ -93,5 +93,71 @@ namespace FamilyTree.Controllers
                 return RedirectToAction("GetIndividuals", "Family", new { fid = individual.familyID });
             }
         }
+
+        [HttpGet]
+        public ActionResult AddRelative(int fid, int pid)
+        {
+            //Assign personID and familyID so they are autopopulated in the view
+            ViewBag.personID = pid;
+            ViewBag.familyID = fid;
+            //List for relativeID
+            List<SelectListItem> relativeList = new List<SelectListItem>();
+
+            foreach(var item in _treeService.GetRelatives(pid))
+            {
+                relativeList.Add(
+                    new SelectListItem()
+                    {
+                        Text = item.fullName,
+                        Value = item.relativeID.ToString()
+                    });
+                    
+            };
+            ViewBag.relativeList = relativeList;
+            //List for Relationship Type
+            List<SelectListItem> typeList = new List<SelectListItem>();
+
+            foreach( var item in _treeService.GetTypes())
+            {
+                typeList.Add(
+                    new SelectListItem()
+                    {
+                        Text = item.typeDescription,
+                        Value = item.relationshipTypeID.ToString()
+                    }
+                );
+            }
+            ViewBag.typeList = typeList;
+
+            //List for relative Role
+
+            List<SelectListItem> roleList = new List<SelectListItem>();
+            
+            foreach(var item in _treeService.GetRoles())
+            {
+                roleList.Add(
+                    new SelectListItem()
+                    {
+                        Text = item.roleDescription,
+                        Value = item.relativeRole.ToString()
+                    }); 
+            }
+            ViewBag.roleList = roleList;
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddRelative(Relationship relaObject)
+        {
+            try
+            {
+                _treeService.AddRelative(relaObject);
+                return RedirectToAction("GetIndividuals", new { fid = relaObject.familyID, controller = "Family" });
+            }
+            catch
+            {
+                return View();
+            }
+        }
     }
 }

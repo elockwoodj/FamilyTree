@@ -303,6 +303,7 @@
     <Content Include="Views\Family\GetIndividual.cshtml" />
     <Content Include="Views\Family\GetRelatives.cshtml" />
     <Content Include="Views\FamilyAdmin\EditIndividual.cshtml" />
+    <Content Include="Views\FamilyAdmin\AddRelative.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

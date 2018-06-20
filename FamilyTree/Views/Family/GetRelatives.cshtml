@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<FamilyTree.Data.BEANS.relaBEAN>
 
 <p>
-    @Html.ActionLink("Add New Relative", "AddRelative" , new { pid = ViewBag.personID })
+    @Html.ActionLink("Add New Relative", "AddRelative", new { pid = ViewBag.personID, fid = ViewBag.familyID, controller = "FamilyAdmin" })
 </p>
 <table class="table">
     <tr>

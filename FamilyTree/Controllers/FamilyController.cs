@@ -70,7 +70,9 @@ namespace FamilyTree.Controllers
 
         public ActionResult GetRelatives(int pid)
         {
+            var familySelect = _treeService.GetRelatives(pid);
             ViewBag.personID = pid;
+            ViewBag.familyID = familySelect.First().familyID;
             return View(_treeService.GetRelatives(pid));
         }
 

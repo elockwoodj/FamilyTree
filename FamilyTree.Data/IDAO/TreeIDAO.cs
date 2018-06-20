@@ -22,7 +22,9 @@ namespace FamilyTree.Data.IDAO
         Individual GetIndividual(int pid);
         IList<relaBEAN> GetRelatives(int pid);
         void EditIndividual(Individual individual);
-
+        void AddRelative(Relationship relative);
+        IList<relaBEAN> GetTypes();
+        IList<relaBEAN> GetRoles();
 
     }
 }
