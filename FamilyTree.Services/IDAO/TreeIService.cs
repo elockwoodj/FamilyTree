@@ -26,5 +26,12 @@ namespace FamilyTree.Services.IDAO
         void AddRelative(Relationship relaObject);
         IList<relaBEAN> GetTypes();
         IList<relaBEAN> GetRoles();
+        IList<relaBEAN> GetListForRelatives(int fid, int pid);
+        void EditRelative(Relationship relaObject);
+        relaBEAN GetRelationship(int rid);
+        Relationship GetRelDelete(int rid);
+        void DeleteRelative(Relationship relObject);
+
+
     }
 }

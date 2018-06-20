@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FamilyTree.Data;
+using FamilyTree.Data.BEANS;
 using FamilyTree.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -70,9 +71,9 @@ namespace FamilyTree.Controllers
 
         public ActionResult GetRelatives(int pid)
         {
-            var familySelect = _treeService.GetRelatives(pid);
+            var familyIDSelect = _treeService.GetIndividual(pid);
             ViewBag.personID = pid;
-            ViewBag.familyID = familySelect.First().familyID;
+            ViewBag.familyID = familyIDSelect.familyID;
             return View(_treeService.GetRelatives(pid));
         }
 
@@ -140,6 +141,27 @@ namespace FamilyTree.Controllers
                 Individual _indObject = _treeService.GetIndividual(pid);
                 _treeService.DeleteIndividual(_indObject);
                 return RedirectToAction("GetIndividuals", new { fid = _indObject.familyID, Controller = "Family" });
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        [HttpGet]
+        public ActionResult DeleteRelative(int rid)
+        {
+            ViewBag.personID = _treeService.GetRelationship(rid).personID;
+            ViewBag.relationshipID = rid;
+            return View(_treeService.GetRelationship(rid));
+        }
+        [HttpPost]
+        public ActionResult DeleteRelative(int rid, Relationship relObject)
+        {
+            try
+            {
+                Relationship _relObject = _treeService.GetRelDelete(rid);
+                _treeService.DeleteRelative(_relObject);
+                return RedirectToAction("GetRelatives", new { pid = _relObject.personID, controller = "Family" });
             }
             catch
             {

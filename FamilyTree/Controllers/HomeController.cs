@@ -10,7 +10,7 @@ namespace FamilyTree.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Families", new { controller = "Family" });
         }
 
         public ActionResult About()

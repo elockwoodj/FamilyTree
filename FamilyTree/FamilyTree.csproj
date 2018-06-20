@@ -304,6 +304,8 @@
     <Content Include="Views\Family\GetRelatives.cshtml" />
     <Content Include="Views\FamilyAdmin\EditIndividual.cshtml" />
     <Content Include="Views\FamilyAdmin\AddRelative.cshtml" />
+    <Content Include="Views\FamilyAdmin\EditRelative.cshtml" />
+    <Content Include="Views\Family\DeleteRelative.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

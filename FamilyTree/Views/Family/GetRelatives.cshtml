@@ -19,9 +19,6 @@
             @Html.DisplayNameFor(model => model.fullName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.gender)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.typeDescription)
         </th>
         <th>
@@ -52,9 +49,9 @@
             @Html.DisplayFor(modelItem => item.roleDescription)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Edit Relative", "EditRelative", new { rid = item.relationshipID , controller= "FamilyAdmin"  }) |
             @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Remove Relative", "DeleteRelative", new { rid = item.relationshipID , controller = "Family"})
         </td>
     </tr>
 }

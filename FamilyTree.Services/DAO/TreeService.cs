@@ -86,7 +86,29 @@ namespace FamilyTree.Services.DAO
             return _treeDAO.GetRoles();
         }
 
-        
+        public IList<relaBEAN> GetListForRelatives(int fid, int pid)
+        {
+            return _treeDAO.GetListForRelatives(fid, pid);
+        }
+
+        public void EditRelative(Relationship relaObject)
+        {
+            _treeDAO.EditRelative(relaObject);
+        }
+
+        public relaBEAN GetRelationship(int rid)
+        {
+            return _treeDAO.GetRelationship(rid);
+        }
+        public Relationship GetRelDelete(int rid)
+        {
+            return _treeDAO.GetRelDelete(rid);
+        }
+        public void DeleteRelative(Relationship relObject)
+        {
+            _treeDAO.DeleteRelative(relObject);
+        }
+
 
     }
 }

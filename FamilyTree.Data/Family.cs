@@ -11,11 +11,14 @@ namespace FamilyTree.Data
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
+
     public partial class Family
     {
         public int familyID { get; set; }
         public string ownerUserName { get; set; }
+        [Display(Name ="Family Surname")]
         public string familyName { get; set; }
     }
 }

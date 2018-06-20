@@ -9,23 +9,39 @@ namespace FamilyTree.Data.IDAO
 {
     public interface TreeIDAO
     {
-        IList<FamilyTree.Data.Family> GetFamilies(string uid);
-        Family GetFamily(int fid);
-        //int GetUserID(string email);
-        void AddFamilyName(Family familyName);
-        void EditFamilyName(Family familyName);
+
+        //-----Deletes -----
         void DeleteFamilyName(Family familyName);
-        void AddIndividual(Individual individual);
         void DeleteIndividual(Individual individual);
-        IList<Individual> GetIndividuals(int fid);
-        IList<relaBEAN> GetRelationships(int fid);
-        Individual GetIndividual(int pid);
-        IList<relaBEAN> GetRelatives(int pid);
-        void EditIndividual(Individual individual);
+        void DeleteRelative(Relationship relative);
+
+        //-----Adds-----
+        void AddIndividual(Individual individual);
+        void AddFamilyName(Family familyName);
         void AddRelative(Relationship relative);
+
+
+        // -----Get Lists-----
+        IList<FamilyTree.Data.Family> GetFamilies(string uid);
+        IList<relaBEAN> GetRelationships(int fid);
+        IList<Individual> GetIndividuals(int fid);
+        IList<relaBEAN> GetRelatives(int pid);
         IList<relaBEAN> GetTypes();
         IList<relaBEAN> GetRoles();
         IList<relaBEAN> GetListForRelatives(int fid, int pid);
+
+
+        //-----Get Singulars-----
+        Individual GetIndividual(int pid);
+        Family GetFamily(int fid);
+        relaBEAN GetRelationship(int rid);
+        Relationship GetRelDelete(int rid);
+
+
+        //-----Edits-----
+        void EditFamilyName(Family familyName);
+        void EditIndividual(Individual individual);
+        void EditRelative(Relationship relaObject);
 
     }
 }

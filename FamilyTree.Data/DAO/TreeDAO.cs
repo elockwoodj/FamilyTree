@@ -156,7 +156,7 @@ namespace FamilyTree.Data.DAO
                        placeOfBirth = ind_.placeOfBirth,
                        relativeRole = rel_.relativeRole,
                        familyID = rel_.familyID,
-                       typeDescription = typ_.typeDescription,
+                       typeDescription = typ_.typeDescription
                    };
 
             return _rel.ToList();
@@ -190,7 +190,47 @@ namespace FamilyTree.Data.DAO
             _context.Relationships.Add(relaObject);
             _context.SaveChanges();
         }
+        public void EditRelative(Relationship relaObject)
+        {
+            IQueryable<Relationship> _relEdit;
+            _relEdit = from rEdit in _context.Relationships
+                       where rEdit.relationshipID == relaObject.relationshipID
+                       select rEdit;
+            Relationship relEdit = _relEdit.First();
 
+            relEdit.notableInformation = relaObject.notableInformation;
+            relEdit.relationshipStartDate = relaObject.relationshipStartDate;
+            relEdit.relationshipEndDate = relaObject.relationshipEndDate;
+            _context.SaveChanges();
+        }
+
+        public relaBEAN GetRelationship(int rid)
+        {
+            IQueryable<relaBEAN> _relBEAN;
+            _relBEAN = from rBEAN in _context.Relationships
+                       where rBEAN.relationshipID == rid
+                       select new relaBEAN
+                       {
+                           relationshipID = rBEAN.relationshipID,
+                           personID = rBEAN.personID,
+                           notableInformation = rBEAN.notableInformation,
+                           relationshipStartDate = rBEAN.relationshipStartDate,
+                           relationshipEndDate = rBEAN.relationshipEndDate
+                       };
+            var rel = _relBEAN.First();
+
+
+            return _relBEAN.ToList().First();
+        }
+
+        public Relationship GetRelDelete(int rid)
+        {
+            IQueryable<Relationship> _relDel;
+            _relDel = from rDel in _context.Relationships
+                      where rDel.relationshipID == rid
+                      select rDel;
+            return _relDel.First();
+        }
         public IList<relaBEAN> GetTypes()
         {
             IQueryable<relaBEAN> _typ;
@@ -213,5 +253,23 @@ namespace FamilyTree.Data.DAO
                     };
             return _role.ToList<relaBEAN>();
         }
+        public IList<relaBEAN> GetListForRelatives(int fid ,int pid)
+        {
+            IQueryable<relaBEAN> _rela;
+            _rela = from ind in _context.Individuals
+                    where ind.familyID == fid && ind.individualID != pid
+                    select new relaBEAN
+                    {
+                        fullName = ind.fullName,
+                        relativeID = ind.individualID
+                    };
+            return _rela.ToList<relaBEAN>();
+        }
+        public void DeleteRelative(Relationship relaObject)
+        {
+            _context.Relationships.Remove(relaObject);
+            _context.SaveChanges();
+        }
+
     }
 }

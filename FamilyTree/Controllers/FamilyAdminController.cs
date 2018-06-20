@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FamilyTree.Data;
+using FamilyTree.Data.BEANS;
 using FamilyTree.Services;
 using Microsoft.AspNet.Identity;
 
@@ -103,7 +104,7 @@ namespace FamilyTree.Controllers
             //List for relativeID
             List<SelectListItem> relativeList = new List<SelectListItem>();
 
-            foreach(var item in _treeService.GetRelatives(pid))
+            foreach(var item in _treeService.GetListForRelatives(fid , pid))
             {
                 relativeList.Add(
                     new SelectListItem()
@@ -152,11 +153,41 @@ namespace FamilyTree.Controllers
             try
             {
                 _treeService.AddRelative(relaObject);
-                return RedirectToAction("GetIndividuals", new { fid = relaObject.familyID, controller = "Family" });
+                return RedirectToAction("GetRelatives", new { fid = relaObject.personID, controller = "Family" });
             }
             catch
             {
                 return View();
+            }
+        }
+
+        [HttpGet]
+        public ActionResult EditRelative(int rid)
+        {
+            int pid = _treeService.GetRelationship(rid).personID;
+            ViewBag.personID = pid;
+            ViewBag.relationshipID = rid;
+            return View(_treeService.GetRelationship(rid));
+        }
+        [HttpPost]
+        public ActionResult EditRelative(relaBEAN relObject)
+        {
+            try
+            {
+                Relationship editRela = new Relationship
+                {
+                    relationshipID = relObject.relationshipID,
+                    notableInformation = relObject.notableInformation,
+                    relationshipStartDate = relObject.relationshipStartDate,
+                    relationshipEndDate = relObject.relationshipEndDate
+                };
+
+                _treeService.EditRelative(editRela);
+                return RedirectToAction("GetRelatives", "Family", new { pid = relObject.personID });
+            }
+            catch
+            {
+                return RedirectToAction("GetRelatives", "Family", new { pid = relObject.personID });
             }
         }
     }

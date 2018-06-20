@@ -86,7 +86,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Individuals", "GetIndividuals", new { fid = ViewBag.familyID, controller = "Family" })
 </div>
 
 @section Scripts {

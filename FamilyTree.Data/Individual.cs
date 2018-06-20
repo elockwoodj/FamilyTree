@@ -11,14 +11,24 @@ namespace FamilyTree.Data
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Individual
     {
         public int individualID { get; set; }
+        [Display(Name ="Full Name")]
         public string fullName { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Date of Birth")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> dateOfBirth { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Date of Death")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> dateOfDeath { get; set; }
+        [Display(Name="Gender")]
         public string gender { get; set; }
+        [Display(Name ="Place of Birth")]
         public string placeOfBirth { get; set; }
         public int familyID { get; set; }
     }
