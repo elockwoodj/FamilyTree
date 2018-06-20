@@ -19,7 +19,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.relativeID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.relativeID, (List<SelectListItem>)ViewBag.relativeList)
+                @Html.DropDownListFor(model => model.relativeID, (List<SelectListItem>)ViewBag.relativeList)
                 @Html.ValidationMessageFor(model => model.relativeID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -27,7 +27,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.relationshipTypeID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.relationshipTypeID, (List<SelectListItem>)ViewBag.typeList)
+                @Html.DropDownListFor(model => model.relationshipTypeID, (List<SelectListItem>)ViewBag.typeList)
                 @Html.ValidationMessageFor(model => model.relationshipTypeID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -35,7 +35,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.relativeRole, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.relativeRole, (List<SelectListItem>)ViewBag.roleList)
+                @Html.DropDownListFor(model => model.relativeRole, (List<SelectListItem>)ViewBag.roleList)
                 @Html.ValidationMessageFor(model => model.relativeRole, "", new { @class = "text-danger" })
             </div>
         </div>

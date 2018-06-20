@@ -25,6 +25,7 @@ namespace FamilyTree.Data.IDAO
         void AddRelative(Relationship relative);
         IList<relaBEAN> GetTypes();
         IList<relaBEAN> GetRoles();
+        IList<relaBEAN> GetListForRelatives(int fid, int pid);
 
     }
 }
