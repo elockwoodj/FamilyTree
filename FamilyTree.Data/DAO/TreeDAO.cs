@@ -17,9 +17,7 @@ namespace FamilyTree.Data.DAO
             _context = new b7039648Entities1();
         }
 
-        // might need to bean everything, using the AspNetUsers table for the usernames - they're all individual so it shouldn't affect the rest of the application
-        // If I bean everything, linq statements change but everything else should be more or less fine
-        // Check Butcher work to get an example
+        // ----- Get Lists -----
 
         public IList<Family> GetFamilies(string uid)
         {
@@ -33,81 +31,6 @@ namespace FamilyTree.Data.DAO
                         
         }
 
-        public Family GetFamily(int fid)
-        {
-            IQueryable<Family> _fam;
-            _fam = from fam
-                   in _context.Families
-                   where fam.familyID == fid
-                   select fam;
-
-            return _fam.First();
-        }
-
-        //public int GetUserID(string email)
-        //{
-        //    IQueryable<FamilyTree.Data.AspNetUser> _ID;
-        //    _ID = from use 
-        //          in _context.AspNetUsers
-        //          where use.userEmail == email
-        //          select use;
-        //    User checker = _ID.ToList().First();
-        //    userID = checker.userID;
-
-        //    return userID;
-        //}
-
-        public void AddFamilyName(Family familyName)
-        {
-            _context.Families.Add(familyName);
-            _context.SaveChanges();
-        }
-        public void EditFamilyName(Family famObject)
-        {
-            IQueryable<Family> _famEdit;
-            _famEdit = from fEdit in _context.Families
-                       where fEdit.familyID == famObject.familyID
-                       select fEdit;
-            Family famEdit = _famEdit.First();
-
-            famEdit.familyName = famObject.familyName;
-
-            _context.SaveChanges();
-        }
-        public void DeleteFamilyName(Family famObject)
-        {
-            _context.Families.Remove(famObject);
-            _context.SaveChanges();
-        }
-
-        public void AddIndividual(Individual individual)
-        {
-            _context.Individuals.Add(individual);
-            _context.SaveChanges();
-        }
-
-        public void EditIndividual(Individual indObject)
-        {
-            IQueryable<Individual> _indEdit;
-            _indEdit = from iEdit in _context.Individuals
-                       where iEdit.individualID == indObject.individualID
-                       select iEdit;
-            Individual indEdit = _indEdit.First();
-
-            indEdit.fullName = indObject.fullName;
-            indEdit.gender = indObject.gender;
-            indEdit.placeOfBirth = indObject.placeOfBirth;
-            indEdit.dateOfBirth = indObject.dateOfBirth;
-            indEdit.dateOfDeath = indObject.dateOfDeath;
-            _context.SaveChanges();
-        }
-
-        public void DeleteIndividual(Individual indObject)
-        {
-            _context.Individuals.Remove(indObject);
-            _context.SaveChanges();
-        }
-
         public IList<Individual> GetIndividuals(int fid)
         {
             IQueryable<Individual> _indiv;
@@ -117,16 +40,6 @@ namespace FamilyTree.Data.DAO
                      select ind;
 
             return _indiv.ToList<Individual>();
-        }
-
-        public Individual GetIndividual(int pid)
-        {
-            IQueryable<Individual> _ind;
-            _ind = from ind in _context.Individuals
-                   where ind.individualID == pid
-                   select ind;
-
-            return _ind.ToList().First();
         }
 
         public IList<relaBEAN> GetRelatives(int pid)
@@ -184,24 +97,55 @@ namespace FamilyTree.Data.DAO
             return null;
         }
 
-
-        public void AddRelative(Relationship relaObject)
+        public IList<relaBEAN> GetTypes()
         {
-            _context.Relationships.Add(relaObject);
-            _context.SaveChanges();
+            IQueryable<relaBEAN> _typ;
+            _typ = from typ in _context.RelationshipTypes
+                   select new relaBEAN
+                   {
+                       typeDescription = typ.typeDescription,
+                       relationshipTypeID = typ.typeID
+                   };
+            return _typ.ToList<relaBEAN>();
         }
-        public void EditRelative(Relationship relaObject)
-        {
-            IQueryable<Relationship> _relEdit;
-            _relEdit = from rEdit in _context.Relationships
-                       where rEdit.relationshipID == relaObject.relationshipID
-                       select rEdit;
-            Relationship relEdit = _relEdit.First();
 
-            relEdit.notableInformation = relaObject.notableInformation;
-            relEdit.relationshipStartDate = relaObject.relationshipStartDate;
-            relEdit.relationshipEndDate = relaObject.relationshipEndDate;
-            _context.SaveChanges();
+        public IList<relaBEAN> GetRoles()
+        {
+            IQueryable<relaBEAN> _role;
+            _role = from rol in _context.Roles
+                    select new relaBEAN
+                    {
+                        roleDescription = rol.roleDescription,
+                        relativeRole = rol.roleID
+                    };
+            return _role.ToList<relaBEAN>();
+        }
+
+        public IList<relaBEAN> GetListForRelatives(int fid ,int pid)
+        {
+            IQueryable<relaBEAN> _rela;
+            _rela = from ind in _context.Individuals
+                    where ind.familyID == fid && ind.individualID != pid
+                    select new relaBEAN
+                    {
+                        fullName = ind.fullName,
+                        relativeID = ind.individualID
+                    };
+            return _rela.ToList<relaBEAN>();
+        }
+
+        // ----- Get Single Objects -----
+
+            //All these methods will fetch a single record out of their respective tables that matches the ID passed to it
+        public Family GetFamily(int fid)
+        {
+            IQueryable<Family> _fam;
+            _fam = from fam
+                   in _context.Families
+                   where fam.familyID == fid
+                   select fam;
+
+            return _fam.First();
         }
 
         public relaBEAN GetRelationship(int rid)
@@ -223,6 +167,8 @@ namespace FamilyTree.Data.DAO
             return _relBEAN.ToList().First();
         }
 
+        // This is different to the GetRelationship method as it doesn't require additional information from separate tables
+        // Therefore not requiring the use of a ViewModel
         public Relationship GetRelDelete(int rid)
         {
             IQueryable<Relationship> _relDel;
@@ -231,45 +177,107 @@ namespace FamilyTree.Data.DAO
                       select rDel;
             return _relDel.First();
         }
-        public IList<relaBEAN> GetTypes()
+
+        public Individual GetIndividual(int pid)
         {
-            IQueryable<relaBEAN> _typ;
-            _typ = from typ in _context.RelationshipTypes
-                   select new relaBEAN
-                   {
-                       typeDescription = typ.typeDescription,
-                       relationshipTypeID = typ.typeID
-                   };
-            return _typ.ToList<relaBEAN>();
+            IQueryable<Individual> _ind;
+            _ind = from ind in _context.Individuals
+                   where ind.individualID == pid
+                   select ind;
+
+            return _ind.ToList().First();
         }
-        public IList<relaBEAN> GetRoles()
+
+        // ----- Adds -----
+        //Adds familyName to the Family table
+        public void AddFamilyName(Family familyName)
         {
-            IQueryable<relaBEAN> _role;
-            _role = from rol in _context.Roles
-                    select new relaBEAN
-                    {
-                        roleDescription = rol.roleDescription,
-                        relativeRole = rol.roleID
-                    };
-            return _role.ToList<relaBEAN>();
+            _context.Families.Add(familyName);
+            _context.SaveChanges();
         }
-        public IList<relaBEAN> GetListForRelatives(int fid ,int pid)
+
+        //Adds individual to the Individual table
+        public void AddIndividual(Individual individual)
         {
-            IQueryable<relaBEAN> _rela;
-            _rela = from ind in _context.Individuals
-                    where ind.familyID == fid && ind.individualID != pid
-                    select new relaBEAN
-                    {
-                        fullName = ind.fullName,
-                        relativeID = ind.individualID
-                    };
-            return _rela.ToList<relaBEAN>();
+            _context.Individuals.Add(individual);
+            _context.SaveChanges();
         }
+
+        //Adds relaObject to the Relationship table
+        public void AddRelative(Relationship relaObject)
+        {
+            _context.Relationships.Add(relaObject);
+            _context.SaveChanges();
+        }
+
+        // ----- Edits -----
+        //Accesses the Family table, pulling an object with the same ID passed in famObject, rewriting information and saving
+        public void EditFamilyName(Family famObject)
+        {
+            IQueryable<Family> _famEdit;
+            _famEdit = from fEdit in _context.Families
+                       where fEdit.familyID == famObject.familyID
+                       select fEdit;
+            Family famEdit = _famEdit.First();
+
+            famEdit.familyName = famObject.familyName;
+
+            _context.SaveChanges();
+        }
+
+        //Accesses the Individual table, pulling an object with the same ID passed by indObject, rewriting information and saving
+        public void EditIndividual(Individual indObject)
+        {
+            IQueryable<Individual> _indEdit;
+            _indEdit = from iEdit in _context.Individuals
+                       where iEdit.individualID == indObject.individualID
+                       select iEdit;
+            Individual indEdit = _indEdit.First();
+
+            indEdit.fullName = indObject.fullName;
+            indEdit.gender = indObject.gender;
+            indEdit.placeOfBirth = indObject.placeOfBirth;
+            indEdit.dateOfBirth = indObject.dateOfBirth;
+            indEdit.dateOfDeath = indObject.dateOfDeath;
+            _context.SaveChanges();
+        }
+
+        //Accesses the Relationship table, pulling an object with the same ID passed by relaObject, rewriting information and saving
+        public void EditRelative(Relationship relaObject)
+        {
+            IQueryable<Relationship> _relEdit;
+            _relEdit = from rEdit in _context.Relationships
+                       where rEdit.relationshipID == relaObject.relationshipID
+                       select rEdit;
+            Relationship relEdit = _relEdit.First();
+
+            relEdit.notableInformation = relaObject.notableInformation;
+            relEdit.relationshipStartDate = relaObject.relationshipStartDate;
+            relEdit.relationshipEndDate = relaObject.relationshipEndDate;
+            _context.SaveChanges();
+        }
+
+        // ----- Deletes -----
+
+        // Removes an object from the Individual table that matches indObject
+        public void DeleteIndividual(Individual indObject)
+        {
+            _context.Individuals.Remove(indObject);
+            _context.SaveChanges();
+        }
+
+        //Removes an object from the Relationship table that matches relaObject
         public void DeleteRelative(Relationship relaObject)
         {
             _context.Relationships.Remove(relaObject);
             _context.SaveChanges();
         }
-
+    
+        //Removes an object from the Family table that matches famObject
+        public void DeleteFamilyName(Family famObject)
+        {
+            _context.Families.Remove(famObject);
+            _context.SaveChanges();
+        }
     }
 }

@@ -8,6 +8,7 @@ using FamilyTree.Data.BEANS;
 using FamilyTree.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Drawing;
 
 
 namespace FamilyTree.Controllers
@@ -26,6 +27,7 @@ namespace FamilyTree.Controllers
         {
             //ViewBag.ownerUserName = User.Identity.Name;
             var uid = User.Identity.Name;
+
             return View(_treeService.GetFamilies(uid));
         }
 
