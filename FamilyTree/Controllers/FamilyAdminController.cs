@@ -148,18 +148,99 @@ namespace FamilyTree.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult AddRelative(Relationship relaObject)
+        public ActionResult AddRelative(Relationship relaObject) //This will add a relationship from a person to a relative and a from that relative to the person
         {
             try
             {
-                _treeService.AddRelative(relaObject);
-                return RedirectToAction("GetRelatives", new { fid = relaObject.personID, controller = "Family" });
+                
+                var rela = _treeService.GetRelative(relaObject.relationshipID);
+                var gender = _treeService.GetRelativeGender(relaObject.personID);
+                var pid = relaObject.personID; //Stores personID to rewrite for inverse
+                var rid = relaObject.relativeID; //Stores relativeID to rewrite for inverse
+                rela.personID = rid;
+                rela.relativeID = pid;
+
+                switch (rela.relationshipTypeID)
+                {
+                    case 1: //Inserting a Sibling, therefore you are also a sibling 
+                        break;
+                    case 2: //Inserting a Parent, therefore you are a child
+                        rela.relationshipTypeID = 3;
+                        break;
+                    case 3: //Inserting a Child, therefore you are a parent
+                        rela.relationshipTypeID = 2;
+                        break;
+                    case 4: //Inserting a Marriage, therefore you are married
+                        break;
+                    default:
+                        break;
+                } //Changes the relationship type for inverse, ie adding a Parent will cause the Parent to have a Child relationship added
+
+                if (gender == "Male")
+                {
+                    switch (rela.relativeRole)
+                    {
+                        case 1: //Inserting a Brother and you are Male
+                            break;
+                        case 2: //Inseting a Sister and you are Male
+                            rela.relativeRole = 1;
+                            break;
+                        case 3: //Inserting a Father and you are Male
+                            rela.relativeRole = 5;
+                            break;
+                        case 4: //Inserting a Mother and you are Male
+                            rela.relativeRole = 5;
+                            break;
+                        case 5: //Inserting a Child and you are Male
+                            rela.relativeRole = 3;
+                            break;
+                        case 6: //Inserting a Husband and you are Male
+                            break;
+                        case 7: //Inserting a Wife and you are Male
+                            rela.relativeRole = 6;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                else
+                {
+                    switch (rela.relativeRole)
+                    {
+                        case 1: //Inesrting a Brother are you are Female
+                            rela.relativeRole = 2;
+                            break;
+                        case 2: //Inserting a Sister and you are Female
+                            break;
+                        case 3: //Inserting a Father and you are Female
+                            rela.relativeRole = 5;
+                            break;
+                        case 4: //Inserting a Mother and you are Female
+                            rela.relativeRole = 5;
+                            break;
+                        case 5: //Inserting a Child and you are Female
+                            rela.relativeRole = 4;
+                            break;
+                        case 6: //Inesrting a Husband and you are Female
+                            rela.relativeRole = 7;
+                            break;
+                        case 7: //Inserting a Wife and you are Female
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                _treeService.AddRelative(relaObject);  //Add the intended relationship
+                _treeService.AddRelative(rela);        //Add the inverse of the relationship 
+                return RedirectToAction("GetRelatives", new { pid = relaObject.personID, controller = "Family" });
             }
             catch
             {
                 return View();
             }
-        }
+        } 
 
         [HttpGet]
         public ActionResult EditRelative(int rid)

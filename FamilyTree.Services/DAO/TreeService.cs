@@ -108,6 +108,19 @@ namespace FamilyTree.Services.DAO
         {
             _treeDAO.DeleteRelative(relObject);
         }
+        public Relationship GetRelative(int rid)
+        {
+            return _treeDAO.GetRelative(rid);
+        }
+        public string GetRelativeGender(int pid)
+        {
+            return _treeDAO.GetRelativeGender(pid);
+        }
+        public void AddInverse(Relationship invObject)
+        {
+            _treeDAO.AddInverse(invObject);
+        }
+
 
 
     }

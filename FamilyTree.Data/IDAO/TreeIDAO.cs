@@ -19,6 +19,7 @@ namespace FamilyTree.Data.IDAO
         void AddIndividual(Individual individual);
         void AddFamilyName(Family familyName);
         void AddRelative(Relationship relative);
+        void AddInverse(Relationship invObject);
 
 
         // -----Get Lists-----
@@ -36,6 +37,8 @@ namespace FamilyTree.Data.IDAO
         Family GetFamily(int fid);
         relaBEAN GetRelationship(int rid);
         Relationship GetRelDelete(int rid);
+        Relationship GetRelative(int rid);
+        string GetRelativeGender(int pid);
 
 
         //-----Edits-----

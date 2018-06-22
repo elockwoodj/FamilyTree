@@ -65,12 +65,12 @@ namespace FamilyTree.Controllers
 
         public FileContentResult PlotOne(int fid)
         {
-            int height = 75;
-            int width = 200;
+            int height = 100;
+            int width = 225;
 
             IList <Individual> indList = _treeService.GetIndividuals(fid);
             int numberOfMembers = indList.Count();
-            int bigH = 150 * numberOfMembers;
+            int bigH = 175 * numberOfMembers;
             int bigW = 600;
             int alpha = 100;
             int red = 204;
@@ -78,28 +78,31 @@ namespace FamilyTree.Controllers
             int blue = 0;
             int xCoordinate = 5;
             int yCoordinate = 0;
-
+            string individualName;
+            string dateBirth;
+            string dateDeath;
             string familyName = _treeService.GetFamily(fid).familyName;
-            string individualName = _treeService.GetIndividual(1).fullName;
-            string dateBirth = _treeService.GetIndividual(1).dateOfBirth.ToString();
-            string dateDeath = _treeService.GetIndividual(1).dateOfDeath.ToString();
-
+            float titleLocation = (bigW / 2) - ((familyName.Length*8)/2); //A letter in a string takes up approx 8 pixels
+            
 
 
             using (Bitmap bmp = new Bitmap(bigW, bigH))
             {
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
+                    g.Clear(Color.Bisque);
+                    g.DrawRectangle(Pens.Azure, (bigW/2), 1, 1, bigH); //Draws a line down the middle of the page, currently only testing for Johnson
+
                     foreach (Individual person in indList)
                     {
                         individualName = person.fullName;
                         dateBirth = person.dateOfBirth.ToString();
                         dateDeath = person.dateOfDeath.ToString();
-                        yCoordinate = yCoordinate + 100;
+                        yCoordinate = yCoordinate + 130;
 
                         //Draws a rectangle and fills it with the information retrieved from the database
                         g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                        g.Clear(Color.Bisque);
+                        
 
                         g.DrawRectangle(Pens.Brown, xCoordinate, yCoordinate, width, height);
 
@@ -120,20 +123,19 @@ namespace FamilyTree.Controllers
                             new PointF(20, yCoordinate + 30), 
                             new StringFormat());
 
-                        g.DrawString(familyName, new Font("Arial", 10, FontStyle.Bold), 
-                            SystemBrushes.WindowText, 
-                            new PointF((bigW / 2) - (familyName.Length / 2), 10), 
+                        g.DrawString(familyName, new Font("Arial", 10, FontStyle.Bold),
+                            SystemBrushes.WindowText,
+                            new PointF(titleLocation, 10),
                             new StringFormat());
 
                         g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
                             green, blue)), xCoordinate, yCoordinate, width, height);
 
-                        g.DrawRectangle(Pens.Azure, 300, 1, 1, 600); //Draws a line down the middle of the page, currently only testing for Johnson
                     }
 
 
                     // Saves it?? Outputs an image??
-                    string filename = Server.MapPath("/") + System.Guid.NewGuid().ToString("N");
+                    string filename = Server.MapPath("/") + Guid.NewGuid().ToString("N");
                     bmp.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
                     byte[] bytes;
                     using (System.IO.FileStream stream = new System.IO.FileStream(filename, System.IO.FileMode.Open))
@@ -143,11 +145,6 @@ namespace FamilyTree.Controllers
                     }
                     System.IO.File.Delete(filename);
                     return new FileContentResult(bytes, "image/jpeg");
-
-
-                    
-
-
                 }
             }
 

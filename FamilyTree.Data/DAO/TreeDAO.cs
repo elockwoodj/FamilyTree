@@ -74,6 +74,14 @@ namespace FamilyTree.Data.DAO
 
             return _rel.ToList();
         }
+        public Relationship GetRelative(int rid)
+        {
+            IQueryable<Relationship> _rel;
+            _rel = from rel in _context.Relationships
+                   where rel.relationshipID == rid
+                   select rel;
+            return _rel.First();
+        }
 
         public IList<relaBEAN> GetRelationships(int fid)
         {
@@ -84,14 +92,7 @@ namespace FamilyTree.Data.DAO
             {
                     relatives = (GetRelatives(per.individualID));
                 return relatives;
-                //if (relatives != null)
-                //{
-                //    return relatives.ToList<relaBEAN>();
-                //}
-                //else
-                //{
-                //    return null;
-                //};
+                
             }
 
             return null;
@@ -187,6 +188,28 @@ namespace FamilyTree.Data.DAO
 
             return _ind.ToList().First();
         }
+        public string GetRelativeGender(int pid)
+        {
+            IQueryable<Individual> _ind;
+            _ind = from ind in _context.Individuals
+                   where ind.individualID == pid
+                   select ind;
+            string genderPicker = _ind.First().gender;
+            return genderPicker;
+        }
+
+
+
+        //public int GetNumberOfGenerations(int fid)
+        //{
+        //    IQueryable<relaBEAN> _gen;
+        //    _gen = from gen in _context.Relationships
+        //           where gen.familyID == fid
+        //           select new relaBEAN
+        //           {
+
+        //           }
+        //}
 
         // ----- Adds -----
         //Adds familyName to the Family table
@@ -209,7 +232,11 @@ namespace FamilyTree.Data.DAO
             _context.Relationships.Add(relaObject);
             _context.SaveChanges();
         }
-
+        public void AddInverse(Relationship invObject)
+        {
+            _context.Relationships.Add(invObject);
+            _context.SaveChanges();
+        }
         // ----- Edits -----
         //Accesses the Family table, pulling an object with the same ID passed in famObject, rewriting information and saving
         public void EditFamilyName(Family famObject)
@@ -278,6 +305,40 @@ namespace FamilyTree.Data.DAO
         {
             _context.Families.Remove(famObject);
             _context.SaveChanges();
+        }
+
+
+        // ----- USED FOR PLOTTING -----
+
+
+        //Works out how many children a person has, used for plotting
+        public int GetNumberOfChildren(int pid)
+        {
+            IQueryable<Relationship> _chi;
+            _chi = from chi in _context.Relationships
+                   where chi.personID == pid && chi.relativeRole == 5 // Checks how many relationships have role 5, associated with "Child"
+                   select chi;
+            int numberChildren = _chi.Count();
+
+            return numberChildren;
+        }
+        //Selects an individuals parents from the database
+        public IList<relaBEAN> GetParents(int pid)
+        {
+            IQueryable<relaBEAN> _par;
+            _par = from par in _context.Relationships
+                   from ind in _context.Individuals
+                   where par.personID == pid && par.relationshipTypeID == 2 && par.relativeID == ind.individualID// Selects all relatives of a person who's relationship type is Parent
+                   select new relaBEAN
+                   {
+                       fullName = ind.fullName,
+                       relativeID = par.relativeID,
+
+
+                   };
+            return _par.ToList<relaBEAN>();
+
+
         }
     }
 }
