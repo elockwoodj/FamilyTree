@@ -45,19 +45,10 @@
             @Html.LabelFor(model => model.gender, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @*Html.EditorFor(model => model.gender, new { htmlAttributes = new { @class = "form-control" } })*@
-                @{ 
-                    List<SelectListItem> genderList = new List<SelectListItem>();
-                    genderList.Add(new SelectListItem
-                    {
-                        Text = "Male",
-                        Value = "Male"
-                    });
-                    genderList.Add(new SelectListItem{
-                        Text = "Female",
-                        Value = "Female"
-                    });
-                }
-                @Html.DropDownListFor(model => model.gender, genderList, "-- Select Gender --")
+
+
+
+                @Html.DropDownListFor(model => model.gender, (List<SelectListItem>)ViewBag.genderList)
                 @Html.ValidationMessageFor(model => model.gender, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -67,6 +58,27 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.placeOfBirth, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.placeOfBirth, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.isParent, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*Html.EditorFor(model => model.isParent, new { htmlAttributes = new { @class = "form-control" } })*@
+                @{
+                    List<SelectListItem> isParentList = new List<SelectListItem>();
+                    isParentList.Add(new SelectListItem
+                    {
+                        Text = "Yes",
+                        Value = "1"
+                    });
+                    isParentList.Add(new SelectListItem
+                    {
+                        Text = "No",
+                        Value = "0"
+                    });
+                }
+                @Html.DropDownListFor(model => model.isParent, isParentList, "-- Is this person a Parent? --")
+                @Html.ValidationMessageFor(model => model.isParent, "", new { @class = "text-danger" })
             </div>
         </div>
 

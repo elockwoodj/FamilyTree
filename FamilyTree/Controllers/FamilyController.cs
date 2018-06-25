@@ -87,6 +87,19 @@ namespace FamilyTree.Controllers
         [HttpGet]
         public ActionResult AddIndividual(int fid)
         {
+                            
+                List<SelectListItem> genderList = new List<SelectListItem>();
+                genderList.Add(new SelectListItem
+                {
+                    Text = "Male",
+                    Value = "Male"
+                });
+                genderList.Add(new SelectListItem
+                {
+                    Text = "Female",
+                    Value = "Female"
+                });
+            ViewBag.genderList = genderList;
             ViewBag.familyID = fid;
             return View();
         }

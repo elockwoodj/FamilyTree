@@ -50,7 +50,6 @@
         </td>
         <td>
             @Html.ActionLink("Edit Relative", "EditRelative", new { rid = item.relationshipID , controller= "FamilyAdmin"  }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
             @Html.ActionLink("Remove Relative", "DeleteRelative", new { rid = item.relationshipID , controller = "Family"})
         </td>
     </tr>
@@ -59,5 +58,6 @@
 </table>
 
 <p>
+    @Html.ActionLink("Back to Individuals", "GetIndividuals", new { controller="Family", fid = ViewBag.familyID}) <br />
     @Html.ActionLink("Plot your Tree!", "PlotOne", new { controller = "Plotting", fid = 1 });
 </p>

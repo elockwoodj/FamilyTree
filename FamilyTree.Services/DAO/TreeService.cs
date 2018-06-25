@@ -120,6 +120,10 @@ namespace FamilyTree.Services.DAO
         {
             _treeDAO.AddInverse(invObject);
         }
+        public int GetNumberOfChildren(int pid)
+        {
+            return _treeDAO.GetNumberOfChildren(pid);
+        }
 
 
 

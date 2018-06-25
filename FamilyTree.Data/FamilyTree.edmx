@@ -41,6 +41,7 @@
           <Property Name="gender" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="placeOfBirth" Type="varchar" MaxLength="50" />
           <Property Name="familyID" Type="int" Nullable="false" />
+          <Property Name="isParent" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Relationships">
           <Key>
@@ -154,6 +155,7 @@
           <Property Name="gender" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="placeOfBirth" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="familyID" Type="Int32" Nullable="false" />
+          <Property Name="isParent" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -222,6 +224,7 @@
           <EntitySetMapping Name="Individuals">
             <EntityTypeMapping TypeName="b7039648Model.Individual">
               <MappingFragment StoreEntitySet="Individuals">
+                <ScalarProperty Name="isParent" ColumnName="isParent" />
                 <ScalarProperty Name="familyID" ColumnName="familyID" />
                 <ScalarProperty Name="placeOfBirth" ColumnName="placeOfBirth" />
                 <ScalarProperty Name="gender" ColumnName="gender" />

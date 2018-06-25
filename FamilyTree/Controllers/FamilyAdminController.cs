@@ -152,14 +152,16 @@ namespace FamilyTree.Controllers
         {
             try
             {
-                
+                _treeService.AddRelative(relaObject);  //Add the intended relationship
+
                 var rela = _treeService.GetRelative(relaObject.relationshipID);
                 var gender = _treeService.GetRelativeGender(relaObject.personID);
                 var pid = relaObject.personID; //Stores personID to rewrite for inverse
+                var person = _treeService.GetIndividual(pid);
                 var rid = relaObject.relativeID; //Stores relativeID to rewrite for inverse
                 rela.personID = rid;
                 rela.relativeID = pid;
-
+                
                 switch (rela.relationshipTypeID)
                 {
                     case 1: //Inserting a Sibling, therefore you are also a sibling 
@@ -231,10 +233,16 @@ namespace FamilyTree.Controllers
                             break;
                     }
                 }
+                //if (rela.relativeRole == 5 && person.isParent == 0) //If you're adding a child and the record isn't a parent, change them to a parent
+                //{
+                //    person.isParent = 1;
+                //    _treeService.EditIndividual(person);
+                //}
+                //else { }
 
-                _treeService.AddRelative(relaObject);  //Add the intended relationship
+                
                 _treeService.AddRelative(rela);        //Add the inverse of the relationship 
-                return RedirectToAction("GetRelatives", new { pid = relaObject.personID, controller = "Family" });
+                return RedirectToAction("GetRelatives", new { pid = pid, controller = "Family" });
             }
             catch
             {

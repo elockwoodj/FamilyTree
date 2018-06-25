@@ -39,6 +39,7 @@ namespace FamilyTree.Data.IDAO
         Relationship GetRelDelete(int rid);
         Relationship GetRelative(int rid);
         string GetRelativeGender(int pid);
+        int GetNumberOfChildren(int pid);
 
 
         //-----Edits-----

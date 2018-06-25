@@ -21,7 +21,7 @@ namespace FamilyTree.Controllers
         }
         public ActionResult PlotRectangle()
         {
-
+            
             return View();
         }
 
@@ -65,25 +65,63 @@ namespace FamilyTree.Controllers
 
         public FileContentResult PlotOne(int fid)
         {
-            int height = 100;
-            int width = 225;
+            //Dimensions of the box
+            int height = 60;
+            int width = 175;
 
             IList <Individual> indList = _treeService.GetIndividuals(fid);
-            int numberOfMembers = indList.Count();
-            int bigH = 175 * numberOfMembers;
-            int bigW = 600;
+            //int numberOfMembers = indList.Count();
+            int numberOfGenerations = 2;
+            int numberOfChildren;
+            int bigW = 450;
+            int bigH = 175 * numberOfGenerations;
+            float xChild = (bigW/2) - ;
+            //COUPLE TABLE HAS NUMBER OF CHILDREN IN
+            //Working out width of bitmap depending on how many children individuals have
+            //In a nuclear family there are 2 parents, therefore each child will add 250 to the total width
+            foreach (Individual person in indList) 
+            {
+                if (person.isParent == 1)
+                {
+                    numberOfChildren = _treeService.GetNumberOfChildren(person.individualID);
+                    if (numberOfChildren <= 2)
+                    {
+                        bigW = bigW;
+                        xChild = xChild;
+                    }
+                    else
+                    {
+                        bigW = bigW + (numberOfChildren * 125);
+                        xChild = (bigW / 2) - ((numberOfChildren / 2) * 100);
+                    }
+                }
+                else
+                {
+                    bigW = bigW;
+                }
+            }
+            //int bigW = _treeService.GetNumberOfChildren(pid);
             int alpha = 100;
             int red = 204;
             int green = 102;
             int blue = 0;
-            int xCoordinate = 5;
-            int yCoordinate = 0;
+
+            int xCoordinate = 10;
+            int yCoordinate = 30;
+
             string individualName;
             string dateBirth;
             string dateDeath;
             string familyName = _treeService.GetFamily(fid).familyName;
             float titleLocation = (bigW / 2) - ((familyName.Length*8)/2); //A letter in a string takes up approx 8 pixels
-            
+            int parentGap = 75; //x coordinate space between parent rectangles
+            int childGap = 50; //x coordingate space between child rectangles
+            int yAddition = 150; //y space between parent and child rows
+
+            int xParent = xCoordinate;
+            int yParent = yCoordinate;
+            int yChild = yCoordinate + yAddition;
+
 
 
             using (Bitmap bmp = new Bitmap(bigW, bigH))
@@ -92,48 +130,124 @@ namespace FamilyTree.Controllers
                 {
                     g.Clear(Color.Bisque);
                     g.DrawRectangle(Pens.Azure, (bigW/2), 1, 1, bigH); //Draws a line down the middle of the page, currently only testing for Johnson
+                    g.DrawLine(Pens.Black, (xParent + width), (yParent + (height/ 2)), (xParent + width + parentGap), (yParent + (height / 2)));
+                    g.DrawLine(Pens.Black, (bigW / 2), (yParent + (height / 2)), (bigW / 2), (yParent + (height / 2) + 70));
 
                     foreach (Individual person in indList)
                     {
                         individualName = person.fullName;
                         dateBirth = person.dateOfBirth.ToString();
                         dateDeath = person.dateOfDeath.ToString();
-                        yCoordinate = yCoordinate + 130;
+                        g.DrawString(familyName, new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(titleLocation, 10),
+                                new StringFormat());
+                        //Workig on nucear family - will have to refactor for extended family
+                        if (person.isParent == 1) //Draw box for parent
+                        {
+                            //Draws a rectangle and fills it with the information retrieved from the database
+                            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-                        //Draws a rectangle and fills it with the information retrieved from the database
-                        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                            g.DrawRectangle(Pens.Brown, xParent, yParent, width, height);
+                            //Writes the Name at 20, yCoordinate
+                            g.DrawString(individualName,
+                                new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xParent + 5, yParent + 5),
+                                new StringFormat());
+
+                            //Writes the Date of Birth
+                            g.DrawString(dateBirth,
+                                new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xParent + 5, yParent + 20),
+                                new StringFormat());
+
+                            g.DrawString(dateDeath, new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xParent + 5, yParent + 35),
+                                new StringFormat());
+
+                            
+
+                            g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
+                                green, blue)), xParent, yParent, width, height);
+                            xParent = xParent + width + parentGap;
+                        }
+                        else //You must be a child, therefore drawn further down on the yAxis
+                        {
+                            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+
+                            g.DrawRectangle(Pens.Brown, xChild, yChild, width, height);
+
+                            //Writes the Name at 20, yCoordinate
+                            g.DrawString(individualName,
+                                new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xChild + 5, yChild + 5),
+                                new StringFormat());
+
+                            //Writes the Date of Birth
+                            g.DrawString(dateBirth,
+                                new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xChild + 5, yChild + 20),
+                                new StringFormat());
+
+                            g.DrawString(dateDeath, new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xChild + 5, yChild + 35),
+                                new StringFormat());
+
+
+
+                            g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
+                                green, blue)), xChild, yChild, width, height);
+                            xChild = xChild + width + childGap;
+                        }
+                        //switch (numberOfChildren = _treeService.GetNumberOfChildren(person.isParent = 1))
+                        //{
+                        //    case 1:
+                        //        g.DrawLine(Pens.Black, (bigW / 2), (yParent + (height / 2)), (bigW / 2), (yParent + (height / 2) + 125);
+                        //}
+
+
+                        ////Draws a rectangle and fills it with the information retrieved from the database
+                        //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                         
 
-                        g.DrawRectangle(Pens.Brown, xCoordinate, yCoordinate, width, height);
+                        //g.DrawRectangle(Pens.Brown, xCoordinate, yCoordinate, width, height);
 
-                        g.DrawString(individualName, 
-                            new Font("Arial", 10, FontStyle.Bold),
-                            SystemBrushes.WindowText, 
-                            new PointF(20, yCoordinate), 
-                            new StringFormat());
+                        ////Writes the Name at 20, yCoordinate
+                        //g.DrawString(individualName, 
+                        //    new Font("Arial", 10, FontStyle.Bold),
+                        //    SystemBrushes.WindowText, 
+                        //    new PointF(20, yCoordinate), 
+                        //    new StringFormat());
 
-                        g.DrawString(dateBirth, 
-                            new Font("Arial", 10, FontStyle.Bold),
-                            SystemBrushes.WindowText, 
-                            new PointF(20, yCoordinate + 15), 
-                            new StringFormat());
+                        ////Writes the Date of Birth
+                        //g.DrawString(dateBirth, 
+                        //    new Font("Arial", 10, FontStyle.Bold),
+                        //    SystemBrushes.WindowText, 
+                        //    new PointF(20, yCoordinate + 15), 
+                        //    new StringFormat());
 
-                        g.DrawString(dateDeath, new Font("Arial", 10, FontStyle.Bold),
-                            SystemBrushes.WindowText, 
-                            new PointF(20, yCoordinate + 30), 
-                            new StringFormat());
+                        //g.DrawString(dateDeath, new Font("Arial", 10, FontStyle.Bold),
+                        //    SystemBrushes.WindowText, 
+                        //    new PointF(20, yCoordinate + 30), 
+                        //    new StringFormat());
 
-                        g.DrawString(familyName, new Font("Arial", 10, FontStyle.Bold),
-                            SystemBrushes.WindowText,
-                            new PointF(titleLocation, 10),
-                            new StringFormat());
+                        //g.DrawString(familyName, new Font("Arial", 10, FontStyle.Bold),
+                        //    SystemBrushes.WindowText,
+                        //    new PointF(titleLocation, 10),
+                        //    new StringFormat());
 
-                        g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
-                            green, blue)), xCoordinate, yCoordinate, width, height);
+                        //g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
+                        //    green, blue)), xCoordinate, yCoordinate, width, height);
 
                     }
-
-
                     // Saves it?? Outputs an image??
                     string filename = Server.MapPath("/") + Guid.NewGuid().ToString("N");
                     bmp.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -147,10 +261,6 @@ namespace FamilyTree.Controllers
                     return new FileContentResult(bytes, "image/jpeg");
                 }
             }
-
-
-
-
         }
     }
 }

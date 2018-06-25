@@ -266,6 +266,7 @@ namespace FamilyTree.Data.DAO
             indEdit.placeOfBirth = indObject.placeOfBirth;
             indEdit.dateOfBirth = indObject.dateOfBirth;
             indEdit.dateOfDeath = indObject.dateOfDeath;
+            indEdit.isParent = indObject.isParent;
             _context.SaveChanges();
         }
 
