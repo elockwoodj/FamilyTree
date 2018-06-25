@@ -149,6 +149,17 @@ namespace FamilyTree.Data.DAO
             return _fam.First();
         }
 
+        public Couple GetCouple(int pid)
+        {
+            IQueryable<Couple> _cou;
+            _cou = from cou
+                   in _context.Couple
+                   where cou.personID == pid
+                   select cou;
+
+            return _cou.First();
+        }
+
         public relaBEAN GetRelationship(int rid)
         {
             IQueryable<relaBEAN> _relBEAN;
@@ -323,18 +334,19 @@ namespace FamilyTree.Data.DAO
 
             return numberChildren;
         }
-        //Selects an individuals parents from the database
-        public IList<relaBEAN> GetParents(int pid)
+        //Selects an individuals children from the database, using Couple table to determine an individuals children
+        public IList<relaBEAN> GetChildren(int pid)
         {
             IQueryable<relaBEAN> _par;
             _par = from par in _context.Relationships
                    from ind in _context.Individuals
-                   where par.personID == pid && par.relationshipTypeID == 2 && par.relativeID == ind.individualID// Selects all relatives of a person who's relationship type is Parent
+                   where par.personID == pid && par.relationshipTypeID == 5 && par.relativeID == ind.individualID// Selects all relatives of a person who's relationship type is Child, used for plotting
                    select new relaBEAN
                    {
                        fullName = ind.fullName,
                        relativeID = par.relativeID,
-
+                       dateOfBirth = ind.dateOfBirth,
+                       dateOfDeath = ind.dateOfDeath
 
                    };
             return _par.ToList<relaBEAN>();

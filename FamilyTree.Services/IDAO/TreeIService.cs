@@ -25,7 +25,7 @@ namespace FamilyTree.Services.IDAO
         IList<relaBEAN> GetRelatives(int pid);
         void AddRelative(Relationship relaObject);
         void AddInverse(Relationship invObject);
-
+        Couple GetCouple(int pid);
         IList<relaBEAN> GetTypes();
         IList<relaBEAN> GetRoles();
         IList<relaBEAN> GetListForRelatives(int fid, int pid);
