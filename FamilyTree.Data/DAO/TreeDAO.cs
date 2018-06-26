@@ -149,14 +149,12 @@ namespace FamilyTree.Data.DAO
             return _fam.First();
         }
 
-        public Couple GetCouple(int pid)
+        public Couple GetCoupleRelation(int pid, int rid)
         {
             IQueryable<Couple> _cou;
-            _cou = from cou
-                   in _context.Couple
-                   where cou.personID == pid
+            _cou = from cou in _context.Couples
+                   where cou.personOne == pid && cou.personTwo == rid
                    select cou;
-
             return _cou.First();
         }
 
@@ -209,19 +207,6 @@ namespace FamilyTree.Data.DAO
             return genderPicker;
         }
 
-
-
-        //public int GetNumberOfGenerations(int fid)
-        //{
-        //    IQueryable<relaBEAN> _gen;
-        //    _gen = from gen in _context.Relationships
-        //           where gen.familyID == fid
-        //           select new relaBEAN
-        //           {
-
-        //           }
-        //}
-
         // ----- Adds -----
         //Adds familyName to the Family table
         public void AddFamilyName(Family familyName)
@@ -263,6 +248,56 @@ namespace FamilyTree.Data.DAO
             _context.SaveChanges();
         }
 
+        public void AddCouple(int pid, int rid)
+        {
+            //Add a couple to the table
+            IQueryable<Relationship> _rel;
+            _rel = from rel in _context.Relationships
+                   where rel.personID == pid
+                   && rel.relationshipTypeID == 3
+                   select rel;
+            int numberOfChildren = _rel.Count();
+            Couple coupObject = new Couple
+            {
+                NumberOfChildren = numberOfChildren,
+                personOne = pid,
+                personTwo = rid
+            };
+            _context.Couples.Add(coupObject);
+            _context.SaveChanges();
+            //Need Couple ID to Add coupleID to partners individual record
+            Couple coupStore =GetCoupleRelation(pid, rid);
+            int coupleID = coupStore.coupleID;
+
+            //Add Couple ID to their record
+            IQueryable<Individual> pidEdit;
+            pidEdit = from _pidEdit in _context.Individuals
+                       where _pidEdit.individualID == pid
+                       select _pidEdit;
+            Individual pidIDEdit = pidEdit.First();
+            pidIDEdit.coupleID = coupleID;
+            _context.SaveChanges();
+
+            IQueryable<Individual> ridEdit;
+            ridEdit = from _ridEdit in _context.Individuals
+                      where _ridEdit.individualID == rid
+                      select _ridEdit;
+            Individual ridIDEdit = ridEdit.First();
+            ridIDEdit.coupleID = coupleID;
+            _context.SaveChanges();
+        }
+        public void AddCoupleChild(int cid)
+        {
+            //Increase the number of children someone has by one
+            IQueryable<Couple> _couAdd;
+            _couAdd = from couAdd in _context.Couples
+                      where couAdd.coupleID == cid
+                      select couAdd;
+            Couple coupAdd = _couAdd.First();
+            coupAdd.NumberOfChildren = coupAdd.NumberOfChildren + 1;
+            _context.SaveChanges();
+
+        }
         //Accesses the Individual table, pulling an object with the same ID passed by indObject, rewriting information and saving
         public void EditIndividual(Individual indObject)
         {

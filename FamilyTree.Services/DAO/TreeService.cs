@@ -124,10 +124,20 @@ namespace FamilyTree.Services.DAO
         {
             return _treeDAO.GetNumberOfChildren(pid);
         }
-        public int GetCouple(int pid)
+        public Couple GetCoupleRelation(int pid,int rid)
         {
-            return _treeDAO.GetCouple(pid);
+            return _treeDAO.GetCoupleRelation(pid, rid);
         }
+        public void AddCouple(int pid, int rid)
+        {
+            _treeDAO.AddCouple(pid, rid);
+        }
+        public void AddCoupleChild(int cid)
+        {
+            _treeDAO.AddCoupleChild(cid);
+        }
+
+
 
 
     }

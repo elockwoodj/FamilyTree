@@ -22,6 +22,15 @@
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
+        <EntityType Name="Couple">
+          <Key>
+            <PropertyRef Name="coupleID" />
+          </Key>
+          <Property Name="coupleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NumberOfChildren" Type="int" Nullable="false" />
+          <Property Name="personOne" Type="int" Nullable="false" />
+          <Property Name="personTwo" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Families">
           <Key>
             <PropertyRef Name="familyID" />
@@ -42,6 +51,7 @@
           <Property Name="placeOfBirth" Type="varchar" MaxLength="50" />
           <Property Name="familyID" Type="int" Nullable="false" />
           <Property Name="isParent" Type="int" Nullable="false" />
+          <Property Name="coupleID" Type="int" />
         </EntityType>
         <EntityType Name="Relationships">
           <Key>
@@ -73,6 +83,7 @@
         </EntityType>
         <EntityContainer Name="b7039648ModelStoreContainer">
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Couple" EntityType="Self.Couple" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Families" EntityType="Self.Families" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Individuals" EntityType="Self.Individuals" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Relationships" EntityType="Self.Relationships" Schema="dbo" store:Type="Tables" />
@@ -115,6 +126,7 @@
           <EntitySet Name="Roles" EntityType="b7039648Model.Role" />
           <EntitySet Name="Relationships" EntityType="b7039648Model.Relationship" />
           <EntitySet Name="Individuals" EntityType="b7039648Model.Individual" />
+          <EntitySet Name="Couples" EntityType="b7039648Model.Couple" />
         </EntityContainer>
         <EntityType Name="RelationshipType">
           <Key>
@@ -156,6 +168,16 @@
           <Property Name="placeOfBirth" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="familyID" Type="Int32" Nullable="false" />
           <Property Name="isParent" Type="Int32" Nullable="false" />
+          <Property Name="coupleID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Couple">
+          <Key>
+            <PropertyRef Name="coupleID" />
+          </Key>
+          <Property Name="coupleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NumberOfChildren" Type="Int32" Nullable="false" />
+          <Property Name="personOne" Type="Int32" Nullable="false" />
+          <Property Name="personTwo" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -224,6 +246,7 @@
           <EntitySetMapping Name="Individuals">
             <EntityTypeMapping TypeName="b7039648Model.Individual">
               <MappingFragment StoreEntitySet="Individuals">
+                <ScalarProperty Name="coupleID" ColumnName="coupleID" />
                 <ScalarProperty Name="isParent" ColumnName="isParent" />
                 <ScalarProperty Name="familyID" ColumnName="familyID" />
                 <ScalarProperty Name="placeOfBirth" ColumnName="placeOfBirth" />
@@ -232,6 +255,16 @@
                 <ScalarProperty Name="dateOfBirth" ColumnName="dateOfBirth" />
                 <ScalarProperty Name="fullName" ColumnName="fullName" />
                 <ScalarProperty Name="individualID" ColumnName="individualID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Couples">
+            <EntityTypeMapping TypeName="b7039648Model.Couple">
+              <MappingFragment StoreEntitySet="Couple">
+                <ScalarProperty Name="personTwo" ColumnName="personTwo" />
+                <ScalarProperty Name="personOne" ColumnName="personOne" />
+                <ScalarProperty Name="NumberOfChildren" ColumnName="NumberOfChildren" />
+                <ScalarProperty Name="coupleID" ColumnName="coupleID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

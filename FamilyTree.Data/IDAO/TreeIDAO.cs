@@ -20,10 +20,12 @@ namespace FamilyTree.Data.IDAO
         void AddFamilyName(Family familyName);
         void AddRelative(Relationship relative);
         void AddInverse(Relationship invObject);
+        void AddCouple(int pid, int rid);
+        void AddCoupleChild(int cid);
 
 
         // -----Get Lists-----
-        IList<FamilyTree.Data.Family> GetFamilies(string uid);
+        IList<Family> GetFamilies(string uid);
         IList<relaBEAN> GetRelationships(int fid);
         IList<Individual> GetIndividuals(int fid);
         IList<relaBEAN> GetRelatives(int pid);
@@ -40,7 +42,7 @@ namespace FamilyTree.Data.IDAO
         Relationship GetRelative(int rid);
         string GetRelativeGender(int pid);
         int GetNumberOfChildren(int pid);
-        Couple GetCouple(int pid);
+        Couple GetCoupleRelation(int pid, int rid);
 
         //-----Edits-----
         void EditFamilyName(Family familyName);

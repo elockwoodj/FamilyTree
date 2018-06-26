@@ -12,16 +12,11 @@ namespace FamilyTree.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Individual
+    public partial class Couple
     {
-        public int individualID { get; set; }
-        public string fullName { get; set; }
-        public Nullable<System.DateTime> dateOfBirth { get; set; }
-        public Nullable<System.DateTime> dateOfDeath { get; set; }
-        public string gender { get; set; }
-        public string placeOfBirth { get; set; }
-        public int familyID { get; set; }
-        public int isParent { get; set; }
-        public Nullable<int> coupleID { get; set; }
+        public int coupleID { get; set; }
+        public int NumberOfChildren { get; set; }
+        public int personOne { get; set; }
+        public int personTwo { get; set; }
     }
 }

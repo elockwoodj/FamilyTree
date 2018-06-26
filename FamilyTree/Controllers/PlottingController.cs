@@ -75,7 +75,7 @@ namespace FamilyTree.Controllers
             int numberOfChildren;
             int bigW = 450;
             int bigH = 175 * numberOfGenerations;
-            float xChild = (bigW/2) - ;
+            float xChild = (bigW/2);
             //COUPLE TABLE HAS NUMBER OF CHILDREN IN
             //Working out width of bitmap depending on how many children individuals have
             //In a nuclear family there are 2 parents, therefore each child will add 250 to the total width
