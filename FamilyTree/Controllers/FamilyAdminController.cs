@@ -153,14 +153,13 @@ namespace FamilyTree.Controllers
             try
             {
                 _treeService.AddRelative(relaObject);  //Add the intended relationship
-
+                
                 var rela = _treeService.GetRelative(relaObject.relationshipID);
                 var gender = _treeService.GetRelativeGender(relaObject.personID);
                 var pid = relaObject.personID; //Stores personID to rewrite for inverse
                 var person = _treeService.GetIndividual(pid);
                 var rid = relaObject.relativeID; //Stores relativeID to rewrite for inverse
-                rela.personID = rid;
-                rela.relativeID = pid;
+
                 
                 switch (rela.relationshipTypeID)
                 {
@@ -171,10 +170,15 @@ namespace FamilyTree.Controllers
                         break;
                     case 3: //Inserting a Child, therefore you are a parent
                         rela.relationshipTypeID = 2;
+                        //This will always be null if you're adding child - think of way to fetch couple information IE mother/father ID's
                         if (_treeService.GetCoupleRelation(pid,rid) != null)
                         {
                             var cid = _treeService.GetCoupleRelation(pid, rid).coupleID;
                             _treeService.AddCoupleChild(cid);
+                            //Change both parents so their isParent value is 1, database knows they're parents now
+                            Individual pidEdit = _treeService.GetIndividual(pid);
+                            pidEdit.isParent = 1;
+                            _treeService.EditIndividual(pidEdit);
                         }
                         else { }
                         //Inserting a child means the number of children column needs to increase in couple
@@ -242,13 +246,15 @@ namespace FamilyTree.Controllers
                             break;
                     }
                 }
+
                 //if (rela.relativeRole == 5 && person.isParent == 0) //If you're adding a child and the record isn't a parent, change them to a parent
                 //{
                 //    person.isParent = 1;
                 //    _treeService.EditIndividual(person);
                 //}
                 //else { }
-
+                rela.personID = rid;
+                rela.relativeID = pid;
                 
                 _treeService.AddRelative(rela);        //Add the inverse of the relationship 
                 return RedirectToAction("GetRelatives", new { pid = pid, controller = "Family" });

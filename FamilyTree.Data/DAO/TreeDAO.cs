@@ -37,6 +37,7 @@ namespace FamilyTree.Data.DAO
             _indiv = from ind
                      in _context.Individuals
                      where ind.familyID == fid
+                     orderby  ind.isParent descending
                      select ind;
 
             return _indiv.ToList<Individual>();
@@ -250,26 +251,32 @@ namespace FamilyTree.Data.DAO
 
         public void AddCouple(int pid, int rid)
         {
-            //Add a couple to the table
+            //Pull the number of children from relationship table the individual has
             IQueryable<Relationship> _rel;
             _rel = from rel in _context.Relationships
                    where rel.personID == pid
                    && rel.relationshipTypeID == 3
                    select rel;
+            //Store the number of children to be added to the couple table
             int numberOfChildren = _rel.Count();
+
+            //Need new couple object to add into couple table
             Couple coupObject = new Couple
             {
-                NumberOfChildren = numberOfChildren,
-                personOne = pid,
-                personTwo = rid
+                NumberOfChildren = numberOfChildren, //Used to help plotting
+                personOne = pid, //Used as identifiers to pull coupleID from table to be inserted into individual table
+                personTwo = rid //As above
             };
+
+            //Add the object and save changes so the coupleID can be accessed straight away
             _context.Couples.Add(coupObject);
             _context.SaveChanges();
-            //Need Couple ID to Add coupleID to partners individual record
-            Couple coupStore =GetCoupleRelation(pid, rid);
+
+            //Need coupleID to Add coupleID to partners individual record
+            Couple coupStore = GetCoupleRelation(pid, rid);
             int coupleID = coupStore.coupleID;
 
-            //Add Couple ID to their record
+            //Add coupleID to their record
             IQueryable<Individual> pidEdit;
             pidEdit = from _pidEdit in _context.Individuals
                        where _pidEdit.individualID == pid
@@ -278,6 +285,7 @@ namespace FamilyTree.Data.DAO
             pidIDEdit.coupleID = coupleID;
             _context.SaveChanges();
 
+            //Add coupleID to partners record
             IQueryable<Individual> ridEdit;
             ridEdit = from _ridEdit in _context.Individuals
                       where _ridEdit.individualID == rid
@@ -286,6 +294,7 @@ namespace FamilyTree.Data.DAO
             ridIDEdit.coupleID = coupleID;
             _context.SaveChanges();
         }
+
         public void AddCoupleChild(int cid)
         {
             //Increase the number of children someone has by one
@@ -296,6 +305,8 @@ namespace FamilyTree.Data.DAO
             Couple coupAdd = _couAdd.First();
             coupAdd.NumberOfChildren = coupAdd.NumberOfChildren + 1;
             _context.SaveChanges();
+            //Check if their isParent tag is false
+            
 
         }
         //Accesses the Individual table, pulling an object with the same ID passed by indObject, rewriting information and saving
