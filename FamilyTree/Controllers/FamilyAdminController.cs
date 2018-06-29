@@ -171,7 +171,7 @@ namespace FamilyTree.Controllers
                     case 3: //Inserting a Child, therefore you are a parent
                         rela.relationshipTypeID = 2;
                         //This will always be null if you're adding child - think of way to fetch couple information IE mother/father ID's
-                        if (_treeService.GetCoupleRelation(pid,rid) != null)
+                        if (_treeService.GetCoupleRelation(pid, rid) != null) 
                         {
                             var cid = _treeService.GetCoupleRelation(pid, rid).coupleID;
                             _treeService.AddCoupleChild(cid);

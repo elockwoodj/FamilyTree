@@ -89,14 +89,23 @@ namespace FamilyTree.Controllers
                     {
                         bigW = bigW;
                     }
-                    else
+                    else if (numberOfChildren == 3)
                     {
-                        if (numberOfChildren == 4)
-                        {
-                            bigW = 6 * width + width / 2;
-                        }
-                        //bigW = bigW + ((numberOfChildren - 2) * width)/2;
+                        bigW = 5 * width;
                     }
+                    else if (numberOfChildren == 4)
+                    {
+                        bigW = 6 * width + width / 2;
+                    }
+                    else if (numberOfChildren == 5) 
+                    {
+                        bigW = 8 * width;
+                    }
+                    else if (numberOfChildren == 6)
+                    {
+                        bigW = 9 * width;
+                    }
+
                 }
                 else
                 {
@@ -188,14 +197,16 @@ namespace FamilyTree.Controllers
                                         g.DrawLine(Pens.Black, pageMid, //Half way point on x-axis
                                             (yParent + (height / 2)), //Halfway down the y-axis of the parent box
                                             pageMid, //Stays on half way point
-                                            (yParent + 2 * height)); //
+                                            (yParent + 2 * height)); //Half a height of distance to the node
                                     xChild = (bigW - width) / 2;
                                     yChild = yParent + 2 * height;
                                     break;
                                 case 2:
                                     g.DrawLine(Pens.Black, pageMid, (yParent + (height / 2)), pageMid, (yParent + (height / 2) + height)); //Draws line straight down, from this point horizontal line must be drawn
                                     g.DrawLine(Pens.Black, (pageMid - width), yParent + (height / 2) + height, (pageMid + width), yParent + (height / 2) + height); //Same y coordinates as where previous line stops, x coordinates change
+                                    //Busses down to nodes
                                     g.DrawLine(Pens.Black, (pageMid - width), yParent + (height / 2) + height, (pageMid - width), yParent + (2 * height));
+
                                     g.DrawLine(Pens.Black, (pageMid + width), yParent + (height / 2) + height, (pageMid + width), yParent + (2 * height));
                                     xChild = (pageMid - width) - (width / 2);
                                     yChild = yParent + 2 * height;
@@ -203,8 +214,11 @@ namespace FamilyTree.Controllers
                                 case 3:
                                     g.DrawLine(Pens.Black, pageMid, (yParent + (height / 2)), pageMid, (yParent + (height / 2) + height)); //Draws line straight down, from this point horizontal line must be drawn
                                     g.DrawLine(Pens.Black, (pageMid - 2 * width), yParent + (height / 2) + height, (pageMid + 2 * width), yParent + (height / 2) + height); //Same y coordinates as where previous line stops, x coordinates change
+                                    //Busses down to nodes
                                     g.DrawLine(Pens.Black, (pageMid - 2 * width), yParent + (height / 2) + height, (pageMid - 2 * width), yParent + (2 * height)); //middle of first child node
+
                                     g.DrawLine(Pens.Black, pageMid, yParent + ((3 / 2) * height), pageMid, yParent + (2 * height)); //middle of second child node 
+
                                     g.DrawLine(Pens.Black, (pageMid + 2 * width), yParent + (height / 2) + height, (pageMid + 2 * width), yParent + (2 * height));//middle of third child node
                                     xChild = (pageMid - width) - (width / 2) - width; //Make the x location of the child node correct
                                     yChild = yParent + 2 * height; //make y location correct
@@ -212,12 +226,45 @@ namespace FamilyTree.Controllers
                                 case 4:
                                     g.DrawLine(Pens.Black, pageMid, (yParent + (height / 2)), pageMid, (yParent + (height / 2) + height)); //Draws line straight down, from this point horizontal line must be drawn
                                     g.DrawLine(Pens.Black, pageMid - 2 * width - width / 4, yParent + (height / 2) + height, pageMid + 2 * width + width / 4, yParent + (height / 2) + height);//Same y coordinates as where previous line stops, x coordinates change
+                                    //Busses down to nodes
                                     g.DrawLine(Pens.Purple, pageMid - 2 * width - width / 4, yParent + (height / 2) + height, pageMid - 2 * width - width / 4, yParent + (2 * height)); //Middle of first child node
                                     g.DrawLine(Pens.Green, pageMid - width + (width / 4), yParent + (height / 2) + height, pageMid - width + (width / 4), yParent + (2 * height)); //Second Node
-                                    g.DrawLine(Pens.Red, pageMid + 2 * width + width / 4, yParent + (height / 2) + height, pageMid + 2 * width + width / 4, yParent + (2 * height)); //Third Node
-                                    g.DrawLine(Pens.Orange, pageMid + width - (width / 4), yParent + (height / 2) + height, pageMid + width - (width / 4), yParent + (2 * height)); //Fourth Node
+
+                                    g.DrawLine(Pens.Orange, pageMid + width - (width / 4), yParent + (height / 2) + height, pageMid + width - (width / 4), yParent + (2 * height)); //Third Node
+                                    g.DrawLine(Pens.Red, pageMid + 2 * width + width / 4, yParent + (height / 2) + height, pageMid + 2 * width + width / 4, yParent + (2 * height)); //Fourth Node
+
                                     childGap = width / 2;
                                     xChild = width / 2;
+                                    yChild = yParent + 2 * height;
+                                    break;
+                                case 5:
+                                    g.DrawLine(Pens.Black, pageMid, (yParent + (height / 2)), pageMid, (yParent + (height / 2) + height)); //Draws line straight down, from this point horizontal line must be drawn
+                                    g.DrawLine(Pens.Black, pageMid - 3 * width, yParent + (height / 2) + height, pageMid + 3 * width, yParent + (height / 2) + height);//Same y coordinates as where previous line stops, x coordinates change
+                                    //Busses down to nodes
+                                    g.DrawLine(Pens.Black, pageMid - 3 * width, yParent + (height / 2) + height, pageMid - 3 * width, yParent + 2 * height);
+                                    g.DrawLine(Pens.Black, pageMid - width - (width / 2), yParent + (height / 2) + height, pageMid - width - (width / 2), yParent + 2 * height);
+
+                                    g.DrawLine(Pens.Black, pageMid, yParent + (height / 2) + height, pageMid,  yParent + 2 * height);
+
+                                    g.DrawLine(Pens.Black, pageMid + width + (width / 2), yParent + (height / 2) + height, pageMid + width + (width / 2), yParent + 2 * height);
+                                    g.DrawLine(Pens.Black, pageMid + 3 * width, yParent + (height / 2) + height, pageMid + 3 * width, yParent + 2 * height);
+                                    childGap = width / 2;
+                                    xChild = width / 2;
+                                    yChild = yParent + 2 * height;
+                                    break;
+                                case 6:
+                                    g.DrawLine(Pens.Black, pageMid, (yParent + (height / 2)), pageMid, (yParent + (height / 2) + height)); //Draws line straight down, from this point horizontal line must be drawn
+                                    g.DrawLine(Pens.Black, pageMid - 3 * width - ((3 / 4) * width), yParent + (height / 2) + height, pageMid + 3 * width + ((3 / 4) * width), yParent + (height / 2) + height); //Same y coordinates as where previous line stops, x coordinates change
+                                    //Busses down to nodes
+                                    g.DrawLine(Pens.Black, pageMid - 3 * width - ((3 / 4) * width), yParent + (height / 2) + height, pageMid - 3 * width - ((3 / 4) * width), yParent + 2 * height);
+                                    g.DrawLine(Pens.Black, pageMid - 2 * width - ((1 / 4) * width), yParent + (height / 2) + height, pageMid - 2 * width - ((1 / 4) * width), yParent + 2 * height);
+                                    g.DrawLine(Pens.Black, pageMid - width  + (width/4), yParent + (height / 2) + height, pageMid - width + (width / 4), yParent + 2 * height);
+
+                                    g.DrawLine(Pens.Black, pageMid + ((3 / 4) * width), yParent + (height / 2) + height, pageMid + ((3 / 4) * width), yParent + 2 * height);
+                                    g.DrawLine(Pens.Black, pageMid + 2 * width + ((1 / 4) * width), yParent + (height / 2) + height, pageMid + 2 * width + ((1 / 4) * width), yParent + 2 * height);
+                                    g.DrawLine(Pens.Black, pageMid + 3 * width + ((3 / 4) * width), yParent + (height / 2) + height, pageMid + 3 * width + ((3 / 4) * width), yParent + 2 * height);
+                                    childGap = width / 2;
+                                    xChild = width / 4;
                                     yChild = yParent + 2 * height;
                                     break;
                             }
