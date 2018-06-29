@@ -84,19 +84,13 @@ namespace FamilyTree.Data.DAO
             return _rel.First();
         }
 
-        public IList<relaBEAN> GetRelationships(int fid)
+        public IList<Relationship> GetRelationships(int pid)
         {
-            var _famLists = GetIndividuals(fid);
-            IList<relaBEAN> relatives;
-             
-            foreach (var per in _famLists)
-            {
-                    relatives = (GetRelatives(per.individualID));
-                return relatives;
-                
-            }
-
-            return null;
+            IQueryable<Relationship> _rel;
+            _rel = from rel in _context.Relationships
+                   where rel.personID == pid
+                   select rel;
+            return _rel.ToList();
         }
 
         public IList<relaBEAN> GetTypes()

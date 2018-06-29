@@ -20,7 +20,7 @@ namespace FamilyTree.Services.IDAO
         void DeleteIndividual(Individual individual);
         void EditIndividual(Individual individual);
         IList<Individual> GetIndividuals(int fid);
-        IList<relaBEAN> GetRelationships(int fid);
+        IList<Relationship> GetRelationships(int pid);
         Individual GetIndividual(int pid);
         IList<relaBEAN> GetRelatives(int pid);
         void AddRelative(Relationship relaObject);

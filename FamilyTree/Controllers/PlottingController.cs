@@ -21,13 +21,13 @@ namespace FamilyTree.Controllers
         }
         public ActionResult PlotRectangle()
         {
-            
+
             return View();
         }
 
         public FileContentResult CreateBitmap()
         {
-            
+
             int height = 400;
             int width = 200;
             Random r = new Random();
@@ -69,8 +69,8 @@ namespace FamilyTree.Controllers
             int height = 60;
             int width = 175;
 
-            
-            IList <Individual> indList = _treeService.GetIndividuals(fid);
+
+            IList<Individual> indList = _treeService.GetIndividuals(fid);
             //int numberOfMembers = indList.Count();
             int numberOfGenerations = 2;
             int numberOfChildren;
@@ -80,7 +80,7 @@ namespace FamilyTree.Controllers
             //COUPLE TABLE HAS NUMBER OF CHILDREN IN
             //Working out width of bitmap depending on how many children individuals have
             //In a nuclear family there are 2 parents, therefore each child will add 250 to the total width
-            foreach (Individual person in indList) 
+            foreach (Individual person in indList)
             {
                 if (person.isParent == 1)
                 {
@@ -97,7 +97,7 @@ namespace FamilyTree.Controllers
                     {
                         bigW = 6 * width + width / 2;
                     }
-                    else if (numberOfChildren == 5) 
+                    else if (numberOfChildren == 5)
                     {
                         bigW = 8 * width;
                     }
@@ -122,7 +122,7 @@ namespace FamilyTree.Controllers
             string dateBirth;
             string dateDeath;
             string familyName = _treeService.GetFamily(fid).familyName;
-            float titleLocation = (bigW / 2) - ((familyName.Length*8)/2); //A letter in a string takes up approx 8 pixels
+            float titleLocation = (bigW / 2) - ((familyName.Length * 8) / 2); //A letter in a string takes up approx 8 pixels
             float parentGap = width; //x coordinate space between parent rectangles
             float childGap = width; //x coordingate space between child rectangles
             float yAddition = height; //y space between parent and child rows
@@ -317,6 +317,160 @@ namespace FamilyTree.Controllers
                     System.IO.File.Delete(filename);
                     return new FileContentResult(bytes, "image/jpeg");
                 }
+            }
+        }
+
+        //Plotting from a specific person in your family, will show parents, partner and children
+        public FileContentResult PlotIndividual(int pid)
+        {
+            //Dimensions of the box, all distances should be measured in these unit distances - helps keep consistancy
+            int height = 60;
+            int width = 175;
+
+            //IList<Individual> indList = _treeService.GetIndividuals(fid);
+            //int numberOfMembers = indList.Count();
+
+            Individual mainIndividual = _treeService.GetIndividual(pid);
+            Individual plotPerson;
+            IList<Relationship> relList = _treeService.GetRelationships(pid);
+            int numberOfGenerations = 3;
+            int numberOfChildren = _treeService.GetNumberOfChildren(pid);
+
+            
+
+
+            int bigW = 4 * width;
+            int bigH = height * (numberOfGenerations + 3); //Give a border of a height either side around the plot
+            float xChild = (bigW / 2);
+            //Used for colour plotting
+            int alpha = 100;
+            int red = 204;
+            int green = 102;
+            int blue = 0;
+
+            string individualName;
+            string dateBirth;
+            string dateDeath;
+            string familyName = _treeService.GetFamily(fid).familyName;
+            float titleLocation = (bigW / 2) - ((familyName.Length * 8) / 2); //A letter in a string takes up approx 8 pixels
+            float parentGap = width; //x coordinate space between parent rectangles
+            float childGap = width; //x coordingate space between child rectangles
+            float yAddition = height; //y space between parent and child rows
+
+            float xParent = ((bigW / 2) - width) - (width / 2);
+            float yParent = height;
+            float yChild = yAddition;
+            float pageMid = bigW / 2;
+
+
+
+
+            //Three Rows of boxes, x and y values for these boxes updated as plotting is done
+            float xRowOne = width / 2;
+            float yRowOne = height;
+            float xRowTwo = 2 * width; // Room for a parent node either side above you
+            float yRowTwo = 3 * height;
+            float xRowThree = width / 2;
+            float yRowThree = 5 * height;
+
+            using (Bitmap bmp = new Bitmap(bigW, bigH))
+            {
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+
+                    individualName = mainIndividual.fullName.ToString();
+                    dateBirth = mainIndividual.dateOfBirth.ToString();
+                    dateDeath = mainIndividual.dateOfDeath.ToString();
+                    
+                    //Plot Initial Person, 
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    g.DrawRectangle(Pens.Brown, xRowTwo, yRowTwo, width, height);
+                    //Writes the Name at 20, yCoordinate
+                    g.DrawString(individualName,
+                        new Font("Arial", 10, FontStyle.Bold),
+                        SystemBrushes.WindowText,
+                        new PointF(xRowTwo + 5, yRowTwo + 5),
+                        new StringFormat());
+                    //Writes the Date of Birth
+                    g.DrawString(dateBirth,
+                        new Font("Arial", 10, FontStyle.Bold),
+                        SystemBrushes.WindowText,
+                        new PointF(xRowTwo + 5, yRowTwo + 20),
+                        new StringFormat());
+                    g.DrawString(dateDeath, new Font("Arial", 10, FontStyle.Bold),
+                        SystemBrushes.WindowText,
+                        new PointF(xRowTwo + 5, yRowTwo + 35),
+                        new StringFormat());
+                    g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
+                        green, blue)), xRowTwo, yRowTwo, width, height);
+
+                    xRowTwo = xRowTwo + 2 * width; //Update x location as partner will require this location
+
+                    foreach (var relative in relList)
+                    {
+                        if (relative.relationshipTypeID == 4)//relationship type is married, therefor plot box next to you
+                        {
+                            individualName = _treeService.GetIndividual(relative.relativeID).fullName.ToString();
+                            dateBirth = _treeService.GetIndividual(relative.relativeID).dateOfBirth.ToString();
+                            dateDeath = _treeService.GetIndividual(relative.relativeID).dateOfDeath.ToString();
+
+                            //Draw Node for Partner
+                            g.DrawString(individualName,
+                                new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xRowTwo + 5, yRowTwo + 5),
+                                new StringFormat());
+                            //Writes the Date of Birth
+                            g.DrawString(dateBirth,
+                                new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xRowTwo + 5, yRowTwo + 20),
+                                new StringFormat());
+                            g.DrawString(dateDeath, new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xRowTwo + 5, yRowTwo + 35),
+                                new StringFormat());
+                            g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
+                                green, blue)), xRowTwo, yRowTwo, width, height);
+
+                            //Draw Line to Partner
+                            g.DrawLine(Pens.Black, (xRowTwo + width), (yRowTwo + (height / 2)), (xRowTwo + 2 * width), (yRowTwo + (height / 2)));
+
+                        }
+                        else if (relative.relationshipTypeID == 2)//relationship type is parent, therefore plot box above you
+                        {
+
+                        }
+                        else if (relative.relationshipTypeID == 3)//relationship type is child, therefore plot box below you
+                        {
+                            if ()//Check if the child has a partner, if they do plot their partner and update xRowThree
+                        }
+                    }
+
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+                // Saves it?? Outputs an image??
+                string filename = Server.MapPath("/") + Guid.NewGuid().ToString("N");
+                bmp.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
+                byte[] bytes;
+                using (System.IO.FileStream stream = new System.IO.FileStream(filename, System.IO.FileMode.Open))
+                {
+                    bytes = new byte[stream.Length];
+                    stream.Read(bytes, 0, bytes.Length);
+                }
+                System.IO.File.Delete(filename);
+                return new FileContentResult(bytes, "image/jpeg");
             }
         }
     }

@@ -69,9 +69,9 @@ namespace FamilyTree.Services.DAO
         {
             return _treeDAO.GetIndividual(pid);
         }
-        public IList<relaBEAN> GetRelationships(int fid)
+        public IList<Relationship> GetRelationships(int pid)
         {
-            return _treeDAO.GetRelationships(fid);
+            return _treeDAO.GetRelationships(pid);
         }
         public void AddRelative(Relationship relaObject)
         {

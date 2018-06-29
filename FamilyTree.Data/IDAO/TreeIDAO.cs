@@ -26,7 +26,7 @@ namespace FamilyTree.Data.IDAO
 
         // -----Get Lists-----
         IList<Family> GetFamilies(string uid);
-        IList<relaBEAN> GetRelationships(int fid);
+        IList<Relationship> GetRelationships(int pid);
         IList<Individual> GetIndividuals(int fid);
         IList<relaBEAN> GetRelatives(int pid);
         IList<relaBEAN> GetTypes();
