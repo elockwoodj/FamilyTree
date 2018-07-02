@@ -51,7 +51,8 @@
         <td>
             @Html.ActionLink("Edit", "EditIndividual", new { pid = item.individualID, controller = "FamilyAdmin" }) |
             @Html.ActionLink("Delete", "DeleteIndividual", new { pid = item.individualID , controller="Family"}) |
-            @Html.ActionLink("Show Relatives", "GetRelatives", new { pid = item.individualID })
+            @Html.ActionLink("Show Relatives", "GetRelatives", new { pid = item.individualID }) |
+            @Html.ActionLink("Plot This Person's Tree", "PlotIndividual", new { pid = item.individualID, controller = "Plotting" })
 
 
         </td>

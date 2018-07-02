@@ -63,7 +63,7 @@ namespace FamilyTree.Controllers
             }
         }
 
-        public FileContentResult PlotOne(int fid)
+        public FileContentResult PlotOne(int fid) //Plots for nuclear families, no extended families.
         {
             //Dimensions of the box, all distances should be measured in these unit distances - helps keep consistancy
             int height = 60;
@@ -331,14 +331,13 @@ namespace FamilyTree.Controllers
             //int numberOfMembers = indList.Count();
 
             Individual mainIndividual = _treeService.GetIndividual(pid);
-            Individual plotPerson;
             IList<Relationship> relList = _treeService.GetRelationships(pid);
             int numberOfGenerations = 3;
             int numberOfChildren = _treeService.GetNumberOfChildren(pid);
 
-            
 
 
+            string mainName = mainIndividual.fullName.ToString();
             int bigW = 4 * width;
             int bigH = height * (numberOfGenerations + 3); //Give a border of a height either side around the plot
             float xChild = (bigW / 2);
@@ -351,29 +350,18 @@ namespace FamilyTree.Controllers
             string individualName;
             string dateBirth;
             string dateDeath;
-            string familyName = _treeService.GetFamily(fid).familyName;
-            float titleLocation = (bigW / 2) - ((familyName.Length * 8) / 2); //A letter in a string takes up approx 8 pixels
-            float parentGap = width; //x coordinate space between parent rectangles
-            float childGap = width; //x coordingate space between child rectangles
-            float yAddition = height; //y space between parent and child rows
-
-            float xParent = ((bigW / 2) - width) - (width / 2);
-            float yParent = height;
-            float yChild = yAddition;
-            float pageMid = bigW / 2;
-
-
+            float titleLocation = (2000 / 2) - ((mainIndividual.fullName.Length * 8) / 2); //A letter in a string takes up approx 8 pixels
 
 
             //Three Rows of boxes, x and y values for these boxes updated as plotting is done
-            float xRowOne = width / 2;
-            float yRowOne = height;
+            float xRowOne = width + width / 4;
+            float yRowOne = height + height / 2;
             float xRowTwo = 2 * width; // Room for a parent node either side above you
             float yRowTwo = 3 * height;
             float xRowThree = width / 2;
             float yRowThree = 5 * height;
 
-            using (Bitmap bmp = new Bitmap(bigW, bigH))
+            using (Bitmap bmp = new Bitmap(2000, 500))
             {
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
@@ -381,6 +369,12 @@ namespace FamilyTree.Controllers
                     individualName = mainIndividual.fullName.ToString();
                     dateBirth = mainIndividual.dateOfBirth.ToString();
                     dateDeath = mainIndividual.dateOfDeath.ToString();
+                    g.Clear(Color.Bisque);
+                    g.DrawString(individualName+"'s Family Tree", 
+                        new Font("Arial", 10, FontStyle.Bold),
+                        SystemBrushes.WindowText,
+                        new PointF(titleLocation, 10),
+                        new StringFormat());
                     
                     //Plot Initial Person, 
                     g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -403,8 +397,14 @@ namespace FamilyTree.Controllers
                         new StringFormat());
                     g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
                         green, blue)), xRowTwo, yRowTwo, width, height);
-
+                    bool Check = relList.Any(p => p.relationshipTypeID == 2); //Check if any of the relationships are parents
+                    if (Check == true) //If there are parent relationships, draw a line out of your box
+                    {
+                        g.DrawLine(Pens.Black, xRowTwo + width / 2, yRowTwo, xRowTwo + width / 2, yRowTwo - height); //Draws a T shape above your node, ready for addition of parent nodes
+                        g.DrawLine(Pens.Black, xRowTwo + width / 4, yRowTwo - height, xRowTwo + width - width / 4, yRowTwo - height);
+                    }
                     xRowTwo = xRowTwo + 2 * width; //Update x location as partner will require this location
+
 
                     foreach (var relative in relList)
                     {
@@ -434,20 +434,138 @@ namespace FamilyTree.Controllers
                                 green, blue)), xRowTwo, yRowTwo, width, height);
 
                             //Draw Line to Partner
-                            g.DrawLine(Pens.Black, (xRowTwo + width), (yRowTwo + (height / 2)), (xRowTwo + 2 * width), (yRowTwo + (height / 2)));
+                            g.DrawLine(Pens.Black, (xRowTwo), (yRowTwo + (height / 2)), (xRowTwo - width), (yRowTwo + (height / 2)));
+                            bool kidCheck = relList.Any(c => c.relationshipTypeID == 3); //Check if you have children, if you do plot a bus from the marriage bus
+                            if (kidCheck == true)
+                            {
+                                g.DrawLine(Pens.Black, xRowTwo - width / 2, (yRowTwo + (height / 2)), xRowTwo - width / 2, (yRowTwo + (height / 2) + height));
+                            }
 
                         }
                         else if (relative.relationshipTypeID == 2)//relationship type is parent, therefore plot box above you
                         {
+                            individualName = _treeService.GetIndividual(relative.relativeID).fullName.ToString();
+                            dateBirth = _treeService.GetIndividual(relative.relativeID).dateOfBirth.ToString();
+                            dateDeath = _treeService.GetIndividual(relative.relativeID).dateOfDeath.ToString();
 
+                            //Draw Node for Parent
+                            g.DrawString(individualName,
+                                new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xRowOne + 5, yRowOne + 5),
+                                new StringFormat());
+                            //Writes the Date of Birth
+                            g.DrawString(dateBirth,
+                                new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xRowOne + 5, yRowOne + 20),
+                                new StringFormat());
+                            g.DrawString(dateDeath, new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xRowOne + 5, yRowOne + 35),
+                                new StringFormat());
+                            g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
+                                green, blue)), xRowOne, yRowOne, width, height);
+                            
+                            var parCheck = _treeService.GetRelationships(relative.relativeID);
+                            bool Checker = parCheck.Any(p => p.relationshipTypeID == 2); //Check if any of the relationships are parents
+                            if (Checker == true) //If there are parent relationships, draw a line out of your box
+                            {
+                                g.DrawLine(Pens.Black, xRowOne + width / 2, yRowOne, xRowOne + width / 2, yRowOne - (height / 2)); //Position the horizontal line, ready for addition of parent nodes, these will not contain information
+                                g.DrawString(individualName + "'s Parents",
+                                    new Font("Arial", 10, FontStyle.Bold),
+                                    SystemBrushes.WindowText,
+                                    new PointF(xRowOne + 5, yRowOne - height),
+                                    new StringFormat());
+
+                                g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
+                                green, blue)), xRowOne, yRowOne - height, width, height / 2);
+                            }
+
+                            xRowOne = xRowOne + (width / 2) + width;
+                            
                         }
                         else if (relative.relationshipTypeID == 3)//relationship type is child, therefore plot box below you
                         {
-                            if ()//Check if the child has a partner, if they do plot their partner and update xRowThree
+                            individualName = _treeService.GetIndividual(relative.relativeID).fullName.ToString();
+                            dateBirth = _treeService.GetIndividual(relative.relativeID).dateOfBirth.ToString();
+                            dateDeath = _treeService.GetIndividual(relative.relativeID).dateOfDeath.ToString();
+
+                            //Draw Node for Parent
+                            g.DrawString(individualName,
+                                new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xRowThree + 5, yRowThree + 5),
+                                new StringFormat());
+                            //Writes the Date of Birth
+                            g.DrawString(dateBirth,
+                                new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xRowThree + 5, yRowThree + 20),
+                                new StringFormat());
+                            g.DrawString(dateDeath, new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xRowThree + 5, yRowThree + 35),
+                                new StringFormat());
+                            g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
+                                green, blue)), xRowThree, yRowThree, width, height);
+
+
+
+                            g.DrawLine(Pens.Black, xRowThree + width / 2, yRowThree, xRowThree + width / 2, yRowThree - height / 2);
+                            g.DrawLine(Pens.Black, xRowThree + width / 2, yRowThree - height / 2, xRowTwo - width / 2, yRowThree - height / 2);
+                            xRowThree = xRowThree + width + width;
+                            var partCheck = _treeService.GetRelationships(relative.relativeID); //Load up childs relationships
+                            bool partnerCheck = partCheck.Any(par => par.relationshipTypeID == 4); //Check if any of the relationships match the marriage type
+                            if (partnerCheck == true) //If they do, plot the marriage 
+                            {
+                                g.DrawLine(Pens.Black, xRowThree - width, yRowThree + height / 2, xRowThree, yRowThree + height / 2);
+                                bool kidCheck = partCheck.Any(c => c.relationshipTypeID == 3); //Check if your children have children, if they do show boxes that can be filled 
+
+                                if (kidCheck == true)
+                                {
+                                    g.DrawLine(Pens.Black, xRowThree - width + width / 2, (yRowThree + (height / 2)), xRowThree - width + width / 2, (yRowThree + (height / 2) + height));
+                                    g.DrawString(individualName + "'s Children",
+                                        new Font("Arial", 10, FontStyle.Bold),
+                                        SystemBrushes.WindowText,
+                                        new PointF(xRowThree + 5 - width, yRowThree + height + height / 2),
+                                        new StringFormat());
+
+                                    g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
+                                        green, blue)), xRowThree - width, yRowThree + height + height / 2, width, height / 2);
+                                }
+
+                                foreach (var person in partCheck)
+                                {
+
+                                    if (person.relationshipTypeID == 4)
+                                    {
+                                        individualName = _treeService.GetIndividual(person.relativeID).fullName.ToString();
+                                        dateBirth = _treeService.GetIndividual(person.relativeID).dateOfBirth.ToString();
+                                        dateDeath = _treeService.GetIndividual(person.relativeID).dateOfDeath.ToString();
+                                        g.DrawString(individualName,
+                                            new Font("Arial", 10, FontStyle.Bold),
+                                            SystemBrushes.WindowText,
+                                            new PointF(xRowThree + 5, yRowThree + 5),
+                                            new StringFormat());
+                                        //Writes the Date of Birth
+                                        g.DrawString(dateBirth,
+                                            new Font("Arial", 10, FontStyle.Bold),
+                                            SystemBrushes.WindowText,
+                                            new PointF(xRowThree + 5, yRowThree + 20),
+                                            new StringFormat());
+                                        g.DrawString(dateDeath, new Font("Arial", 10, FontStyle.Bold),
+                                            SystemBrushes.WindowText,
+                                            new PointF(xRowThree + 5, yRowThree + 35),
+                                            new StringFormat());
+                                        g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
+                                            green, blue)), xRowThree, yRowThree, width, height);
+                                        xRowThree = xRowThree + width + width;
+                                    }
+                                }
+                            }
                         }
                     }
-
-
                 }
 
 
