@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewBag.Title = "PlotIndividual";
+}
+
+<h2>Customise Your Plot</h2>
+
+
+<div>
+    <p>Please choose the colour you would like the background to be:</p>
+    @Html.DropDownList()
+
+
+    
+
+</div>
+
+<div>
+    <p>Please choose the colour you would like to fill the family tree nodes with</p>
+
+
+</div>
+
+
+<div>
+    <p>When you plot, the selected family member will be central to the tree, with a distinct outline around their node to be easily visible</p>
+
+
+    @Html.ActionLink("Plot with Selected Information", "PlotIndividual", new { pid = ViewBag.pid, BackG = background, Fill = fill, controller = "Plotting" }) 
+
+
+</div>
+
+

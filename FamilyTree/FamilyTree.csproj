@@ -307,11 +307,11 @@
     <Content Include="Views\FamilyAdmin\AddRelative.cshtml" />
     <Content Include="Views\FamilyAdmin\EditRelative.cshtml" />
     <Content Include="Views\Family\DeleteRelative.cshtml" />
+    <Content Include="Views\Plotting\PlotIndividual.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Application\" />
-    <Folder Include="Views\Plotting\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

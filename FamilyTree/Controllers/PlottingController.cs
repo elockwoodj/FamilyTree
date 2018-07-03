@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Drawing;
 
+
 namespace FamilyTree.Controllers
 {
     public class PlottingController : Controller
@@ -63,6 +64,7 @@ namespace FamilyTree.Controllers
             }
         }
 
+       
         public FileContentResult PlotOne(int fid) //Plots for nuclear families, no extended families.
         {
             //Dimensions of the box, all distances should be measured in these unit distances - helps keep consistancy
@@ -320,13 +322,23 @@ namespace FamilyTree.Controllers
             }
         }
 
+
+        public ActionResult PlotIndividual(int pid)
+        {
+            ViewBag.pid = pid;
+            return View();
+        }
         //Plotting from a specific person in your family, will show parents, partner and children
-        public FileContentResult PlotIndividual(int pid)
+        public FileContentResult PlotIndividual(int pid, Color BackG, Color Fill)
         {
             //Dimensions of the box, all distances should be measured in these unit distances - helps keep consistancy
             int height = 60;
             int width = 175;
 
+
+
+            Color BackgroundColour = BackG;
+            Color FillColour = Fill;
             //IList<Individual> indList = _treeService.GetIndividuals(fid);
             //int numberOfMembers = indList.Count();
 
@@ -370,12 +382,12 @@ namespace FamilyTree.Controllers
                     dateBirth = mainIndividual.dateOfBirth.ToString();
                     dateDeath = mainIndividual.dateOfDeath.ToString();
                     g.Clear(Color.Bisque);
-                    g.DrawString(individualName+"'s Family Tree", 
+                    g.DrawString(individualName + "'s Family Tree",
                         new Font("Arial", 10, FontStyle.Bold),
                         SystemBrushes.WindowText,
                         new PointF(titleLocation, 10),
                         new StringFormat());
-                    
+
                     //Plot Initial Person, 
                     g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     g.DrawRectangle(Pens.Brown, xRowTwo, yRowTwo, width, height);
@@ -405,7 +417,6 @@ namespace FamilyTree.Controllers
                     }
                     xRowTwo = xRowTwo + 2 * width; //Update x location as partner will require this location
 
-
                     foreach (var relative in relList)
                     {
                         if (relative.relationshipTypeID == 4)//relationship type is married, therefor plot box next to you
@@ -414,6 +425,7 @@ namespace FamilyTree.Controllers
                             dateBirth = _treeService.GetIndividual(relative.relativeID).dateOfBirth.ToString();
                             dateDeath = _treeService.GetIndividual(relative.relativeID).dateOfDeath.ToString();
 
+                            
                             //Draw Node for Partner
                             g.DrawString(individualName,
                                 new Font("Arial", 10, FontStyle.Bold),
@@ -432,7 +444,7 @@ namespace FamilyTree.Controllers
                                 new StringFormat());
                             g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
                                 green, blue)), xRowTwo, yRowTwo, width, height);
-
+                            
                             //Draw Line to Partner
                             g.DrawLine(Pens.Black, (xRowTwo), (yRowTwo + (height / 2)), (xRowTwo - width), (yRowTwo + (height / 2)));
                             bool kidCheck = relList.Any(c => c.relationshipTypeID == 3); //Check if you have children, if you do plot a bus from the marriage bus
@@ -466,7 +478,7 @@ namespace FamilyTree.Controllers
                                 new StringFormat());
                             g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
                                 green, blue)), xRowOne, yRowOne, width, height);
-                            
+
                             var parCheck = _treeService.GetRelationships(relative.relativeID);
                             bool Checker = parCheck.Any(p => p.relationshipTypeID == 2); //Check if any of the relationships are parents
                             if (Checker == true) //If there are parent relationships, draw a line out of your box
@@ -483,7 +495,7 @@ namespace FamilyTree.Controllers
                             }
 
                             xRowOne = xRowOne + (width / 2) + width;
-                            
+
                         }
                         else if (relative.relationshipTypeID == 3)//relationship type is child, therefore plot box below you
                         {
@@ -567,17 +579,6 @@ namespace FamilyTree.Controllers
                         }
                     }
                 }
-
-
-
-
-
-
-
-
-
-
-
                 // Saves it?? Outputs an image??
                 string filename = Server.MapPath("/") + Guid.NewGuid().ToString("N");
                 bmp.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
