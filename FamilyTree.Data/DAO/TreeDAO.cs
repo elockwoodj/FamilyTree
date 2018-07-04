@@ -37,7 +37,8 @@ namespace FamilyTree.Data.DAO
             _indiv = from ind
                      in _context.Individuals
                      where ind.familyID == fid
-                     orderby  ind.isParent descending
+                     //This orderby was required for the first iteration as it required the parents to be plotted first
+                     orderby ind.isParent descending
                      select ind;
 
             return _indiv.ToList<Individual>();
@@ -89,6 +90,8 @@ namespace FamilyTree.Data.DAO
             IQueryable<Relationship> _rel;
             _rel = from rel in _context.Relationships
                    where rel.personID == pid
+                   //Ordered by type ID descending as plotting requires marriages to be plotted first, simple fix
+                   //orderby rel.relationshipTypeID descending
                    select rel;
             return _rel.ToList();
         }
@@ -132,7 +135,11 @@ namespace FamilyTree.Data.DAO
 
         // ----- Get Single Objects -----
 
-            //All these methods will fetch a single record out of their respective tables that matches the ID passed to it
+        //All these methods will fetch a single record out of their respective tables that matches the ID passed to it
+
+
+
+        //Gets a specific Family name  and ID from the family table
         public Family GetFamily(int fid)
         {
             IQueryable<Family> _fam;
@@ -143,16 +150,7 @@ namespace FamilyTree.Data.DAO
 
             return _fam.First();
         }
-
-        public Couple GetCoupleRelation(int pid, int rid)
-        {
-            IQueryable<Couple> _cou;
-            _cou = from cou in _context.Couples
-                   where cou.personOne == pid && cou.personTwo == rid
-                   select cou;
-            return _cou.First();
-        }
-
+        //Gets a specific relationship
         public relaBEAN GetRelationship(int rid)
         {
             IQueryable<relaBEAN> _relBEAN;
@@ -173,7 +171,7 @@ namespace FamilyTree.Data.DAO
         }
 
         // This is different to the GetRelationship method as it doesn't require additional information from separate tables
-        // Therefore not requiring the use of a ViewModel
+        // Therefore not requiring the use of a ViewModel, as we are only deleting the record
         public Relationship GetRelDelete(int rid)
         {
             IQueryable<Relationship> _relDel;
@@ -182,7 +180,7 @@ namespace FamilyTree.Data.DAO
                       select rDel;
             return _relDel.First();
         }
-
+        //Select an individual from the individuals table
         public Individual GetIndividual(int pid)
         {
             IQueryable<Individual> _ind;
@@ -192,6 +190,7 @@ namespace FamilyTree.Data.DAO
 
             return _ind.ToList().First();
         }
+        //Grabs the gender for the relative, called when adding a new relative
         public string GetRelativeGender(int pid)
         {
             IQueryable<Individual> _ind;
@@ -243,66 +242,7 @@ namespace FamilyTree.Data.DAO
             _context.SaveChanges();
         }
 
-        public void AddCouple(int pid, int rid)
-        {
-            //Pull the number of children from relationship table the individual has
-            IQueryable<Relationship> _rel;
-            _rel = from rel in _context.Relationships
-                   where rel.personID == pid
-                   && rel.relationshipTypeID == 3
-                   select rel;
-            //Store the number of children to be added to the couple table
-            int numberOfChildren = _rel.Count();
 
-            //Need new couple object to add into couple table
-            Couple coupObject = new Couple
-            {
-                NumberOfChildren = numberOfChildren, //Used to help plotting
-                personOne = pid, //Used as identifiers to pull coupleID from table to be inserted into individual table
-                personTwo = rid //As above
-            };
-
-            //Add the object and save changes so the coupleID can be accessed straight away
-            _context.Couples.Add(coupObject);
-            _context.SaveChanges();
-
-            //Need coupleID to Add coupleID to partners individual record
-            Couple coupStore = GetCoupleRelation(pid, rid);
-            int coupleID = coupStore.coupleID;
-
-            //Add coupleID to their record
-            IQueryable<Individual> pidEdit;
-            pidEdit = from _pidEdit in _context.Individuals
-                       where _pidEdit.individualID == pid
-                       select _pidEdit;
-            Individual pidIDEdit = pidEdit.First();
-            pidIDEdit.coupleID = coupleID;
-            _context.SaveChanges();
-
-            //Add coupleID to partners record
-            IQueryable<Individual> ridEdit;
-            ridEdit = from _ridEdit in _context.Individuals
-                      where _ridEdit.individualID == rid
-                      select _ridEdit;
-            Individual ridIDEdit = ridEdit.First();
-            ridIDEdit.coupleID = coupleID;
-            _context.SaveChanges();
-        }
-
-        public void AddCoupleChild(int cid)
-        {
-            //Increase the number of children someone has by one
-            IQueryable<Couple> _couAdd;
-            _couAdd = from couAdd in _context.Couples
-                      where couAdd.coupleID == cid
-                      select couAdd;
-            Couple coupAdd = _couAdd.First();
-            coupAdd.NumberOfChildren = coupAdd.NumberOfChildren + 1;
-            _context.SaveChanges();
-            //Check if their isParent tag is false
-            
-
-        }
         //Accesses the Individual table, pulling an object with the same ID passed by indObject, rewriting information and saving
         public void EditIndividual(Individual indObject)
         {
@@ -374,7 +314,162 @@ namespace FamilyTree.Data.DAO
 
             return numberChildren;
         }
-        //Selects an individuals children from the database, using Couple table to determine an individuals children
+
+
+        //Works out the width of each row, compares them against each other and returns the greatest value - used to calculate the width of the plot
+        public int GetPlotWidth(int pid)
+        {
+            //Set initial row widths, these start at X unit widths as there is a border around the tree that must be maintained 
+            //Row Two starts at one as, at bare minimum, you are plotting this person
+            int rowOneEntries = 0;
+            int rowTwoEntries = 1;
+            int rowThreeEntries = 0;
+
+            IList<Relationship> relList = GetRelationships(pid);
+
+            foreach (var person in relList)
+            {
+                if (person.relationshipTypeID == 1) //They are this persons siblings
+                {
+
+                    var partCheck = GetRelationships(person.relativeID); //Load up childs relationships
+                    bool partnerCheck = partCheck.Any(par => par.relationshipTypeID == 4); //Check if any of the relationships match the marriage type
+                    if (partnerCheck == true) //If they do, add an additional width
+                    {
+                        rowTwoEntries = rowTwoEntries + 1;
+                    }
+                    rowTwoEntries = rowTwoEntries + 1;
+                }
+
+                else if(person.relationshipTypeID == 2) //They are this persons parents
+                {
+                    var partCheck = GetRelationships(person.relativeID); //Load up parents relationships
+                    bool partnerCheck = partCheck.Any(par => par.relationshipTypeID == 4); //Check if any of the relationships match the marriage type
+                    if (partnerCheck == true) //If they do, add an additional width
+                    {
+                        rowOneEntries = rowOneEntries + 1;
+                    }
+                    rowOneEntries = rowOneEntries + 1;
+                }
+
+                else if(person.relationshipTypeID == 3) //They are this persons child
+                {
+                    var partCheck = GetRelationships(person.relativeID); //Load up parents relationships
+                    bool partnerCheck = partCheck.Any(par => par.relationshipTypeID == 4); //Check if any of the relationships match the marriage type
+                    if (partnerCheck == true) //If they do, add an additional width
+                    {
+                        rowThreeEntries = rowThreeEntries + 1;
+                    }
+                    rowThreeEntries = rowThreeEntries + 1;
+                }
+
+                else if(person.relationshipTypeID == 4) //They are this persons partner
+                {
+                    rowTwoEntries = rowTwoEntries + 1;
+                }
+            }
+
+
+                //Add all these values to a list
+
+            List<int> widthList = new List<int>();
+            widthList.Add(rowOneEntries);
+            widthList.Add(rowTwoEntries);
+            widthList.Add(rowThreeEntries);
+
+                //Find the max width value between the three rows, returning this to be calculated
+
+            int maxWidth = widthList.Max();
+
+
+                //Return the maximum width value
+
+            return maxWidth;
+
+        }
+
+
+
+        // ------------------------------ Method Graveyard ------------------------------
+
+
+            //These were methods that were added at one stage as they could have potentially been useful, however in the long run I ended up discarding them
+            //Usually these were discarded as I thought of a better way to achieve what they were initially made for 
+            //For instance, the couple table was initially added as a way of being able to display different "Family units" within the same tree
+            //However, I felt the way I ended up doing that functionality made more sense to myself and was more intuitive
+
+
+
+
+        public void AddCouple(int pid, int rid)
+        {
+            //Pull the number of children from relationship table the individual has
+            IQueryable<Relationship> _rel;
+            _rel = from rel in _context.Relationships
+                   where rel.personID == pid
+                   && rel.relationshipTypeID == 3
+                   select rel;
+            //Store the number of children to be added to the couple table
+            int numberOfChildren = _rel.Count();
+
+            //Need new couple object to add into couple table
+            Couple coupObject = new Couple
+            {
+                NumberOfChildren = numberOfChildren, //Used to help plotting
+                personOne = pid, //Used as identifiers to pull coupleID from table to be inserted into individual table
+                personTwo = rid //As above
+            };
+
+            //Add the object and save changes so the coupleID can be accessed straight away
+            _context.Couples.Add(coupObject);
+            _context.SaveChanges();
+
+            //Need coupleID to Add coupleID to partners individual record
+            Couple coupStore = GetCoupleRelation(pid, rid);
+            int coupleID = coupStore.coupleID;
+
+            //Add coupleID to their record
+            IQueryable<Individual> pidEdit;
+            pidEdit = from _pidEdit in _context.Individuals
+                      where _pidEdit.individualID == pid
+                      select _pidEdit;
+            Individual pidIDEdit = pidEdit.First();
+            pidIDEdit.coupleID = coupleID;
+            _context.SaveChanges();
+
+            //Add coupleID to partners record
+            IQueryable<Individual> ridEdit;
+            ridEdit = from _ridEdit in _context.Individuals
+                      where _ridEdit.individualID == rid
+                      select _ridEdit;
+            Individual ridIDEdit = ridEdit.First();
+            ridIDEdit.coupleID = coupleID;
+            _context.SaveChanges();
+        }
+
+        public void AddCoupleChild(int cid)
+        {
+            //Increase the number of children someone has by one
+            IQueryable<Couple> _couAdd;
+            _couAdd = from couAdd in _context.Couples
+                      where couAdd.coupleID == cid
+                      select couAdd;
+            Couple coupAdd = _couAdd.First();
+            coupAdd.NumberOfChildren = coupAdd.NumberOfChildren + 1;
+            _context.SaveChanges();
+            //Check if their isParent tag is false
+
+
+        }
+        public Couple GetCoupleRelation(int pid, int rid)
+        {
+            IQueryable<Couple> _cou;
+            _cou = from cou in _context.Couples
+                   where cou.personOne == pid && cou.personTwo == rid
+                   select cou;
+            return _cou.First();
+        }
+        //Selects an individuals children from the database
         public IList<relaBEAN> GetChildren(int pid)
         {
             IQueryable<relaBEAN> _par;
@@ -387,11 +482,8 @@ namespace FamilyTree.Data.DAO
                        relativeID = par.relativeID,
                        dateOfBirth = ind.dateOfBirth,
                        dateOfDeath = ind.dateOfDeath
-
                    };
             return _par.ToList<relaBEAN>();
-
-
         }
     }
 }

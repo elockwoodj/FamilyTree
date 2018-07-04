@@ -43,6 +43,7 @@ namespace FamilyTree.Data.IDAO
         string GetRelativeGender(int pid);
         int GetNumberOfChildren(int pid);
         Couple GetCoupleRelation(int pid, int rid);
+        int GetPlotWidth(int pid);
 
         //-----Edits-----
         void EditFamilyName(Family familyName);

@@ -136,6 +136,10 @@ namespace FamilyTree.Services.DAO
         {
             _treeDAO.AddCoupleChild(cid);
         }
+        public int GetPlotWidth(int pid)
+        {
+            return _treeDAO.GetPlotWidth(pid);
+        }
 
 
 

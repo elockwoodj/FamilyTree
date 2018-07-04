@@ -64,7 +64,7 @@ namespace FamilyTree.Controllers
             }
         }
 
-       
+
         public FileContentResult PlotOne(int fid) //Plots for nuclear families, no extended families.
         {
             //Dimensions of the box, all distances should be measured in these unit distances - helps keep consistancy
@@ -79,8 +79,8 @@ namespace FamilyTree.Controllers
             int bigW = 4 * width;
             int bigH = 175 * numberOfGenerations;
             float xChild = (bigW / 2);
-            //COUPLE TABLE HAS NUMBER OF CHILDREN IN
-            //Working out width of bitmap depending on how many children individuals have
+
+           //Working out width of bitmap depending on how many children individuals have
             //In a nuclear family there are 2 parents, therefore each child will add 250 to the total width
             foreach (Individual person in indList)
             {
@@ -140,17 +140,17 @@ namespace FamilyTree.Controllers
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
                     g.Clear(Color.Bisque);
-                    g.DrawRectangle(Pens.Azure, (bigW/2), 1, 1, bigH); //Draws a line down the middle of the page, currently only testing for Johnson
+                    g.DrawRectangle(Pens.Azure, (bigW / 2), 1, 1, bigH); //Draws a line down the middle of the page, currently only testing for Johnson
 
 
 
                     //Draws line between top two parent nodes
-                    g.DrawLine(Pens.Black, (xParent + width), (yParent + (height/ 2)), (xParent + width + parentGap), (yParent + (height / 2)));
-                    
+                    g.DrawLine(Pens.Black, (xParent + width), (yParent + (height / 2)), (xParent + width + parentGap), (yParent + (height / 2)));
+
 
                     foreach (Individual person in indList)
                     {
-                        
+
                         individualName = person.fullName;
                         dateBirth = person.dateOfBirth.ToString();
                         dateDeath = person.dateOfDeath.ToString();
@@ -195,11 +195,11 @@ namespace FamilyTree.Controllers
                                 case 0: // No children, no line required
                                     break;
                                 case 1: //One Child, therefore one line required
-                                    //Draws from middle of parent bus straight down 70 pixels
-                                        g.DrawLine(Pens.Black, pageMid, //Half way point on x-axis
-                                            (yParent + (height / 2)), //Halfway down the y-axis of the parent box
-                                            pageMid, //Stays on half way point
-                                            (yParent + 2 * height)); //Half a height of distance to the node
+                                        //Draws from middle of parent bus straight down 70 pixels
+                                    g.DrawLine(Pens.Black, pageMid, //Half way point on x-axis
+                                        (yParent + (height / 2)), //Halfway down the y-axis of the parent box
+                                        pageMid, //Stays on half way point
+                                        (yParent + 2 * height)); //Half a height of distance to the node
                                     xChild = (bigW - width) / 2;
                                     yChild = yParent + 2 * height;
                                     break;
@@ -246,7 +246,7 @@ namespace FamilyTree.Controllers
                                     g.DrawLine(Pens.Black, pageMid - 3 * width, yParent + (height / 2) + height, pageMid - 3 * width, yParent + 2 * height);
                                     g.DrawLine(Pens.Black, pageMid - width - (width / 2), yParent + (height / 2) + height, pageMid - width - (width / 2), yParent + 2 * height);
 
-                                    g.DrawLine(Pens.Black, pageMid, yParent + (height / 2) + height, pageMid,  yParent + 2 * height);
+                                    g.DrawLine(Pens.Black, pageMid, yParent + (height / 2) + height, pageMid, yParent + 2 * height);
 
                                     g.DrawLine(Pens.Black, pageMid + width + (width / 2), yParent + (height / 2) + height, pageMid + width + (width / 2), yParent + 2 * height);
                                     g.DrawLine(Pens.Black, pageMid + 3 * width, yParent + (height / 2) + height, pageMid + 3 * width, yParent + 2 * height);
@@ -260,7 +260,7 @@ namespace FamilyTree.Controllers
                                     //Busses down to nodes
                                     g.DrawLine(Pens.Black, pageMid - 3 * width - ((3 / 4) * width), yParent + (height / 2) + height, pageMid - 3 * width - ((3 / 4) * width), yParent + 2 * height);
                                     g.DrawLine(Pens.Black, pageMid - 2 * width - ((1 / 4) * width), yParent + (height / 2) + height, pageMid - 2 * width - ((1 / 4) * width), yParent + 2 * height);
-                                    g.DrawLine(Pens.Black, pageMid - width  + (width/4), yParent + (height / 2) + height, pageMid - width + (width / 4), yParent + 2 * height);
+                                    g.DrawLine(Pens.Black, pageMid - width + (width / 4), yParent + (height / 2) + height, pageMid - width + (width / 4), yParent + 2 * height);
 
                                     g.DrawLine(Pens.Black, pageMid + ((3 / 4) * width), yParent + (height / 2) + height, pageMid + ((3 / 4) * width), yParent + 2 * height);
                                     g.DrawLine(Pens.Black, pageMid + 2 * width + ((1 / 4) * width), yParent + (height / 2) + height, pageMid + 2 * width + ((1 / 4) * width), yParent + 2 * height);
@@ -274,7 +274,7 @@ namespace FamilyTree.Controllers
 
                         else //You must be a child, therefore drawn further down on the yAxis
                         {
-                            
+
                             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
 
@@ -323,13 +323,13 @@ namespace FamilyTree.Controllers
         }
 
 
-        public ActionResult PlotIndividual(int pid)
-        {
-            ViewBag.pid = pid;
-            return View();
-        }
+        //public ActionResult PlotIndividual(int pid)
+        //{
+        //    ViewBag.pid = pid;
+        //    return View();
+        //}
         //Plotting from a specific person in your family, will show parents, partner and children
-        public FileContentResult PlotIndividual(int pid, Color BackG, Color Fill)
+        public FileContentResult PlotIndividual(int pid)
         {
             //Dimensions of the box, all distances should be measured in these unit distances - helps keep consistancy
             int height = 60;
@@ -337,8 +337,8 @@ namespace FamilyTree.Controllers
 
 
 
-            Color BackgroundColour = BackG;
-            Color FillColour = Fill;
+            //Color BackgroundColour = BackG;
+            //Color FillColour = Fill;
             //IList<Individual> indList = _treeService.GetIndividuals(fid);
             //int numberOfMembers = indList.Count();
 
@@ -350,7 +350,7 @@ namespace FamilyTree.Controllers
 
 
             string mainName = mainIndividual.fullName.ToString();
-            int bigW = 4 * width;
+            int bigW = _treeService.GetPlotWidth(pid) * width * 2;
             int bigH = height * (numberOfGenerations + 3); //Give a border of a height either side around the plot
             float xChild = (bigW / 2);
             //Used for colour plotting
@@ -359,29 +359,43 @@ namespace FamilyTree.Controllers
             int green = 102;
             int blue = 0;
 
+
+
             string individualName;
             string dateBirth;
             string dateDeath;
-            float titleLocation = (2000 / 2) - ((mainIndividual.fullName.Length * 8) / 2); //A letter in a string takes up approx 8 pixels
+            float titleLocation = (bigW / 2) - ((mainIndividual.fullName.Length * 8) / 2); //A letter in a string takes up approx 8 pixels
 
 
             //Three Rows of boxes, x and y values for these boxes updated as plotting is done
-            float xRowOne = width + width / 4;
+            float xRowOne = width / 4;
             float yRowOne = height + height / 2;
-            float xRowTwo = 2 * width; // Room for a parent node either side above you
+            float xRowTwo = width; // Room for a parent node either side above you
             float yRowTwo = 3 * height;
-            float xRowThree = width / 2;
+            float xRowThree = width / 4;
             float yRowThree = 5 * height;
+            //If the individual plotted has siblings, these will need to be used, otherwise they won't be used
+            float siblingX = 0;
+            float siblingY = 0;
+            //Plot point for Children
+            float childX = 0;
+            float childY = 0;
 
-            using (Bitmap bmp = new Bitmap(2000, 500))
+
+            using (Bitmap bmp = new Bitmap(bigW, 500))
             {
                 using (Graphics g = Graphics.FromImage(bmp))
                 {
 
+                    //Store individual name, first node will be the main individual
                     individualName = mainIndividual.fullName.ToString();
                     dateBirth = mainIndividual.dateOfBirth.ToString();
                     dateDeath = mainIndividual.dateOfDeath.ToString();
+
+                    //Colour the background of the bitmap
                     g.Clear(Color.Bisque);
+
+                    //Title the bitmap with the main individuals name
                     g.DrawString(individualName + "'s Family Tree",
                         new Font("Arial", 10, FontStyle.Bold),
                         SystemBrushes.WindowText,
@@ -391,13 +405,13 @@ namespace FamilyTree.Controllers
                     //Plot Initial Person, 
                     g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     g.DrawRectangle(Pens.Brown, xRowTwo, yRowTwo, width, height);
-                    //Writes the Name at 20, yCoordinate
+
+                    //Fill in the information of the individual within the confised of the rectangle fill
                     g.DrawString(individualName,
                         new Font("Arial", 10, FontStyle.Bold),
                         SystemBrushes.WindowText,
                         new PointF(xRowTwo + 5, yRowTwo + 5),
                         new StringFormat());
-                    //Writes the Date of Birth
                     g.DrawString(dateBirth,
                         new Font("Arial", 10, FontStyle.Bold),
                         SystemBrushes.WindowText,
@@ -409,30 +423,51 @@ namespace FamilyTree.Controllers
                         new StringFormat());
                     g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
                         green, blue)), xRowTwo, yRowTwo, width, height);
-                    bool Check = relList.Any(p => p.relationshipTypeID == 2); //Check if any of the relationships are parents
-                    if (Check == true) //If there are parent relationships, draw a line out of your box
+
+                    //Check if the individual has parents in the database
+                    //If there are, prepare the bus to accept two parent boxes, 
+                    bool Check = relList.Any(p => p.relationshipTypeID == 2);
+                    if (Check == true) 
                     {
                         g.DrawLine(Pens.Black, xRowTwo + width / 2, yRowTwo, xRowTwo + width / 2, yRowTwo - height); //Draws a T shape above your node, ready for addition of parent nodes
                         g.DrawLine(Pens.Black, xRowTwo + width / 4, yRowTwo - height, xRowTwo + width - width / 4, yRowTwo - height);
+
+                        //Store the location that siblings will need to bus to
+                        siblingX = xRowTwo + width / 2;
+                        siblingY = yRowTwo - height / 4;
                     }
-                    xRowTwo = xRowTwo + 2 * width; //Update x location as partner will require this location
+
+
+                    //Update x location
+                    xRowTwo = xRowTwo + 2 * width; 
+
+                    //Check if the individual has any children, if they do draw a bus for their nodes to attach to and save the x and y coordinates of that location
+                    bool kidCheck = relList.Any(c => c.relationshipTypeID == 3); 
+                    if (kidCheck == true)
+                    {
+                        g.DrawLine(Pens.Black, xRowTwo - width / 2, (yRowTwo + (height / 2)), xRowTwo - width / 2, (yRowTwo + (height / 2) + height));
+                    }
+                    childX = xRowTwo - width / 2;
+                    childY = yRowTwo + height + height / 2;
 
                     foreach (var relative in relList)
                     {
-                        if (relative.relationshipTypeID == 4)//relationship type is married, therefor plot box next to you
+
+                        //------------------------------- Check for Marriage Relationship -----------------------------
+                        if (relative.relationshipTypeID == 4)
                         {
+                            //Load partners information
                             individualName = _treeService.GetIndividual(relative.relativeID).fullName.ToString();
                             dateBirth = _treeService.GetIndividual(relative.relativeID).dateOfBirth.ToString();
                             dateDeath = _treeService.GetIndividual(relative.relativeID).dateOfDeath.ToString();
 
-                            
-                            //Draw Node for Partner
+
+                            //Fill the node with their partners information and fill the node with the colour
                             g.DrawString(individualName,
                                 new Font("Arial", 10, FontStyle.Bold),
                                 SystemBrushes.WindowText,
                                 new PointF(xRowTwo + 5, yRowTwo + 5),
                                 new StringFormat());
-                            //Writes the Date of Birth
                             g.DrawString(dateBirth,
                                 new Font("Arial", 10, FontStyle.Bold),
                                 SystemBrushes.WindowText,
@@ -444,16 +479,17 @@ namespace FamilyTree.Controllers
                                 new StringFormat());
                             g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
                                 green, blue)), xRowTwo, yRowTwo, width, height);
-                            
+
                             //Draw Line to Partner
                             g.DrawLine(Pens.Black, (xRowTwo), (yRowTwo + (height / 2)), (xRowTwo - width), (yRowTwo + (height / 2)));
-                            bool kidCheck = relList.Any(c => c.relationshipTypeID == 3); //Check if you have children, if you do plot a bus from the marriage bus
-                            if (kidCheck == true)
-                            {
-                                g.DrawLine(Pens.Black, xRowTwo - width / 2, (yRowTwo + (height / 2)), xRowTwo - width / 2, (yRowTwo + (height / 2) + height));
-                            }
+
+                            //Update x coordinates
+                            xRowTwo = xRowTwo + 2 * width;
 
                         }
+                        // ****************************** COMMENT FROM HERE **************************************
+
+                        /// ---------------- Check For Parent Relationship -----------------
                         else if (relative.relationshipTypeID == 2)//relationship type is parent, therefore plot box above you
                         {
                             individualName = _treeService.GetIndividual(relative.relativeID).fullName.ToString();
@@ -494,9 +530,13 @@ namespace FamilyTree.Controllers
                                 green, blue)), xRowOne, yRowOne - height, width, height / 2);
                             }
 
-                            xRowOne = xRowOne + (width / 2) + width;
+                            xRowOne = xRowOne + width / 2 + width;
 
                         }
+
+
+
+                        //----------------------  Check for Child Relationship ------------------------
                         else if (relative.relationshipTypeID == 3)//relationship type is child, therefore plot box below you
                         {
                             individualName = _treeService.GetIndividual(relative.relativeID).fullName.ToString();
@@ -525,16 +565,16 @@ namespace FamilyTree.Controllers
 
 
                             g.DrawLine(Pens.Black, xRowThree + width / 2, yRowThree, xRowThree + width / 2, yRowThree - height / 2);
-                            g.DrawLine(Pens.Black, xRowThree + width / 2, yRowThree - height / 2, xRowTwo - width / 2, yRowThree - height / 2);
+                            g.DrawLine(Pens.Black, xRowThree + width / 2, childY, childX, childY);
                             xRowThree = xRowThree + width + width;
                             var partCheck = _treeService.GetRelationships(relative.relativeID); //Load up childs relationships
                             bool partnerCheck = partCheck.Any(par => par.relationshipTypeID == 4); //Check if any of the relationships match the marriage type
                             if (partnerCheck == true) //If they do, plot the marriage 
                             {
                                 g.DrawLine(Pens.Black, xRowThree - width, yRowThree + height / 2, xRowThree, yRowThree + height / 2);
-                                bool kidCheck = partCheck.Any(c => c.relationshipTypeID == 3); //Check if your children have children, if they do show boxes that can be filled 
+                                bool kidChecker = partCheck.Any(c => c.relationshipTypeID == 3); //Check if your children have children, if they do show boxes that can be filled 
 
-                                if (kidCheck == true)
+                                if (kidChecker == true)
                                 {
                                     g.DrawLine(Pens.Black, xRowThree - width + width / 2, (yRowThree + (height / 2)), xRowThree - width + width / 2, (yRowThree + (height / 2) + height));
                                     g.DrawString(individualName + "'s Children",
@@ -578,18 +618,107 @@ namespace FamilyTree.Controllers
                             }
                         }
                     }
+
+                    //Plot Siblings after all transformations have been made by previous foreach
+                    foreach (var relative in relList)
+                    {
+                        if (relative.relationshipTypeID == 1)
+                        {
+                            individualName = _treeService.GetIndividual(relative.relativeID).fullName.ToString();
+                            dateBirth = _treeService.GetIndividual(relative.relativeID).dateOfBirth.ToString();
+                            dateDeath = _treeService.GetIndividual(relative.relativeID).dateOfDeath.ToString();
+
+                            g.DrawString(individualName,
+                                new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xRowTwo + 5, yRowTwo + 5),
+                                new StringFormat());
+
+                            //Writes the Date of Birth
+                            g.DrawString(dateBirth,
+                                new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xRowTwo + 5, yRowTwo + 20),
+                                new StringFormat());
+
+                            g.DrawString(dateDeath, new Font("Arial", 10, FontStyle.Bold),
+                                SystemBrushes.WindowText,
+                                new PointF(xRowTwo + 5, yRowTwo + 35),
+                                new StringFormat());
+
+                            g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
+                                green, blue)), xRowTwo, yRowTwo, width, height);
+
+                            //Draw lines back to the parent bus
+                            g.DrawLine(Pens.Black, xRowTwo + width / 2, yRowTwo, xRowTwo + width / 2, siblingY);
+                            g.DrawLine(Pens.Black, xRowTwo + width / 2, siblingY, siblingX, siblingY);
+
+                            xRowTwo = xRowTwo + 2 * width;
+
+                            var partCheck = _treeService.GetRelationships(relative.relativeID); //Load up siblings relationships
+                            bool partnerCheck = partCheck.Any(par => par.relationshipTypeID == 4); //Check if any of the relationships match the marriage type
+                            if (partnerCheck == true) //If they do, plot the marriage 
+                            {
+                                g.DrawLine(Pens.Black, xRowTwo - width, yRowTwo + height / 2, xRowTwo, yRowTwo + height / 2);
+                                bool kidChecker = partCheck.Any(c => c.relationshipTypeID == 3); //Check if your children have children, if they do show boxes that can be filled 
+                                if (kidChecker == true)
+                                {
+                                    g.DrawLine(Pens.Black, xRowTwo - width + width / 2, (yRowTwo + (height / 2)), xRowTwo - width + width / 2, (yRowTwo + (height / 2) + height));
+                                    g.DrawString(individualName + "'s Children",
+                                        new Font("Arial", 10, FontStyle.Bold),
+                                        SystemBrushes.WindowText,
+                                        new PointF(xRowTwo + 5 - width, yRowTwo + height + height / 2),
+                                        new StringFormat());
+                                    g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
+                                        green, blue)), xRowTwo - width, yRowTwo + height + height / 2, width, height / 2);
+                                }
+
+                                foreach (var person in partCheck)
+                                {
+
+                                    if (person.relationshipTypeID == 4)
+                                    {
+                                        individualName = _treeService.GetIndividual(person.relativeID).fullName.ToString();
+                                        dateBirth = _treeService.GetIndividual(person.relativeID).dateOfBirth.ToString();
+                                        dateDeath = _treeService.GetIndividual(person.relativeID).dateOfDeath.ToString();
+                                        g.DrawString(individualName,
+                                            new Font("Arial", 10, FontStyle.Bold),
+                                            SystemBrushes.WindowText,
+                                            new PointF(xRowTwo + 5, yRowTwo + 5),
+                                            new StringFormat());
+                                        //Writes the Date of Birth
+                                        g.DrawString(dateBirth,
+                                            new Font("Arial", 10, FontStyle.Bold),
+                                            SystemBrushes.WindowText,
+                                            new PointF(xRowTwo + 5, yRowTwo + 20),
+                                            new StringFormat());
+                                        g.DrawString(dateDeath, new Font("Arial", 10, FontStyle.Bold),
+                                            SystemBrushes.WindowText,
+                                            new PointF(xRowTwo + 5, yRowTwo + 35),
+                                            new StringFormat());
+                                        g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
+                                            green, blue)), xRowTwo, yRowTwo, width, height);
+                                        xRowTwo = xRowTwo + width + width;
+                                    }
+                                }
+
+
+                            }
+                        }
+
+                    }
+                    // Saves it?? Outputs an image??
+                    string filename = Server.MapPath("/") + Guid.NewGuid().ToString("N");
+                    bmp.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    byte[] bytes;
+                    using (System.IO.FileStream stream = new System.IO.FileStream(filename, System.IO.FileMode.Open))
+                    {
+                        bytes = new byte[stream.Length];
+                        stream.Read(bytes, 0, bytes.Length);
+                    }
+                    System.IO.File.Delete(filename);
+                    return new FileContentResult(bytes, "image/jpeg");
                 }
-                // Saves it?? Outputs an image??
-                string filename = Server.MapPath("/") + Guid.NewGuid().ToString("N");
-                bmp.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
-                byte[] bytes;
-                using (System.IO.FileStream stream = new System.IO.FileStream(filename, System.IO.FileMode.Open))
-                {
-                    bytes = new byte[stream.Length];
-                    stream.Read(bytes, 0, bytes.Length);
-                }
-                System.IO.File.Delete(filename);
-                return new FileContentResult(bytes, "image/jpeg");
             }
         }
     }

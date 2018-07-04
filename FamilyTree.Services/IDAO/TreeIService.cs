@@ -38,6 +38,7 @@ namespace FamilyTree.Services.IDAO
         int GetNumberOfChildren(int pid);
         void AddCouple(int pid, int rid);
         void AddCoupleChild(int cid);
+        int GetPlotWidth(int pid);
 
 
     }

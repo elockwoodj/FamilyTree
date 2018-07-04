@@ -170,22 +170,9 @@ namespace FamilyTree.Controllers
                         break;
                     case 3: //Inserting a Child, therefore you are a parent
                         rela.relationshipTypeID = 2;
-                        //This will always be null if you're adding child - think of way to fetch couple information IE mother/father ID's
-                        if (_treeService.GetCoupleRelation(pid, rid) != null) 
-                        {
-                            var cid = _treeService.GetCoupleRelation(pid, rid).coupleID;
-                            _treeService.AddCoupleChild(cid);
-                            //Change both parents so their isParent value is 1, database knows they're parents now
-                            Individual pidEdit = _treeService.GetIndividual(pid);
-                            pidEdit.isParent = 1;
-                            _treeService.EditIndividual(pidEdit);
-                        }
-                        else { }
                         //Inserting a child means the number of children column needs to increase in couple
                         break;
                     case 4: //Inserting a Marriage, therefore you are married
-                        //Inserting a marriage means you are now a couple, therefore will need a couple ID
-                        _treeService.AddCouple(pid, rid);
                         break;
                     default:
                         break;

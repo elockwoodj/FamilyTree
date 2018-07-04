@@ -58,6 +58,7 @@
 </table>
 
 <p>
+    @Html.ActionLink("ohgowiht", "CreateBitmap", new { controller = "Plotting" });
     @Html.ActionLink("Back to Individuals", "GetIndividuals", new { controller="Family", fid = ViewBag.familyID}) <br />
     @Html.ActionLink("Plot your Tree!", "PlotOne", new { controller = "Plotting", fid = ViewBag.familyID });
 </p>
