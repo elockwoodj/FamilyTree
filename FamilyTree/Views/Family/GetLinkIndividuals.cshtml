@@ -1,17 +1,12 @@
 ﻿@model IEnumerable<FamilyTree.Data.Individual>
 
 @{
-    ViewBag.Title = "GetIndividuals";
+    ViewBag.Title = "GetLinkIndividuals";
 }
 
-<h2>Your Family Members</h2>
+<h2>GetLinkIndividuals</h2>
 
-<p>
-    @Html.ActionLink("Add New Family Member Record", "AddIndividual", new { fid = ViewBag.familyID }) |<br />
 
-    @Html.ActionLink("View Linked Users", "GetLinkedUsers", new { fid = ViewBag.familyID, controller = "Family" })
-
-</p>
 <table class="table">
     <tr>
         <th>
@@ -28,9 +23,6 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.placeOfBirth)
-        </th>
-        <th>
-
         </th>
     </tr>
 
@@ -52,14 +44,9 @@
             @Html.DisplayFor(modelItem => item.placeOfBirth)
         </td>
         <td>
-            @Html.ActionLink("Edit", "EditIndividual", new { pid = item.individualID, controller = "FamilyAdmin" }) |
-            @Html.ActionLink("Delete", "DeleteIndividual", new { pid = item.individualID , controller="Family"}) |
-            @Html.ActionLink("Show Relatives", "GetRelatives", new { pid = item.individualID }) |
             @Html.ActionLink("Plot This Person's Tree", "PlotIndividual", new { pid = item.individualID, controller = "Plotting" })
-
-
         </td>
     </tr>
 }
-   
+
 </table>

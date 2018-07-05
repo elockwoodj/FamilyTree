@@ -28,6 +28,10 @@ namespace FamilyTree.Services.DAO
         {
             return _treeDAO.GetFamily(fid);
         }
+        public IList<Family> GetLinkFamilies(string uid)
+        {
+            return _treeDAO.GetLinkFamilies(uid);
+        }
         //public int GetUserID(string email)
         //{
         //    return _treeDAO.GetUserID(email);
@@ -141,8 +145,27 @@ namespace FamilyTree.Services.DAO
             return _treeDAO.GetPlotWidth(pid);
         }
 
+        public void AddLink(UserLink otherUser)
+        {
+            _treeDAO.AddLink(otherUser);
+        }
 
-
+        public IList<UserLink> GetLinkList(string uid, int fid)
+        {
+            return _treeDAO.GetLinkList(uid, fid);
+        }
+        public void DeleteLinkedUser(UserLink linkObject)
+        {
+            _treeDAO.DeleteLinkedUser(linkObject);
+        }
+        public UserLink GetUserLink(int lid)
+        {
+            return _treeDAO.GetUserLink(lid);
+        }
+        public void EditLink(UserLink linkObject)
+        {
+            _treeDAO.EditLink(linkObject);
+        }
 
     }
 }

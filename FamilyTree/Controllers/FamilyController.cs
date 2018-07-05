@@ -31,6 +31,12 @@ namespace FamilyTree.Controllers
             return View(_treeService.GetFamilies(uid));
         }
 
+        public ActionResult _Families()
+        {
+            var uid = User.Identity.Name;
+            return PartialView(_treeService.GetLinkFamilies(uid));
+        }
+
         public ActionResult GetFamily(int fid)
         {
             return View(_treeService.GetFamily(fid));
@@ -65,7 +71,20 @@ namespace FamilyTree.Controllers
             ViewBag.familyID = fid;
             return View(_treeService.GetIndividuals(fid));
         }
-            //VVV
+        //Partial view for Linked users
+        public ActionResult GetLinkIndividuals(int fid)
+        {
+            ViewBag.familyID = fid;
+            return View(_treeService.GetIndividuals(fid));
+        }
+
+        public ActionResult GetLinkedUsers(int fid)
+        {
+            ViewBag.familyID = fid;
+            var uid = User.Identity.Name;
+            return View(_treeService.GetLinkList(uid, fid));
+        }
+        //VVV
         public ActionResult _GetRelationships(int fid)
         {
             return PartialView(_treeService.GetRelatives(fid));
@@ -135,6 +154,25 @@ namespace FamilyTree.Controllers
                 Family _famObject = _treeService.GetFamily(fid);
                 _treeService.DeleteFamilyName(_famObject);
                 return RedirectToAction("Families", new { uid = User.Identity.Name, Controller = "Family" });
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public ActionResult DeleteLinkedUser(int lid)
+        {
+            return View(_treeService.GetUserLink(lid));
+        }
+        public ActionResult DeleteLinkedUser(int lid, UserLink linkObject)
+        {
+            try
+            {
+                UserLink _linkObeject = _treeService.GetUserLink(lid);
+                _treeService.DeleteLinkedUser(_linkObeject);
+                return RedirectToAction("GetLinkedUsers", new { fid = linkObject.familyID });
             }
             catch
             {

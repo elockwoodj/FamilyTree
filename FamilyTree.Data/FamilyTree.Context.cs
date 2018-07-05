@@ -32,5 +32,6 @@ namespace FamilyTree.Data
         public virtual DbSet<Relationship> Relationships { get; set; }
         public virtual DbSet<Individual> Individuals { get; set; }
         public virtual DbSet<Couple> Couples { get; set; }
+        public virtual DbSet<UserLink> UserLinks { get; set; }
     }
 }

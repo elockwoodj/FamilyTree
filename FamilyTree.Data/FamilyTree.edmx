@@ -81,6 +81,15 @@
           <Property Name="roleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="roleDescription" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="UserLinks">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="familyID" Type="int" Nullable="false" />
+          <Property Name="ownerUserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="enabledUserName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="b7039648ModelStoreContainer">
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Couple" EntityType="Self.Couple" Schema="dbo" store:Type="Tables" />
@@ -89,6 +98,7 @@
           <EntitySet Name="Relationships" EntityType="Self.Relationships" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RelationshipTypes" EntityType="Self.RelationshipTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserLinks" EntityType="Self.UserLinks" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -127,6 +137,7 @@
           <EntitySet Name="Relationships" EntityType="b7039648Model.Relationship" />
           <EntitySet Name="Individuals" EntityType="b7039648Model.Individual" />
           <EntitySet Name="Couples" EntityType="b7039648Model.Couple" />
+          <EntitySet Name="UserLinks" EntityType="b7039648Model.UserLink" />
         </EntityContainer>
         <EntityType Name="RelationshipType">
           <Key>
@@ -178,6 +189,15 @@
           <Property Name="NumberOfChildren" Type="Int32" Nullable="false" />
           <Property Name="personOne" Type="Int32" Nullable="false" />
           <Property Name="personTwo" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserLink">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="familyID" Type="Int32" Nullable="false" />
+          <Property Name="ownerUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="enabledUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -265,6 +285,16 @@
                 <ScalarProperty Name="personOne" ColumnName="personOne" />
                 <ScalarProperty Name="NumberOfChildren" ColumnName="NumberOfChildren" />
                 <ScalarProperty Name="coupleID" ColumnName="coupleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLinks">
+            <EntityTypeMapping TypeName="b7039648Model.UserLink">
+              <MappingFragment StoreEntitySet="UserLinks">
+                <ScalarProperty Name="enabledUserName" ColumnName="enabledUserName" />
+                <ScalarProperty Name="ownerUserName" ColumnName="ownerUserName" />
+                <ScalarProperty Name="familyID" ColumnName="familyID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

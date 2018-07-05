@@ -1,0 +1,29 @@
+﻿@model IEnumerable<FamilyTree.Data.Family>
+
+<p>Other users may enable you to view their family tree progress, their family names will appear here, you may navigate to view their specified family trees</p>
+
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ownerUserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.familyName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ownerUserName)
+        </td>
+        <td>
+            @Html.ActionLink(item.familyName, "GetLinkIndividuals", new { fid = item.familyID, controller = "Family" })
+        </td>
+    </tr>
+}
+
+</table>

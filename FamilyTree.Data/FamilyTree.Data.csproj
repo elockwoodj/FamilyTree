@@ -91,6 +91,9 @@
     <Compile Include="Role.cs">
       <DependentUpon>FamilyTree.tt</DependentUpon>
     </Compile>
+    <Compile Include="UserLink.cs">
+      <DependentUpon>FamilyTree.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="FamilyTree.Context.tt">

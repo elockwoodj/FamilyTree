@@ -17,19 +17,6 @@ namespace FamilyTree.Controllers
         {
             _treeService = new Services.DAO.TreeService();
         }
-        // GET: FamilyAdmin
-        
-        public ActionResult Index()
-        {
-
-            return View();
-        }
-
-        // GET: FamilyAdmin/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
         // GET: FamilyAdmin/Create
         [HttpGet]
@@ -53,7 +40,26 @@ namespace FamilyTree.Controllers
                 return View();
             }
         }
-
+        [HttpGet]
+        public ActionResult AddLink(int fid)
+        {
+            ViewBag.familyID = fid;
+            ViewBag.ownerUserName = User.Identity.Name;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddLink(UserLink otherUser)
+        {
+            try
+            {
+                _treeService.AddLink(otherUser);
+                return RedirectToAction("GetIndividuals", "Family", new { fid = otherUser.familyID });
+            }
+            catch
+            {
+                return View();
+            }
+        }
         
         //Needs Finishing, doesn't work properly, possibly the get action as doesn't retrieve the information
         // GET: FamilyAdmin/Edit/5
@@ -94,8 +100,8 @@ namespace FamilyTree.Controllers
                 return RedirectToAction("GetIndividuals", "Family", new { fid = individual.familyID });
             }
         }
-
         [HttpGet]
+
         public ActionResult AddRelative(int fid, int pid)
         {
             //Assign personID and familyID so they are autopopulated in the view
@@ -253,6 +259,26 @@ namespace FamilyTree.Controllers
         } 
 
         [HttpGet]
+        public ActionResult EditLink(int lid)
+        {
+            return View(_treeService.GetUserLink(lid));
+        }
+        [HttpPost]
+        public ActionResult EditLink(int lid, UserLink obj)
+        {
+            try
+            {
+                _treeService.EditLink(obj);
+                return RedirectToAction("GetLinkedUsers", new { fid = obj.familyID , controller = "Family"});
+            }
+            catch
+            {
+                return RedirectToAction("GetLinkedUsers", new { fid = obj.familyID, controller = "Family" });
+            }
+        }
+
+
+        [HttpGet]
         public ActionResult EditRelative(int rid)
         {
             int pid = _treeService.GetRelationship(rid).personID;
@@ -281,5 +307,8 @@ namespace FamilyTree.Controllers
                 return RedirectToAction("GetRelatives", "Family", new { pid = relObject.personID });
             }
         }
+
+        
+
     }
 }

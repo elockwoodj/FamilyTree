@@ -10,9 +10,10 @@ namespace FamilyTree.Services.IDAO
 {
     public interface TreeIService
     {
-        IList<FamilyTree.Data.Family> GetFamilies(string uid);
+        IList<Family> GetFamilies(string uid);
         Family GetFamily(int fid);
         //int GetUserID(string email);
+        void DeleteLinkedUser(UserLink linkObject);
         void AddFamilyName(Family familyName);
         void EditFamilyName(Family famObject);
         void DeleteFamilyName(Family famObject);
@@ -33,13 +34,16 @@ namespace FamilyTree.Services.IDAO
         relaBEAN GetRelationship(int rid);
         Relationship GetRelDelete(int rid);
         void DeleteRelative(Relationship relObject);
+        UserLink GetUserLink(int lid);
         Relationship GetRelative(int rid);
         string GetRelativeGender(int pid);
         int GetNumberOfChildren(int pid);
         void AddCouple(int pid, int rid);
         void AddCoupleChild(int cid);
         int GetPlotWidth(int pid);
-
-
+        void AddLink(UserLink otherUser);
+        IList<Family> GetLinkFamilies(string uid);
+        IList<UserLink> GetLinkList(string uid, int fid);
+        void EditLink(UserLink linkObject);
     }
 }

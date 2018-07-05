@@ -21,7 +21,7 @@ namespace FamilyTree.Data.DAO
 
         public IList<Family> GetFamilies(string uid)
         {
-            IQueryable<FamilyTree.Data.Family> _families;
+            IQueryable<Family> _families;
             _families = from fam
                         in _context.Families
                         where fam.ownerUserName == uid
@@ -29,6 +29,29 @@ namespace FamilyTree.Data.DAO
 
             return _families.ToList<Family>();
                         
+        }
+
+        public IList<Family> GetLinkFamilies(string uid)
+        {
+            IQueryable<Family> _fam;
+
+            //Select from the families table, all family entries that are enabled for this user, therefore having the same family ID's as shown in the link table
+            _fam = from link in _context.UserLinks
+                        from fam in _context.Families
+                        where link.enabledUserName == uid
+                        && fam.familyID == link.familyID
+                        select fam;
+
+            return _fam.ToList();
+        }
+        public IList<UserLink> GetLinkList(string uid, int fid)
+        {
+            IQueryable<UserLink> _link;
+            _link = from link in _context.UserLinks
+                    where link.ownerUserName == uid
+                    && link.familyID == fid
+                    select link;
+            return _link.ToList();
         }
 
         public IList<Individual> GetIndividuals(int fid)
@@ -41,7 +64,7 @@ namespace FamilyTree.Data.DAO
                      orderby ind.isParent descending
                      select ind;
 
-            return _indiv.ToList<Individual>();
+            return _indiv.ToList();
         }
 
         public IList<relaBEAN> GetRelatives(int pid)
@@ -105,7 +128,7 @@ namespace FamilyTree.Data.DAO
                        typeDescription = typ.typeDescription,
                        relationshipTypeID = typ.typeID
                    };
-            return _typ.ToList<relaBEAN>();
+            return _typ.ToList();
         }
 
         public IList<relaBEAN> GetRoles()
@@ -117,7 +140,7 @@ namespace FamilyTree.Data.DAO
                         roleDescription = rol.roleDescription,
                         relativeRole = rol.roleID
                     };
-            return _role.ToList<relaBEAN>();
+            return _role.ToList();
         }
 
         public IList<relaBEAN> GetListForRelatives(int fid ,int pid)
@@ -130,7 +153,7 @@ namespace FamilyTree.Data.DAO
                         fullName = ind.fullName,
                         relativeID = ind.individualID
                     };
-            return _rela.ToList<relaBEAN>();
+            return _rela.ToList();
         }
 
         // ----- Get Single Objects -----
@@ -165,9 +188,16 @@ namespace FamilyTree.Data.DAO
                            relationshipEndDate = rBEAN.relationshipEndDate
                        };
             var rel = _relBEAN.First();
-
-
             return _relBEAN.ToList().First();
+        }
+
+        public UserLink GetUserLink(int lid)
+        {
+            IQueryable<UserLink> _link;
+            _link = from link in _context.UserLinks
+                    where link.Id == lid
+                    select link;
+            return _link.First();
         }
 
         // This is different to the GetRelationship method as it doesn't require additional information from separate tables
@@ -227,6 +257,12 @@ namespace FamilyTree.Data.DAO
             _context.Relationships.Add(invObject);
             _context.SaveChanges();
         }
+
+        public void AddLink(UserLink otherUser)
+        {
+            _context.UserLinks.Add(otherUser);
+            _context.SaveChanges();
+        }
         // ----- Edits -----
         //Accesses the Family table, pulling an object with the same ID passed in famObject, rewriting information and saving
         public void EditFamilyName(Family famObject)
@@ -242,7 +278,19 @@ namespace FamilyTree.Data.DAO
             _context.SaveChanges();
         }
 
+        public void EditLink(UserLink linkObject)
+        {
+            IQueryable<UserLink> _link;
+            _link = from link in _context.UserLinks
+                    where link.Id == linkObject.Id
+                    select link;
+            UserLink linkEdit = _link.First();
 
+            linkEdit.enabledUserName = linkObject.enabledUserName;
+            _context.SaveChanges();
+
+            
+        }
         //Accesses the Individual table, pulling an object with the same ID passed by indObject, rewriting information and saving
         public void EditIndividual(Individual indObject)
         {
@@ -298,7 +346,11 @@ namespace FamilyTree.Data.DAO
             _context.Families.Remove(famObject);
             _context.SaveChanges();
         }
-
+        public void DeleteLinkedUser(UserLink linkObject)
+        {
+            _context.UserLinks.Remove(linkObject);
+            _context.SaveChanges();
+        }
 
         // ----- USED FOR PLOTTING -----
 

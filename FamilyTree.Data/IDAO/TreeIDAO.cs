@@ -14,7 +14,7 @@ namespace FamilyTree.Data.IDAO
         void DeleteFamilyName(Family familyName);
         void DeleteIndividual(Individual individual);
         void DeleteRelative(Relationship relative);
-
+        void DeleteLinkedUser(UserLink linkObject);
         //-----Adds-----
         void AddIndividual(Individual individual);
         void AddFamilyName(Family familyName);
@@ -22,7 +22,7 @@ namespace FamilyTree.Data.IDAO
         void AddInverse(Relationship invObject);
         void AddCouple(int pid, int rid);
         void AddCoupleChild(int cid);
-
+        void AddLink(UserLink otherUser);
 
         // -----Get Lists-----
         IList<Family> GetFamilies(string uid);
@@ -32,7 +32,8 @@ namespace FamilyTree.Data.IDAO
         IList<relaBEAN> GetTypes();
         IList<relaBEAN> GetRoles();
         IList<relaBEAN> GetListForRelatives(int fid, int pid);
-
+        IList<Family> GetLinkFamilies(string uid);
+        IList<UserLink> GetLinkList(string uid, int fid);
 
         //-----Get Singulars-----
         Individual GetIndividual(int pid);
@@ -44,11 +45,11 @@ namespace FamilyTree.Data.IDAO
         int GetNumberOfChildren(int pid);
         Couple GetCoupleRelation(int pid, int rid);
         int GetPlotWidth(int pid);
-
+        UserLink GetUserLink(int lid);
         //-----Edits-----
         void EditFamilyName(Family familyName);
         void EditIndividual(Individual individual);
         void EditRelative(Relationship relaObject);
-
+        void EditLink(UserLink linkObject);
     }
 }

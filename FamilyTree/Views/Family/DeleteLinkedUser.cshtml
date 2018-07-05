@@ -1,0 +1,48 @@
+﻿@model FamilyTree.Data.UserLink
+
+@{
+    ViewBag.Title = "DeleteLinkedUser";
+}
+
+<h2>DeleteLinkedUser</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>UserLink</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.familyID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.familyID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ownerUserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ownerUserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.enabledUserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.enabledUserName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

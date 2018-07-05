@@ -1,0 +1,33 @@
+﻿@model IEnumerable<FamilyTree.Data.UserLink>
+
+@{
+    ViewBag.Title = "GetLinkedUsers";
+}
+
+<h2>GetLinkedUsers</h2>
+
+<p>
+    @Html.ActionLink("Allow Another User Access to this Tree", "AddLink", new { fid = ViewBag.familyID, controller = "FamilyAdmin" })
+</p>
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.enabledUserName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.enabledUserName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditLink", new { lid=item.Id , controller = "FamilyAdmin"}) |
+            @Html.ActionLink("Delete", "DeleteLinkedUser", new { lid = item.Id, controller = "Family" })
+        </td>
+    </tr>
+}
+
+</table>
