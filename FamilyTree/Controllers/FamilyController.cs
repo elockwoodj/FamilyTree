@@ -181,8 +181,9 @@ namespace FamilyTree.Controllers
         }
 
         [HttpGet]
-        public ActionResult DeleteIndividual(int pid)
+        public ActionResult DeleteIndividual(int pid, int fid)
         {
+            ViewBag.familyID = fid;
             return View(_treeService.GetIndividual(pid));
         }
 

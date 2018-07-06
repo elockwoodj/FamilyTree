@@ -140,7 +140,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Back to Relatives", "GetRelatives", new { pid = ViewBag.personID, controller = "Family" })
         </div>
     }
 </div>

@@ -9,7 +9,7 @@ using FamilyTree.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Drawing;
-
+using System.Windows.Forms;
 
 namespace FamilyTree.Controllers
 {
@@ -28,7 +28,6 @@ namespace FamilyTree.Controllers
 
         public FileContentResult CreateBitmap()
         {
-
             int height = 400;
             int width = 200;
             Random r = new Random();
@@ -50,19 +49,117 @@ namespace FamilyTree.Controllers
                     g.FillRectangle(new System.Drawing.Drawing2D.LinearGradientBrush(new System.Drawing.Point(x, 0),
                         new System.Drawing.Point(x + 75, 100), System.Drawing.Color.FromArgb(128, 0, 0, r.Next(255)),
                         System.Drawing.Color.FromArgb(255, r.Next(192, 255), r.Next(192, 255), r.Next(255))), x, r.Next(height), 75, 50);
+
+                    //Returns the specific location of the file
+                    //MapPath gives "physical file path that corresponds with the virtual path on the Web Server"
+                    //System.Guid.NewGuid() - Generates a Global Unique Identifier and initializes a new instance of Guid
+                    //Returns this physical path with the specified identifier to a string called "filename"
                     string filename = Server.MapPath("/") + System.Guid.NewGuid().ToString("N");
+
+
+                    //Saves the bitmap file at that location in the specified format, in this case JPEG
                     bmp.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
                     byte[] bytes;
+
+                    //System.IO.Filestream - Creates a filestream at the location of "filename" with the FileMode "Open"
+                    //In this example, it will attempt to open the file filename and turn this into a stream
+                    //If "filename" doesn't exist it will error
                     using (System.IO.FileStream stream = new System.IO.FileStream(filename, System.IO.FileMode.Open))
                     {
+
                         bytes = new byte[stream.Length];
                         stream.Read(bytes, 0, bytes.Length);
                     }
+
                     System.IO.File.Delete(filename);
                     return new FileContentResult(bytes, "image/jpeg");
+
+
+
+                    PictureBox picture = new PictureBox();
+                    picture.Image = bmp;
+                    //return picture;
                 }
             }
         }
+
+        public PictureBox picture()
+        {
+            int height = 400;
+            int width = 200;
+            Random r = new Random();
+            using (Bitmap bmp = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format24bppRgb))
+            {
+                using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp))
+                {
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    g.Clear(System.Drawing.Color.LightGray);
+                    g.DrawRectangle(System.Drawing.Pens.White, 1, 1, width - 3, height - 3);
+                    g.DrawRectangle(System.Drawing.Pens.Gray, 2, 2, width - 3, height - 3);
+                    g.DrawRectangle(System.Drawing.Pens.Black, 0, 0, width, height);
+                    g.DrawString("Refresh Me!", new System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold),
+                        System.Drawing.SystemBrushes.WindowText, new System.Drawing.PointF(r.Next(50), r.Next(100)),
+                        new System.Drawing.StringFormat(System.Drawing.StringFormatFlags.DirectionVertical));
+                    g.FillRectangle(new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(r.Next(100), r.Next(130),
+                        r.Next(150), r.Next(200))), 20, 40, 60, 80);
+                    int x = r.Next(width);
+                    g.FillRectangle(new System.Drawing.Drawing2D.LinearGradientBrush(new System.Drawing.Point(x, 0),
+                        new System.Drawing.Point(x + 75, 100), System.Drawing.Color.FromArgb(128, 0, 0, r.Next(255)),
+                        System.Drawing.Color.FromArgb(255, r.Next(192, 255), r.Next(192, 255), r.Next(255))), x, r.Next(height), 75, 50);
+
+                    //Returns the specific location of the file
+                    //MapPath gives "physical file path that corresponds with the virtual path on the Web Server"
+                    //System.Guid.NewGuid() - Generates a Global Unique Identifier and initializes a new instance of Guid
+                    //Returns this physical path with the specified identifier to a string called "filename"
+                    string filename = Server.MapPath("/") + System.Guid.NewGuid().ToString("N");
+
+
+                    //Saves the bitmap file at that location in the specified format, in this case JPEG
+                    bmp.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    byte[] bytes;
+                    PictureBox picture = new PictureBox();
+                    //System.IO.Filestream - Creates a filestream at the location of "filename" with the FileMode "Open"
+                    //In this example, it will attempt to open the file filename and turn this into a stream
+                    //If "filename" doesn't exist it will error
+                    using (System.IO.FileStream stream = new System.IO.FileStream(filename, System.IO.FileMode.Open))
+                    {
+
+                        bytes = new byte[stream.Length];
+                        stream.Read(bytes, 0, bytes.Length);
+                        
+                    }
+
+                    //System.IO.File.Delete(filename);
+                    //return new FileContentResult(bytes, "image/jpeg");
+
+                    picture.Height = height;
+                    picture.Width = width;
+                    picture.Image = bmp;
+
+                    PictureBox imageControl = new PictureBox();
+
+                    imageControl.Width = 400;
+
+                    imageControl.Height = 400;
+
+
+
+                    Bitmap image = new Bitmap(bmp);
+
+                    imageControl.Dock = DockStyle.Fill;
+
+                    imageControl.Image = (Image)image;
+
+                    
+
+                    
+
+
+                    return imageControl;
+                }
+            }
+        }
+
 
 
         public FileContentResult PlotOne(int fid) //Plots for nuclear families, no extended families.

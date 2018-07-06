@@ -7,9 +7,9 @@
 <h2>Your Family Members</h2>
 
 <p>
-    @Html.ActionLink("Add New Family Member Record", "AddIndividual", new { fid = ViewBag.familyID }) |<br />
+    @Html.ActionLink("Add New Family Member Record", "AddIndividual", new { fid = ViewBag.familyID }) | @Html.ActionLink("View Linked Users", "GetLinkedUsers", new { fid = ViewBag.familyID, controller = "Family" })
 
-    @Html.ActionLink("View Linked Users", "GetLinkedUsers", new { fid = ViewBag.familyID, controller = "Family" })
+    
 
 </p>
 <table class="table">
@@ -53,7 +53,7 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "EditIndividual", new { pid = item.individualID, controller = "FamilyAdmin" }) |
-            @Html.ActionLink("Delete", "DeleteIndividual", new { pid = item.individualID , controller="Family"}) |
+            @Html.ActionLink("Delete", "DeleteIndividual", new { pid = item.individualID ,fid = ViewBag.familyID , controller="Family"}) |
             @Html.ActionLink("Show Relatives", "GetRelatives", new { pid = item.individualID }) |
             @Html.ActionLink("Plot This Person's Tree", "PlotIndividual", new { pid = item.individualID, controller = "Plotting" })
 
