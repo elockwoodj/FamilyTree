@@ -11,14 +11,21 @@ namespace FamilyTree.Data.DAO
     public class TreeDAO : TreeIDAO
     {
         private b7039648Entities1 _context;
-        public int userID;
         public TreeDAO()
         {
             _context = new b7039648Entities1();
         }
 
-        // ----- Get Lists -----
+        // -----------------------------------------------------------------------
+        //In this DAO, all methods are grouped by the table they are affecting
+        //For instance, below is all the methods that will affect the data held in
+        //the Family table - it doesn't require any external methods
+        // -----------------------------------------------------------------------
 
+
+
+        // ----- Family Related Methods -----
+         //Gets a list of all families created by the user
         public IList<Family> GetFamilies(string uid)
         {
             IQueryable<Family> _families;
@@ -26,34 +33,52 @@ namespace FamilyTree.Data.DAO
                         in _context.Families
                         where fam.ownerUserName == uid
                         select fam;
-
-            return _families.ToList<Family>();
-                        
+            return _families.ToList<Family>();                        
         }
 
-        public IList<Family> GetLinkFamilies(string uid)
+          //Gets a specific Family name  and ID from the family table
+        public Family GetFamily(int fid)
         {
             IQueryable<Family> _fam;
+            _fam = from fam
+                   in _context.Families
+                   where fam.familyID == fid
+                   select fam;
 
-            //Select from the families table, all family entries that are enabled for this user, therefore having the same family ID's as shown in the link table
-            _fam = from link in _context.UserLinks
-                        from fam in _context.Families
-                        where link.enabledUserName == uid
-                        && fam.familyID == link.familyID
-                        select fam;
-
-            return _fam.ToList();
+            return _fam.First();
         }
-        public IList<UserLink> GetLinkList(string uid, int fid)
+
+           //Adds familyName to the Family table
+        public void AddFamilyName(Family familyName)
         {
-            IQueryable<UserLink> _link;
-            _link = from link in _context.UserLinks
-                    where link.ownerUserName == uid
-                    && link.familyID == fid
-                    select link;
-            return _link.ToList();
+            _context.Families.Add(familyName);
+            _context.SaveChanges();
         }
 
+          //Removes an object from the Family table that matches famObject
+        public void DeleteFamilyName(Family famObject)
+        {
+            _context.Families.Remove(famObject);
+            _context.SaveChanges();
+        }
+
+          //Accesses the Family table, pulling an object with the same ID passed in famObject, rewriting information and saving
+        public void EditFamilyName(Family famObject)
+        {
+            IQueryable<Family> _famEdit;
+            _famEdit = from fEdit in _context.Families
+                       where fEdit.familyID == famObject.familyID
+                       select fEdit;
+            Family famEdit = _famEdit.First();
+
+            famEdit.familyName = famObject.familyName;
+
+            _context.SaveChanges();
+        }
+
+        // ------- Individual Related Methods ---------
+
+            //Selects all individuals within a specified family tree
         public IList<Individual> GetIndividuals(int fid)
         {
             IQueryable<Individual> _indiv;
@@ -66,7 +91,58 @@ namespace FamilyTree.Data.DAO
 
             return _indiv.ToList();
         }
+            //Select an individual from the individuals table
+        public Individual GetIndividual(int pid)
+        {
+            IQueryable<Individual> _ind;
+            _ind = from ind in _context.Individuals
+                   where ind.individualID == pid
+                   select ind;
 
+            return _ind.ToList().First();
+        }
+
+            //Adds individual to the Individual table
+        public void AddIndividual(Individual individual)
+        {
+            _context.Individuals.Add(individual);
+            _context.SaveChanges();
+        }
+
+            //Accesses the Individual table, pulling an object with the same ID passed by indObject, rewriting information and saving
+        public void EditIndividual(Individual indObject)
+        {
+            IQueryable<Individual> _indEdit;
+            _indEdit = from iEdit in _context.Individuals
+                       where iEdit.individualID == indObject.individualID
+                       select iEdit;
+            Individual indEdit = _indEdit.First();
+
+            indEdit.fullName = indObject.fullName;
+            indEdit.gender = indObject.gender;
+            indEdit.placeOfBirth = indObject.placeOfBirth;
+            indEdit.dateOfBirth = indObject.dateOfBirth;
+            indEdit.dateOfDeath = indObject.dateOfDeath;
+            indEdit.isParent = indObject.isParent;
+            _context.SaveChanges();
+        }
+
+            // Removes an object from the Individual table that matches indObject
+        public void DeleteIndividual(Individual indObject)
+        {
+            _context.Individuals.Remove(indObject);
+            _context.SaveChanges();
+        }
+
+        //---------------- Relationship Related Methods --------------
+        // This group of methods needs several helper methods to select specific 
+        // pieces of information required to do what is necessary
+        //The Relationship table contains several foreign keys which just link
+        //to various pieces of information from several different tables
+
+            //Produces a list of all relatives a specified individual has
+            //Accesses four tables so linq query is fairly complicated
+            //This is displayed back to the user therefore a ViewModel (BEAN) is required
         public IList<relaBEAN> GetRelatives(int pid)
         {
             IQueryable<relaBEAN> _rel;
@@ -99,6 +175,9 @@ namespace FamilyTree.Data.DAO
 
             return _rel.ToList();
         }
+
+            //Returns a specific relative from the relationship table, this isn't used
+            //to display to the user, therefore doesn't need to be converted into a ViewModel
         public Relationship GetRelative(int rid)
         {
             IQueryable<Relationship> _rel;
@@ -108,6 +187,9 @@ namespace FamilyTree.Data.DAO
             return _rel.First();
         }
 
+            //A similar method to GetRelatives, however this isn't displayed to the user and therefore
+            //doesn't require converting into a ViewModel, this method is called by the PlottingController
+            //to be able to discern all direct relatives of the specified person
         public IList<Relationship> GetRelationships(int pid)
         {
             IQueryable<Relationship> _rel;
@@ -119,6 +201,39 @@ namespace FamilyTree.Data.DAO
             return _rel.ToList();
         }
 
+            //Adds an object into the relationship table
+        public void AddRelative(Relationship relaObject)
+        {
+            _context.Relationships.Add(relaObject);
+            _context.SaveChanges();
+        }
+        //Accesses the Relationship table, pulling an object with the same ID passed by relaObject, rewriting information and saving
+        public void EditRelative(Relationship relaObject)
+        {
+            IQueryable<Relationship> _relEdit;
+            _relEdit = from rEdit in _context.Relationships
+                       where rEdit.relationshipID == relaObject.relationshipID
+                       select rEdit;
+            Relationship relEdit = _relEdit.First();
+
+            relEdit.notableInformation = relaObject.notableInformation;
+            relEdit.relationshipStartDate = relaObject.relationshipStartDate;
+            relEdit.relationshipEndDate = relaObject.relationshipEndDate;
+            _context.SaveChanges();
+        }
+
+            //Removes an object from the Relationship table that matches relaObject
+        public void DeleteRelative(Relationship relaObject)
+        {
+            _context.Relationships.Remove(relaObject);
+            _context.SaveChanges();
+        }
+        //-------- Helper methods ---------
+        //These methods are all called by other methods within the application and aren't used directly by the user
+        //Often these are to collect specific bits of information to display to the user or as a midpoint between the
+        //database and the controllers
+
+            //Retrieves a list of all available relationship types to be displayed in the AddRelative View
         public IList<relaBEAN> GetTypes()
         {
             IQueryable<relaBEAN> _typ;
@@ -130,7 +245,7 @@ namespace FamilyTree.Data.DAO
                    };
             return _typ.ToList();
         }
-
+            //Retrieves a list of all available roles types to be displayed in the AddRelative View
         public IList<relaBEAN> GetRoles()
         {
             IQueryable<relaBEAN> _role;
@@ -143,6 +258,9 @@ namespace FamilyTree.Data.DAO
             return _role.ToList();
         }
 
+            //This will retreive all members of a family unit that aren't the 
+            //specified individual, this is used when adding new relationships
+            //to an individual
         public IList<relaBEAN> GetListForRelatives(int fid ,int pid)
         {
             IQueryable<relaBEAN> _rela;
@@ -156,24 +274,10 @@ namespace FamilyTree.Data.DAO
             return _rela.ToList();
         }
 
-        // ----- Get Single Objects -----
 
-        //All these methods will fetch a single record out of their respective tables that matches the ID passed to it
-
-
-
-        //Gets a specific Family name  and ID from the family table
-        public Family GetFamily(int fid)
-        {
-            IQueryable<Family> _fam;
-            _fam = from fam
-                   in _context.Families
-                   where fam.familyID == fid
-                   select fam;
-
-            return _fam.First();
-        }
-        //Gets a specific relationship
+        
+            //Gets a specific relationship, this is used within the edit method for a relationship
+            //required in the form of a ViewModel as the raw data wouldn't be useful for a user
         public relaBEAN GetRelationship(int rid)
         {
             IQueryable<relaBEAN> _relBEAN;
@@ -191,17 +295,8 @@ namespace FamilyTree.Data.DAO
             return _relBEAN.ToList().First();
         }
 
-        public UserLink GetUserLink(int lid)
-        {
-            IQueryable<UserLink> _link;
-            _link = from link in _context.UserLinks
-                    where link.Id == lid
-                    select link;
-            return _link.First();
-        }
-
-        // This is different to the GetRelationship method as it doesn't require additional information from separate tables
-        // Therefore not requiring the use of a ViewModel, as we are only deleting the record
+            // This is different to the GetRelationship method as it doesn't require additional information from separate tables
+            // Therefore not requiring the use of a ViewModel, as we are only deleting the record and the user will just need to confirm that
         public Relationship GetRelDelete(int rid)
         {
             IQueryable<Relationship> _relDel;
@@ -210,17 +305,8 @@ namespace FamilyTree.Data.DAO
                       select rDel;
             return _relDel.First();
         }
-        //Select an individual from the individuals table
-        public Individual GetIndividual(int pid)
-        {
-            IQueryable<Individual> _ind;
-            _ind = from ind in _context.Individuals
-                   where ind.individualID == pid
-                   select ind;
 
-            return _ind.ToList().First();
-        }
-        //Grabs the gender for the relative, called when adding a new relative
+            //Grabs the gender for the relative, called when adding a new relative
         public string GetRelativeGender(int pid)
         {
             IQueryable<Individual> _ind;
@@ -231,131 +317,9 @@ namespace FamilyTree.Data.DAO
             return genderPicker;
         }
 
-        // ----- Adds -----
-        //Adds familyName to the Family table
-        public void AddFamilyName(Family familyName)
-        {
-            _context.Families.Add(familyName);
-            _context.SaveChanges();
-        }
-
-        //Adds individual to the Individual table
-        public void AddIndividual(Individual individual)
-        {
-            _context.Individuals.Add(individual);
-            _context.SaveChanges();
-        }
-
-        //Adds relaObject to the Relationship table
-        public void AddRelative(Relationship relaObject)
-        {
-            _context.Relationships.Add(relaObject);
-            _context.SaveChanges();
-        }
-        public void AddInverse(Relationship invObject)
-        {
-            _context.Relationships.Add(invObject);
-            _context.SaveChanges();
-        }
-
-        public void AddLink(UserLink otherUser)
-        {
-            _context.UserLinks.Add(otherUser);
-            _context.SaveChanges();
-        }
-        // ----- Edits -----
-        //Accesses the Family table, pulling an object with the same ID passed in famObject, rewriting information and saving
-        public void EditFamilyName(Family famObject)
-        {
-            IQueryable<Family> _famEdit;
-            _famEdit = from fEdit in _context.Families
-                       where fEdit.familyID == famObject.familyID
-                       select fEdit;
-            Family famEdit = _famEdit.First();
-
-            famEdit.familyName = famObject.familyName;
-
-            _context.SaveChanges();
-        }
-
-        public void EditLink(UserLink linkObject)
-        {
-            IQueryable<UserLink> _link;
-            _link = from link in _context.UserLinks
-                    where link.Id == linkObject.Id
-                    select link;
-            UserLink linkEdit = _link.First();
-
-            linkEdit.enabledUserName = linkObject.enabledUserName;
-            _context.SaveChanges();
-
-            
-        }
-        //Accesses the Individual table, pulling an object with the same ID passed by indObject, rewriting information and saving
-        public void EditIndividual(Individual indObject)
-        {
-            IQueryable<Individual> _indEdit;
-            _indEdit = from iEdit in _context.Individuals
-                       where iEdit.individualID == indObject.individualID
-                       select iEdit;
-            Individual indEdit = _indEdit.First();
-
-            indEdit.fullName = indObject.fullName;
-            indEdit.gender = indObject.gender;
-            indEdit.placeOfBirth = indObject.placeOfBirth;
-            indEdit.dateOfBirth = indObject.dateOfBirth;
-            indEdit.dateOfDeath = indObject.dateOfDeath;
-            indEdit.isParent = indObject.isParent;
-            _context.SaveChanges();
-        }
-
-        //Accesses the Relationship table, pulling an object with the same ID passed by relaObject, rewriting information and saving
-        public void EditRelative(Relationship relaObject)
-        {
-            IQueryable<Relationship> _relEdit;
-            _relEdit = from rEdit in _context.Relationships
-                       where rEdit.relationshipID == relaObject.relationshipID
-                       select rEdit;
-            Relationship relEdit = _relEdit.First();
-
-            relEdit.notableInformation = relaObject.notableInformation;
-            relEdit.relationshipStartDate = relaObject.relationshipStartDate;
-            relEdit.relationshipEndDate = relaObject.relationshipEndDate;
-            _context.SaveChanges();
-        }
-
-        // ----- Deletes -----
-
-        // Removes an object from the Individual table that matches indObject
-        public void DeleteIndividual(Individual indObject)
-        {
-            _context.Individuals.Remove(indObject);
-            _context.SaveChanges();
-        }
-
-        //Removes an object from the Relationship table that matches relaObject
-        public void DeleteRelative(Relationship relaObject)
-        {
-            _context.Relationships.Remove(relaObject);
-            _context.SaveChanges();
-        }
-    
-        //Removes an object from the Family table that matches famObject
-        public void DeleteFamilyName(Family famObject)
-        {
-            _context.Families.Remove(famObject);
-            _context.SaveChanges();
-        }
-        public void DeleteLinkedUser(UserLink linkObject)
-        {
-            _context.UserLinks.Remove(linkObject);
-            _context.SaveChanges();
-        }
-
-        // ----- USED FOR PLOTTING -----
 
 
-        //Works out how many children a person has, used for plotting
+            //Works out how many children a person has, used for plotting
         public int GetNumberOfChildren(int pid)
         {
             IQueryable<Relationship> _chi;
@@ -368,7 +332,10 @@ namespace FamilyTree.Data.DAO
         }
 
 
-        //Works out the width of each row, compares them against each other and returns the greatest value - used to calculate the width of the plot
+            //Works out the width of each row, compares them against each other and returns the greatest value - used to calculate the width of the plot
+            //This will cycle through all the relationships of an individual, and check to see whether they have partners and/or children
+            //As the plot is split into three rows it will work out the width required for each row and select the largest of the three and return this
+            //The plotting action will take this number and transpose that into the width required for the bitmap
         public int GetPlotWidth(int pid)
         {
             //Set initial row widths, these start at X unit widths as there is a border around the tree that must be maintained 
@@ -441,6 +408,73 @@ namespace FamilyTree.Data.DAO
         }
 
 
+        //------------ User Link Related Methods ------------
+        //
+
+            //This will add a user to the userlink table
+        public void AddLink(UserLink otherUser)
+        {
+            _context.UserLinks.Add(otherUser);
+            _context.SaveChanges();
+        }
+
+            //Enables a user to edit the username they input into the database
+            //Only really useful if they misspelled the email address
+        public void EditLink(UserLink linkObject)
+        {
+            IQueryable<UserLink> _link;
+            _link = from link in _context.UserLinks
+                    where link.Id == linkObject.Id
+                    select link;
+            UserLink linkEdit = _link.First();
+
+            linkEdit.enabledUserName = linkObject.enabledUserName;
+            _context.SaveChanges();
+        }
+
+            //Selects all the families that the user has been enabled access on by the owner
+        public IList<Family> GetLinkFamilies(string uid)
+        {
+            IQueryable<Family> _fam;
+
+            //Select from the families table, all family entries that are enabled for this user, therefore having the same family ID's as shown in the link table
+            _fam = from link in _context.UserLinks
+                   from fam in _context.Families
+                   where link.enabledUserName == uid
+                   && fam.familyID == link.familyID
+                   select fam;
+
+            return _fam.ToList();
+        }
+
+            //Selects a specified link for a user, used for confirmation when deleting a link
+        public UserLink GetUserLink(int lid)
+        {
+            IQueryable<UserLink> _link;
+            _link = from link in _context.UserLinks
+                    where link.Id == lid
+                    select link;
+            return _link.First();
+        }
+
+            //Gets a list of all the links enabled on a specific family that is owned by the current user
+        public IList<UserLink> GetLinkList(string uid, int fid)
+        {
+            IQueryable<UserLink> _link;
+            _link = from link in _context.UserLinks
+                    where link.ownerUserName == uid
+                    && link.familyID == fid
+                    select link;
+            return _link.ToList();
+        }
+
+            //Removes a linked user from a family tree
+        public void DeleteLinkedUser(UserLink linkObject)
+        {
+            _context.UserLinks.Remove(linkObject);
+            _context.SaveChanges();
+        }
+
 
         // ------------------------------ Method Graveyard ------------------------------
 
@@ -450,7 +484,11 @@ namespace FamilyTree.Data.DAO
             //For instance, the couple table was initially added as a way of being able to display different "Family units" within the same tree
             //However, I felt the way I ended up doing that functionality made more sense to myself and was more intuitive
 
-
+        public void AddInverse(Relationship invObject)
+        {
+            _context.Relationships.Add(invObject);
+            _context.SaveChanges();
+        }
 
 
         public void AddCouple(int pid, int rid)

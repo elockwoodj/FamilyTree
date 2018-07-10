@@ -52,9 +52,7 @@
     <Compile Include="AspNetUser.cs">
       <DependentUpon>FamilyTree.tt</DependentUpon>
     </Compile>
-    <Compile Include="BEANS\couBEAN.cs" />
     <Compile Include="BEANS\relaBEAN.cs" />
-    <Compile Include="BEANS\TreeBEAN.cs" />
     <Compile Include="Couple.cs">
       <DependentUpon>FamilyTree.tt</DependentUpon>
     </Compile>

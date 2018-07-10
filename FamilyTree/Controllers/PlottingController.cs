@@ -74,14 +74,10 @@ namespace FamilyTree.Controllers
                     System.IO.File.Delete(filename);
                     return new FileContentResult(bytes, "image/jpeg");
 
-
-
-                    PictureBox picture = new PictureBox();
-                    picture.Image = bmp;
-                    //return picture;
                 }
             }
         }
+
 
         public PictureBox picture()
         {
@@ -159,6 +155,8 @@ namespace FamilyTree.Controllers
                 }
             }
         }
+        
+
 
 
 

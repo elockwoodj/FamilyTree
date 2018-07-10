@@ -1,16 +1,15 @@
 ﻿
 @{
-    ViewBag.Title = "PlotIndividual";
+    ViewBag.Title = "picture";
 }
 
-<h2>Customise Your Plot</h2>
-
+<h2>picture</h2>
 
 <div>
     <p>Please choose the colour you would like the background to be:</p>
 
 
-    
+
 
 </div>
 
@@ -24,11 +23,10 @@
 <div>
     <p>When you plot, the selected family member will be central to the tree, with a distinct outline around their node to be easily visible</p>
     @Html.BeginForm()
-    { 
+    {
 
-        @Html.ActionLink("Plot with Selected Information", "picture", new { @*pid = ViewBag.pid,*@  controller = "Plotting" }) 
+    @Html.ActionLink("Plot with Selected Information", "picture", new
+        { @*pid = ViewBag.pid,*@  controller = "Plotting"});
     }
 
 </div>
-
-

@@ -322,6 +322,7 @@
     <Content Include="Views\Family\GetLinkedUsers.cshtml" />
     <Content Include="Views\Family\DeleteLinkedUser.cshtml" />
     <Content Include="Views\FamilyAdmin\EditLink.cshtml" />
+    <Content Include="Views\Plotting\picture.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

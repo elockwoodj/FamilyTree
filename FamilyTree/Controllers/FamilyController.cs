@@ -25,9 +25,7 @@ namespace FamilyTree.Controllers
 
         public ActionResult Families()
         {
-            //ViewBag.ownerUserName = User.Identity.Name;
             var uid = User.Identity.Name;
-
             return View(_treeService.GetFamilies(uid));
         }
 
@@ -45,25 +43,6 @@ namespace FamilyTree.Controllers
         {
             return View(_treeService.GetIndividual(pid));
         }
-        //[HttpGet]
-        //public ActionResult AddFamilyName()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public ActionResult AddFamilyName(Family familyName)
-        //{
-        //    try
-        //    {
-        //        _treeService.AddFamilyName(familyName);
-        //        return RedirectToAction("Families");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
 
             //VVV
         public ActionResult GetIndividuals(int fid)
@@ -98,10 +77,6 @@ namespace FamilyTree.Controllers
             return View(_treeService.GetRelatives(pid));
         }
 
-        //public ActionResult GetFamily(int fid)
-        //{
-        //    return View(_treeService.GetFamilyMembers(fid));
-        //}
 
         [HttpGet]
         public ActionResult AddIndividual(int fid)
@@ -216,28 +191,6 @@ namespace FamilyTree.Controllers
                 Relationship _relObject = _treeService.GetRelDelete(rid);
                 _treeService.DeleteRelative(_relObject);
                 return RedirectToAction("GetRelatives", new { pid = _relObject.personID, controller = "Family" });
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Family/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Family/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
             }
             catch
             {
