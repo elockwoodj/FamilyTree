@@ -100,8 +100,8 @@ namespace FamilyTree.Controllers
                 return RedirectToAction("GetIndividuals", "Family", new { fid = individual.familyID });
             }
         }
-        [HttpGet]
 
+        [HttpGet]
         public ActionResult AddRelative(int fid, int pid)
         {
             //Assign personID and familyID so they are autopopulated in the view
@@ -117,8 +117,7 @@ namespace FamilyTree.Controllers
                     {
                         Text = item.fullName,
                         Value = item.relativeID.ToString()
-                    });
-                    
+                    });                    
             };
             ViewBag.relativeList = relativeList;
             //List for Relationship Type
@@ -135,9 +134,7 @@ namespace FamilyTree.Controllers
                 );
             }
             ViewBag.typeList = typeList;
-
             //List for relative Role
-
             List<SelectListItem> roleList = new List<SelectListItem>();
             
             foreach(var item in _treeService.GetRoles())
