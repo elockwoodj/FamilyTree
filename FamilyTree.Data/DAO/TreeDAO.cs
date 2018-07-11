@@ -58,8 +58,14 @@ namespace FamilyTree.Data.DAO
           //Removes an object from the Family table that matches famObject
         public void DeleteFamilyName(Family famObject)
         {
-            _context.Families.Remove(famObject);
-            _context.SaveChanges();
+            if (famCheck(famObject.familyID) == false)
+            { }
+            else
+            {
+                _context.Families.Remove(famObject);
+                _context.SaveChanges();                
+            }
+
         }
 
           //Accesses the Family table, pulling an object with the same ID passed in famObject, rewriting information and saving
@@ -130,8 +136,13 @@ namespace FamilyTree.Data.DAO
             // Removes an object from the Individual table that matches indObject
         public void DeleteIndividual(Individual indObject)
         {
-            _context.Individuals.Remove(indObject);
-            _context.SaveChanges();
+            if (IndCheck(indObject.individualID) == false)
+            { }
+            else
+            {
+                _context.Individuals.Remove(indObject);
+                _context.SaveChanges();
+            }
         }
 
         //---------------- Relationship Related Methods --------------
@@ -207,7 +218,7 @@ namespace FamilyTree.Data.DAO
             _context.Relationships.Add(relaObject);
             _context.SaveChanges();
         }
-        //Accesses the Relationship table, pulling an object with the same ID passed by relaObject, rewriting information and saving
+            //Accesses the Relationship table, pulling an object with the same ID passed by relaObject, rewriting information and saving
         public void EditRelative(Relationship relaObject)
         {
             IQueryable<Relationship> _relEdit;
@@ -225,8 +236,13 @@ namespace FamilyTree.Data.DAO
             //Removes an object from the Relationship table that matches relaObject
         public void DeleteRelative(Relationship relaObject)
         {
+            if (relCheck(relaObject.relationshipID) == false) { }
+            else
+            {
             _context.Relationships.Remove(relaObject);
             _context.SaveChanges();
+            }
+
         }
         //-------- Helper methods ---------
         //These methods are all called by other methods within the application and aren't used directly by the user
@@ -362,12 +378,14 @@ namespace FamilyTree.Data.DAO
 
                 else if(person.relationshipTypeID == 2) //They are this persons parents
                 {
-                    var partCheck = GetRelationships(person.relativeID); //Load up parents relationships
-                    bool partnerCheck = partCheck.Any(par => par.relationshipTypeID == 4); //Check if any of the relationships match the marriage type
-                    if (partnerCheck == true) //If they do, add an additional width
-                    {
-                        rowOneEntries = rowOneEntries + 1;
-                    }
+                        //Don't need to load parents relationships as they will be connected already 
+                        //We are assuming they are not divorced as we are not concerned with divorces etc.
+                    //var partCheck = GetRelationships(person.relativeID); //Load up parents relationships
+                    //bool partnerCheck = partCheck.Any(par => par.relationshipTypeID == 4); //Check if any of the relationships match the marriage type
+                    //if (partnerCheck == true) //If they do, add an additional width
+                    //{
+                    //    rowOneEntries = rowOneEntries + 1;
+                    //}
                     rowOneEntries = rowOneEntries + 1;
                 }
 
@@ -417,6 +435,8 @@ namespace FamilyTree.Data.DAO
             _context.UserLinks.Add(otherUser);
             _context.SaveChanges();
         }
+
+
 
             //Enables a user to edit the username they input into the database
             //Only really useful if they misspelled the email address
@@ -471,11 +491,58 @@ namespace FamilyTree.Data.DAO
             //Removes a linked user from a family tree
         public void DeleteLinkedUser(UserLink linkObject)
         {
-            _context.UserLinks.Remove(linkObject);
-            _context.SaveChanges();
+            bool check = LinkCheck(linkObject.Id);
+            //Check if this link exists, if it does then delete
+            if (check == false)
+            {  }
+            else
+            {
+                _context.UserLinks.Remove(linkObject);
+                _context.SaveChanges();
+            }
         }
 
-
+        //Checkers, testing if values exist for deletion
+        public bool LinkCheck(int lid)
+        {
+            IQueryable<int> idList = from lis in _context.UserLinks
+                                     select lis.Id;
+            if (idList.ToList<int>().Contains(lid))
+            {
+                return true;
+            }
+            else return false;
+        }
+        public bool IndCheck(int pid)
+        {
+            IQueryable<int> idList = from lis in _context.Individuals
+                                     select lis.individualID;
+            if (idList.ToList().Contains(pid))
+            {
+                return true;
+            }
+            else return false;
+        }
+        public bool relCheck(int rid)
+        {
+            IQueryable<int> idList = from list in _context.Relationships
+                                     select list.relationshipID;
+            if (idList.ToList().Contains(rid))
+            {
+                return true;
+            }
+            else return false;
+        }
+        public bool famCheck(int fid)
+        {
+            IQueryable<int> idList = from list in _context.Families
+                                     select list.familyID;
+            if (idList.ToList().Contains(fid))
+            {
+                return true;
+            }
+            else return false;
+        }
         // ------------------------------ Method Graveyard ------------------------------
 
 

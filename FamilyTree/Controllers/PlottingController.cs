@@ -445,8 +445,8 @@ namespace FamilyTree.Controllers
 
 
             string mainName = mainIndividual.fullName.ToString();
-            int bigW = _treeService.GetPlotWidth(pid) * width * 2;
-            int bigH = height * (numberOfGenerations + 3); //Give a border of a height either side around the plot
+            int bigW = _treeService.GetPlotWidth(pid) * width * 2 + (width / 4);
+            int bigH = height * (numberOfGenerations + 3); //Give a border of a height either side around the plot, assi
             float xChild = (bigW / 2);
             //Used for colour plotting
             int alpha = 100;
