@@ -4,7 +4,7 @@
     ViewBag.Title = "Families";
 }
 
-<h2>Families</h2>
+<h2>Welcome @ViewBag.ownerUserName</h2>
 
 <p>
     @Html.ActionLink("Create New Family", "AddFamilyName",new { ownerUserName = ViewBag.ownerUserName, controller = "FamilyAdmin"})

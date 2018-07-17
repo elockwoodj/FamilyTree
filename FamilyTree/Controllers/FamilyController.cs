@@ -26,6 +26,7 @@ namespace FamilyTree.Controllers
         public ActionResult Families()
         {
             var uid = User.Identity.Name;
+            ViewBag.ownerUserName = User.Identity.Name;
             return View(_treeService.GetFamilies(uid));
         }
 
