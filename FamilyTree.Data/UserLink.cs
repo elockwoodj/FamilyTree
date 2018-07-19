@@ -11,17 +11,12 @@ namespace FamilyTree.Data
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class UserLink
     {
         public int Id { get; set; }
         public int familyID { get; set; }
-
-        [Display(Name = "Owner User Name")]
         public string ownerUserName { get; set; }
-
-        [Display(Name = "Enabled User Name")]
         public string enabledUserName { get; set; }
     }
 }

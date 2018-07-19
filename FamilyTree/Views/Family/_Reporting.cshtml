@@ -1,0 +1,23 @@
+﻿@model FamilyTree.Data.Individual
+
+
+
+<div>
+    <p>Which individual would you like information on?</p>
+</div>
+
+@using (Html.BeginForm())
+{ 
+
+<div class="form-group">
+    <div class="col-md-10">
+        @Html.DropDownListFor(model => model.fullName, (List<SelectListItem>)ViewBag.indList)
+        @Html.ValidationMessageFor(model => model.fullName, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Create" class="btn btn-default" />
+    </div>
+</div>
+}

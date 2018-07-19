@@ -10,9 +10,9 @@
         <EntityTypeShape EntityType="b7039648Model.RelationshipType" Width="1.5" PointX="4.75" PointY="0.75" />
         <EntityTypeShape EntityType="b7039648Model.Role" Width="1.5" PointX="6.5" PointY="0.75" />
         <EntityTypeShape EntityType="b7039648Model.Relationship" Width="1.5" PointX="4.75" PointY="2.375" />
-        <EntityTypeShape EntityType="b7039648Model.Individual" Width="1.5" PointX="2.75" PointY="2.5" />
         <EntityTypeShape EntityType="b7039648Model.Couple" Width="1.5" PointX="6.5" PointY="2.375" />
         <EntityTypeShape EntityType="b7039648Model.UserLink" Width="1.5" PointX="8.25" PointY="0.75" />
+        <EntityTypeShape EntityType="b7039648Model.Individual" Width="1.5" PointX="2.75" PointY="2.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

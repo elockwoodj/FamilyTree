@@ -30,8 +30,8 @@ namespace FamilyTree.Data
         public virtual DbSet<RelationshipType> RelationshipTypes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Relationship> Relationships { get; set; }
-        public virtual DbSet<Individual> Individuals { get; set; }
         public virtual DbSet<Couple> Couples { get; set; }
         public virtual DbSet<UserLink> UserLinks { get; set; }
+        public virtual DbSet<Individual> Individuals { get; set; }
     }
 }

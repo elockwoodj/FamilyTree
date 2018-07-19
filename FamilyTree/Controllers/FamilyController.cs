@@ -51,6 +51,33 @@ namespace FamilyTree.Controllers
             ViewBag.familyID = fid;
             return View(_treeService.GetIndividuals(fid));
         }
+
+        [HttpGet]
+        public ActionResult _Reporting(int fid)
+        {
+            //Make a list of individuals, allows to expand details on any one individual
+            List<SelectListItem> indList = new List<SelectListItem>();
+            foreach (var item in _treeService.GetIndividuals(fid))
+            {
+                indList.Add(
+                    new SelectListItem()
+                    {
+                        Text = item.fullName,
+                        Value = item.individualID.ToString()
+                    });
+            };
+            ViewBag.indList = indList;
+
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult _Reporting(int fid, int pid)
+        {
+            return RedirectToAction("GetIndividual", new { pid = pid });
+        }
+
+
         //Partial view for Linked users
         public ActionResult GetLinkIndividuals(int fid)
         {

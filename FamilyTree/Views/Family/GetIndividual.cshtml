@@ -1,8 +1,6 @@
 ﻿@model IEnumerable<FamilyTree.Data.Individual>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<p>Additional Information on Individual</p>
 <table class="table">
     <tr>
         <th>
@@ -21,7 +19,7 @@
             @Html.DisplayNameFor(model => model.placeOfBirth)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.familyID)
+            @Html.DisplayNameFor(model => model.notes)
         </th>
         <th></th>
     </tr>
@@ -44,14 +42,9 @@
             @Html.DisplayFor(modelItem => item.placeOfBirth)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.familyID)
+            @Html.DisplayFor(modelItem => item.notes)
         </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.individualID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.individualID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.individualID })
-        </td>
-    </tr>
+        </tr>
 }
 
 </table>

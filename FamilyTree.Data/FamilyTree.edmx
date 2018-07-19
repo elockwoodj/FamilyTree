@@ -52,6 +52,7 @@
           <Property Name="familyID" Type="int" Nullable="false" />
           <Property Name="isParent" Type="int" Nullable="false" />
           <Property Name="coupleID" Type="int" />
+          <Property Name="notes" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Relationships">
           <Key>
@@ -135,9 +136,9 @@
           <EntitySet Name="RelationshipTypes" EntityType="b7039648Model.RelationshipType" />
           <EntitySet Name="Roles" EntityType="b7039648Model.Role" />
           <EntitySet Name="Relationships" EntityType="b7039648Model.Relationship" />
-          <EntitySet Name="Individuals" EntityType="b7039648Model.Individual" />
           <EntitySet Name="Couples" EntityType="b7039648Model.Couple" />
           <EntitySet Name="UserLinks" EntityType="b7039648Model.UserLink" />
+          <EntitySet Name="Individuals" EntityType="b7039648Model.Individual" />
         </EntityContainer>
         <EntityType Name="RelationshipType">
           <Key>
@@ -167,20 +168,6 @@
           <Property Name="notableInformation" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="familyID" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="Individual">
-          <Key>
-            <PropertyRef Name="individualID" />
-          </Key>
-          <Property Name="individualID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="fullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="dateOfBirth" Type="DateTime" Precision="0" />
-          <Property Name="dateOfDeath" Type="DateTime" Precision="0" />
-          <Property Name="gender" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="placeOfBirth" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="familyID" Type="Int32" Nullable="false" />
-          <Property Name="isParent" Type="Int32" Nullable="false" />
-          <Property Name="coupleID" Type="Int32" />
-        </EntityType>
         <EntityType Name="Couple">
           <Key>
             <PropertyRef Name="coupleID" />
@@ -198,6 +185,21 @@
           <Property Name="familyID" Type="Int32" Nullable="false" />
           <Property Name="ownerUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="enabledUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Individual">
+          <Key>
+            <PropertyRef Name="individualID" />
+          </Key>
+          <Property Name="individualID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="dateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="dateOfDeath" Type="DateTime" Precision="0" />
+          <Property Name="gender" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="placeOfBirth" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="familyID" Type="Int32" Nullable="false" />
+          <Property Name="isParent" Type="Int32" Nullable="false" />
+          <Property Name="coupleID" Type="Int32" />
+          <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -263,21 +265,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Individuals">
-            <EntityTypeMapping TypeName="b7039648Model.Individual">
-              <MappingFragment StoreEntitySet="Individuals">
-                <ScalarProperty Name="coupleID" ColumnName="coupleID" />
-                <ScalarProperty Name="isParent" ColumnName="isParent" />
-                <ScalarProperty Name="familyID" ColumnName="familyID" />
-                <ScalarProperty Name="placeOfBirth" ColumnName="placeOfBirth" />
-                <ScalarProperty Name="gender" ColumnName="gender" />
-                <ScalarProperty Name="dateOfDeath" ColumnName="dateOfDeath" />
-                <ScalarProperty Name="dateOfBirth" ColumnName="dateOfBirth" />
-                <ScalarProperty Name="fullName" ColumnName="fullName" />
-                <ScalarProperty Name="individualID" ColumnName="individualID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Couples">
             <EntityTypeMapping TypeName="b7039648Model.Couple">
               <MappingFragment StoreEntitySet="Couple">
@@ -295,6 +282,22 @@
                 <ScalarProperty Name="ownerUserName" ColumnName="ownerUserName" />
                 <ScalarProperty Name="familyID" ColumnName="familyID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Individuals">
+            <EntityTypeMapping TypeName="b7039648Model.Individual">
+              <MappingFragment StoreEntitySet="Individuals">
+                <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="coupleID" ColumnName="coupleID" />
+                <ScalarProperty Name="isParent" ColumnName="isParent" />
+                <ScalarProperty Name="familyID" ColumnName="familyID" />
+                <ScalarProperty Name="placeOfBirth" ColumnName="placeOfBirth" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="dateOfDeath" ColumnName="dateOfDeath" />
+                <ScalarProperty Name="dateOfBirth" ColumnName="dateOfBirth" />
+                <ScalarProperty Name="fullName" ColumnName="fullName" />
+                <ScalarProperty Name="individualID" ColumnName="individualID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
