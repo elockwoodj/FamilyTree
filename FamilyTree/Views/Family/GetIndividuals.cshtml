@@ -53,9 +53,10 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "EditIndividual", new { pid = item.individualID, controller = "FamilyAdmin" }) |
-            @Html.ActionLink("Delete", "DeleteIndividual", new { pid = item.individualID ,fid = ViewBag.familyID , controller="Family"}) |
+            @Html.ActionLink("Delete", "DeleteIndividual", new { pid = item.individualID, fid = ViewBag.familyID, controller = "Family" }) |
             @Html.ActionLink("Show Relatives", "GetRelatives", new { pid = item.individualID }) |
-            @Html.ActionLink("Plot This Person's Tree", "PlotIndividual", new { pid = item.individualID, controller = "Plotting" })
+            @Html.ActionLink("Plot This Person's Tree", "PlotIndividual", new { pid = item.individualID, controller = "Plotting" }) |
+            @Html.ActionLink("Report on this Person", "ReportIndividual", new { pid = item.individualID, controller = "Family" })
 
 
         </td>
@@ -64,5 +65,5 @@
    
 </table>
 
-@{Html.RenderAction("_Reporting", "Family", new { fid = ViewBag.familyID });} @*NEED TO FIND WAY OF PASSING PID*@
+
 

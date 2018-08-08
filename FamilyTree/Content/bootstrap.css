@@ -277,10 +277,10 @@ table {
   .navbar {
     display: none;
   }
-  .table td,
-  .table th {
-    background-color: #fff !important;
-  }
+    .table td,
+    .table th {
+        background-color: #FFFF00 !important;
+    }
   .btn > .caret,
   .dropup > .btn > .caret {
     border-top-color: #000 !important;
