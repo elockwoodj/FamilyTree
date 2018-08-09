@@ -465,7 +465,7 @@ namespace FamilyTree.Controllers
             //Three Rows of boxes, x and y values for these boxes updated as plotting is done
             float xRowOne = width / 4;
             float yRowOne = height + height / 2;
-            float xRowTwo = width; // Room for a parent node either side above you
+            float xRowTwo = width;
             float yRowTwo = 3 * height;
             float xRowThree = width / 4;
             float yRowThree = 5 * height;
@@ -612,7 +612,7 @@ namespace FamilyTree.Controllers
 
                             var parCheck = _treeService.GetRelationships(relative.relativeID);
                             bool Checker = parCheck.Any(p => p.relationshipTypeID == 2); //Check if any of the relationships are parents
-                            if (Checker == true) //If there are parent relationships, draw a line out of your box
+                            if (Checker == true) //If there are parent relationships, draw a line out of their box
                             {
                                 g.DrawLine(Pens.Black, xRowOne + width / 2, yRowOne, xRowOne + width / 2, yRowOne - (height / 2)); //Position the horizontal line, ready for addition of parent nodes, these will not contain information
                                 g.DrawString(individualName + "'s Parents",
