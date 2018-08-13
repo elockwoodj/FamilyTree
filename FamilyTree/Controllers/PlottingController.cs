@@ -26,140 +26,8 @@ namespace FamilyTree.Controllers
             return View();
         }
 
-        public FileContentResult CreateBitmap()
-        {
-            int height = 400;
-            int width = 200;
-            Random r = new Random();
-            using (Bitmap bmp = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format24bppRgb))
-            {
-                using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp))
-                {
-                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    g.Clear(System.Drawing.Color.LightGray);
-                    g.DrawRectangle(System.Drawing.Pens.White, 1, 1, width - 3, height - 3);
-                    g.DrawRectangle(System.Drawing.Pens.Gray, 2, 2, width - 3, height - 3);
-                    g.DrawRectangle(System.Drawing.Pens.Black, 0, 0, width, height);
-                    g.DrawString("Refresh Me!", new System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold),
-                        System.Drawing.SystemBrushes.WindowText, new System.Drawing.PointF(r.Next(50), r.Next(100)),
-                        new System.Drawing.StringFormat(System.Drawing.StringFormatFlags.DirectionVertical));
-                    g.FillRectangle(new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(r.Next(100), r.Next(130),
-                        r.Next(150), r.Next(200))), 20, 40, 60, 80);
-                    int x = r.Next(width);
-                    g.FillRectangle(new System.Drawing.Drawing2D.LinearGradientBrush(new System.Drawing.Point(x, 0),
-                        new System.Drawing.Point(x + 75, 100), System.Drawing.Color.FromArgb(128, 0, 0, r.Next(255)),
-                        System.Drawing.Color.FromArgb(255, r.Next(192, 255), r.Next(192, 255), r.Next(255))), x, r.Next(height), 75, 50);
 
-                    //Returns the specific location of the file
-                    //MapPath gives "physical file path that corresponds with the virtual path on the Web Server"
-                    //System.Guid.NewGuid() - Generates a Global Unique Identifier and initializes a new instance of Guid
-                    //Returns this physical path with the specified identifier to a string called "filename"
-                    string filename = Server.MapPath("/") + System.Guid.NewGuid().ToString("N");
-
-
-                    //Saves the bitmap file at that location in the specified format, in this case JPEG
-                    bmp.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    byte[] bytes;
-
-                    //System.IO.Filestream - Creates a filestream at the location of "filename" with the FileMode "Open"
-                    //In this example, it will attempt to open the file filename and turn this into a stream
-                    //If "filename" doesn't exist it will error
-                    using (System.IO.FileStream stream = new System.IO.FileStream(filename, System.IO.FileMode.Open))
-                    {
-
-                        bytes = new byte[stream.Length];
-                        stream.Read(bytes, 0, bytes.Length);
-                    }
-
-                    System.IO.File.Delete(filename);
-                    return new FileContentResult(bytes, "image/jpeg");
-
-                }
-            }
-        }
-
-
-        public PictureBox picture()
-        {
-            int height = 400;
-            int width = 200;
-            Random r = new Random();
-            using (Bitmap bmp = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format24bppRgb))
-            {
-                using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp))
-                {
-                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    g.Clear(System.Drawing.Color.LightGray);
-                    g.DrawRectangle(System.Drawing.Pens.White, 1, 1, width - 3, height - 3);
-                    g.DrawRectangle(System.Drawing.Pens.Gray, 2, 2, width - 3, height - 3);
-                    g.DrawRectangle(System.Drawing.Pens.Black, 0, 0, width, height);
-                    g.DrawString("Refresh Me!", new System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold),
-                        System.Drawing.SystemBrushes.WindowText, new System.Drawing.PointF(r.Next(50), r.Next(100)),
-                        new System.Drawing.StringFormat(System.Drawing.StringFormatFlags.DirectionVertical));
-                    g.FillRectangle(new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(r.Next(100), r.Next(130),
-                        r.Next(150), r.Next(200))), 20, 40, 60, 80);
-                    int x = r.Next(width);
-                    g.FillRectangle(new System.Drawing.Drawing2D.LinearGradientBrush(new System.Drawing.Point(x, 0),
-                        new System.Drawing.Point(x + 75, 100), System.Drawing.Color.FromArgb(128, 0, 0, r.Next(255)),
-                        System.Drawing.Color.FromArgb(255, r.Next(192, 255), r.Next(192, 255), r.Next(255))), x, r.Next(height), 75, 50);
-
-                    //Returns the specific location of the file
-                    //MapPath gives "physical file path that corresponds with the virtual path on the Web Server"
-                    //System.Guid.NewGuid() - Generates a Global Unique Identifier and initializes a new instance of Guid
-                    //Returns this physical path with the specified identifier to a string called "filename"
-                    string filename = Server.MapPath("/") + System.Guid.NewGuid().ToString("N");
-
-
-                    //Saves the bitmap file at that location in the specified format, in this case JPEG
-                    bmp.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    byte[] bytes;
-                    PictureBox picture = new PictureBox();
-                    //System.IO.Filestream - Creates a filestream at the location of "filename" with the FileMode "Open"
-                    //In this example, it will attempt to open the file filename and turn this into a stream
-                    //If "filename" doesn't exist it will error
-                    using (System.IO.FileStream stream = new System.IO.FileStream(filename, System.IO.FileMode.Open))
-                    {
-
-                        bytes = new byte[stream.Length];
-                        stream.Read(bytes, 0, bytes.Length);
-                        
-                    }
-
-                    //System.IO.File.Delete(filename);
-                    //return new FileContentResult(bytes, "image/jpeg");
-
-                    picture.Height = height;
-                    picture.Width = width;
-                    picture.Image = bmp;
-
-                    PictureBox imageControl = new PictureBox();
-
-                    imageControl.Width = 400;
-
-                    imageControl.Height = 400;
-
-
-
-                    Bitmap image = new Bitmap(bmp);
-
-                    imageControl.Dock = DockStyle.Fill;
-
-                    imageControl.Image = (Image)image;
-
-                    
-
-                    
-
-
-                    return imageControl;
-                }
-            }
-        }
-        
-
-
-
-
+        // ---------------- This is the first iteration of the plotting application -------------------
         public FileContentResult PlotOne(int fid) //Plots for nuclear families, no extended families.
         {
             //Dimensions of the box, all distances should be measured in these unit distances - helps keep consistancy
@@ -430,30 +298,21 @@ namespace FamilyTree.Controllers
             int height = 60;
             int width = 175;
 
-
-
-            //Color BackgroundColour = BackG;
-            //Color FillColour = Fill;
-            //IList<Individual> indList = _treeService.GetIndividuals(fid);
-            //int numberOfMembers = indList.Count();
-
+            // Collect information on individual and relatives
             Individual mainIndividual = _treeService.GetIndividual(pid);
             IList<Relationship> relList = _treeService.GetRelationships(pid);
-            int numberOfGenerations = 3;
-            int numberOfChildren = _treeService.GetNumberOfChildren(pid);
-
-
-
+            int numberOfChildren = _treeService.GetNumberOfChildren(pid);       
             string mainName = mainIndividual.fullName.ToString();
+
+            
             int bigW = _treeService.GetPlotWidth(pid) * width * 2 + (width / 4);
-            int bigH = height * (numberOfGenerations + 3); //Give a border of a height either side around the plot, assi
-            float xChild = (bigW / 2);
+            int bigH = height * 6; //Give a border of a height either side around the plot, assi
+
             //Used for colour plotting
             int alpha = 100;
             int red = 204;
             int green = 102;
             int blue = 0;
-
 
 
             string individualName;
@@ -463,19 +322,20 @@ namespace FamilyTree.Controllers
 
 
             //Three Rows of boxes, x and y values for these boxes updated as plotting is done
+
             float xRowOne = width / 4;
             float yRowOne = height + height / 2;
             float xRowTwo = width; // Room for a parent node either side above you
             float yRowTwo = 3 * height;
             float xRowThree = width / 4;
             float yRowThree = 5 * height;
+
             //If the individual plotted has siblings, these will need to be used, otherwise they won't be used
             float siblingX = 0;
             float siblingY = 0;
             //Plot point for Children
             float childX = 0;
             float childY = 0;
-
 
             using (Bitmap bmp = new Bitmap(bigW, 500))
             {

@@ -11,7 +11,8 @@ namespace FamilyTree.Data
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Relationship
     {
         public int relationshipID { get; set; }
@@ -19,8 +20,14 @@ namespace FamilyTree.Data
         public int relativeID { get; set; }
         public int relationshipTypeID { get; set; }
         public int relativeRole { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Relationship Start Date")]
         public Nullable<System.DateTime> relationshipStartDate { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Relationship End Date")]
         public Nullable<System.DateTime> relationshipEndDate { get; set; }
+        [Display(Name = "Notable Information")]
+
         public string notableInformation { get; set; }
         public int familyID { get; set; }
     }
