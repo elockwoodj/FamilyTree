@@ -85,6 +85,7 @@ namespace FamilyTree.Controllers
         [HttpGet]
         public ActionResult EditIndividual(int pid)
         {
+            ViewBag.familyID = _treeService.GetIndividual(pid).familyID;
             return View(_treeService.GetIndividual(pid));
         }
         [HttpPost]

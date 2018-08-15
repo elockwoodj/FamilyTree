@@ -20,13 +20,6 @@ namespace FamilyTree.Controllers
         {
             _treeService = new FamilyTree.Services.DAO.TreeService();
         }
-        public ActionResult PlotRectangle()
-        {
-
-            return View();
-        }
-
-
         // ---------------- This is the first iteration of the plotting application -------------------
         public FileContentResult PlotOne(int fid) //Plots for nuclear families, no extended families.
         {
@@ -286,11 +279,7 @@ namespace FamilyTree.Controllers
         }
 
 
-        //public ActionResult PlotIndividual(int pid)
-        //{
-        //    ViewBag.pid = pid;
-        //    return View();
-        //}
+        // ---------------- Second and Final Iteration of plotting application ---------------------
         //Plotting from a specific person in your family, will show parents, partner and children
         public FileContentResult PlotIndividual(int pid)
         {
