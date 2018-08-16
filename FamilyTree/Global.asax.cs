@@ -16,7 +16,7 @@ namespace FamilyTree
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            GlobalFilters.Filters.Add(new AuthorizeAttribute()); //Forces user login for everything, otherwise should navigate them to login page
+            GlobalFilters.Filters.Add(new AuthorizeAttribute()); //Forces user login for everything, otherwise navigate them to login page
         }
     }
 }

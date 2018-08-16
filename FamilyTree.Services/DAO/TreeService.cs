@@ -20,6 +20,11 @@ namespace FamilyTree.Services.DAO
             _treeDAO = new TreeDAO();
         }
 
+        // -----------------------
+        // All the methods within this section simply collect the 
+
+
+
         public IList<Family> GetFamilies(string uid)
         {
             return _treeDAO.GetFamilies(uid);

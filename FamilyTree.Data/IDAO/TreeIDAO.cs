@@ -10,6 +10,9 @@ namespace FamilyTree.Data.IDAO
     public interface TreeIDAO
     {
 
+
+
+
         //-----Deletes -----
         void DeleteFamilyName(Family familyName);
         void DeleteIndividual(Individual individual);

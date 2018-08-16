@@ -431,7 +431,6 @@ namespace FamilyTree.Controllers
                             xRowTwo = xRowTwo + 2 * width;
 
                         }
-                        // ****************************** COMMENT FROM HERE **************************************
 
                         /// ---------------- Check For Parent Relationship -----------------
                         else if (relative.relationshipTypeID == 2)//relationship type is parent, therefore plot box above you
@@ -499,18 +498,21 @@ namespace FamilyTree.Controllers
                                 SystemBrushes.WindowText,
                                 new PointF(xRowThree + 5, yRowThree + 20),
                                 new StringFormat());
+                            //Writes Date of Death
                             g.DrawString(dateDeath, new Font("Arial", 10, FontStyle.Bold),
                                 SystemBrushes.WindowText,
                                 new PointF(xRowThree + 5, yRowThree + 35),
                                 new StringFormat());
+                            // Fill node with colour
                             g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
                                 green, blue)), xRowThree, yRowThree, width, height);
 
-
-
+                            // Draw lines up to the bus from the parent
                             g.DrawLine(Pens.Black, xRowThree + width / 2, yRowThree, xRowThree + width / 2, yRowThree - height / 2);
                             g.DrawLine(Pens.Black, xRowThree + width / 2, childY, childX, childY);
+                            // Update row three's x Position 
                             xRowThree = xRowThree + width + width;
+
                             var partCheck = _treeService.GetRelationships(relative.relativeID); //Load up childs relationships
                             bool partnerCheck = partCheck.Any(par => par.relationshipTypeID == 4); //Check if any of the relationships match the marriage type
                             if (partnerCheck == true) //If they do, plot the marriage 
@@ -520,6 +522,7 @@ namespace FamilyTree.Controllers
 
                                 if (kidChecker == true)
                                 {
+                                    //Create busses to the child node, write their names and fill the rectangle
                                     g.DrawLine(Pens.Black, xRowThree - width + width / 2, (yRowThree + (height / 2)), xRowThree - width + width / 2, (yRowThree + (height / 2) + height));
                                     g.DrawString(individualName + "'s Children",
                                         new Font("Arial", 10, FontStyle.Bold),

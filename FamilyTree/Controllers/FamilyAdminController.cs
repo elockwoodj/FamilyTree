@@ -18,15 +18,14 @@ namespace FamilyTree.Controllers
             _treeService = new Services.DAO.TreeService();
         }
 
-        // GET: FamilyAdmin/Create
+        //Adds the current users username to the viewbag to be used in view
         [HttpGet]
         public ActionResult AddFamilyName()
         {
             ViewBag.ownerUserName = User.Identity.Name;
             return View();
         }
-
-        // POST: FamilyAdmin/Create
+        // Adds a Family Name to the Family Table
         [HttpPost]
         public ActionResult AddFamilyName(Family familyObject)
         {
@@ -40,6 +39,8 @@ namespace FamilyTree.Controllers
                 return View();
             }
         }
+
+        // Adds familyID and the owners user name to ViewBag to be accessed in view
         [HttpGet]
         public ActionResult AddLink(int fid)
         {
@@ -47,6 +48,7 @@ namespace FamilyTree.Controllers
             ViewBag.ownerUserName = User.Identity.Name;
             return View();
         }
+        // Adds a linked user to the database
         [HttpPost]
         public ActionResult AddLink(UserLink otherUser)
         {
@@ -61,14 +63,13 @@ namespace FamilyTree.Controllers
             }
         }
         
-        //Needs Finishing, doesn't work properly, possibly the get action as doesn't retrieve the information
-        // GET: FamilyAdmin/Edit/5
+        
+        // Retrieves Family Object from database and edits the information before redirecting to the Families action
         [HttpGet]
         public ActionResult EditFamilyName(int fid)
         {
             return View(_treeService.GetFamily(fid));
-        }
-
+        }    
         [HttpPost]
         public ActionResult EditFamilyName(Family famObject)
         {
@@ -82,6 +83,8 @@ namespace FamilyTree.Controllers
                 return RedirectToAction("Families", "Family");
             }
         }
+
+        // Retrieves Individual Object from database and edits the information before redirecting to the GetIndividuals action
         [HttpGet]
         public ActionResult EditIndividual(int pid)
         {
@@ -102,6 +105,7 @@ namespace FamilyTree.Controllers
             }
         }
 
+
         [HttpGet]
         public ActionResult AddRelative(int fid, int pid)
         {
@@ -121,7 +125,7 @@ namespace FamilyTree.Controllers
                     });                    
             };
             ViewBag.relativeList = relativeList;
-            //List for Relationship Type
+            //List for Relationship Type, used in view
             List<SelectListItem> typeList = new List<SelectListItem>();
 
             foreach( var item in _treeService.GetTypes())
@@ -135,7 +139,7 @@ namespace FamilyTree.Controllers
                 );
             }
             ViewBag.typeList = typeList;
-            //List for relative Role
+            //List for relative Role, used in the view
             List<SelectListItem> roleList = new List<SelectListItem>();
             
             foreach(var item in _treeService.GetRoles())
@@ -256,6 +260,7 @@ namespace FamilyTree.Controllers
             }
         } 
 
+        // Allows edit of a linked username
         [HttpGet]
         public ActionResult EditLink(int lid)
         {
@@ -275,7 +280,7 @@ namespace FamilyTree.Controllers
             }
         }
 
-
+        // Takes the relationship object from the database, storing some information for the view and edits the information before saving
         [HttpGet]
         public ActionResult EditRelative(int rid)
         {
@@ -287,6 +292,7 @@ namespace FamilyTree.Controllers
         [HttpPost]
         public ActionResult EditRelative(relaBEAN relObject)
         {
+            // try/catch to ensure the programme doesn't crash
             try
             {
                 Relationship editRela = new Relationship
