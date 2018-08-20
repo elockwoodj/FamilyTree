@@ -192,7 +192,7 @@ namespace FamilyTree.Controllers
                     {
                         case 1: //Inserting a Brother and you are Male
                             break;
-                        case 2: //Inseting a Sister and you are Male
+                        case 2: //Inserting a Sister and you are Male
                             rela.relativeRole = 1;
                             break;
                         case 3: //Inserting a Father and you are Male
@@ -218,7 +218,7 @@ namespace FamilyTree.Controllers
                 {
                     switch (rela.relativeRole)
                     {
-                        case 1: //Inesrting a Brother are you are Female
+                        case 1: //Inserting a Brother are you are Female
                             rela.relativeRole = 2;
                             break;
                         case 2: //Inserting a Sister and you are Female
@@ -232,7 +232,7 @@ namespace FamilyTree.Controllers
                         case 5: //Inserting a Child and you are Female
                             rela.relativeRole = 4;
                             break;
-                        case 6: //Inesrting a Husband and you are Female
+                        case 6: //Ineserting a Husband and you are Female
                             rela.relativeRole = 7;
                             break;
                         case 7: //Inserting a Wife and you are Female
