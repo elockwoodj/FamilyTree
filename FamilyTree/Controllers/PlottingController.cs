@@ -303,14 +303,15 @@ namespace FamilyTree.Controllers
             int green = 102;
             int blue = 0;
 
-
+            //variables that will contain individual information, used to print values inside node
             string individualName;
             string dateBirth;
             string dateDeath;
             float titleLocation = (bigW / 2) - ((mainIndividual.fullName.Length * 8) / 2); //A letter in a string takes up approx 8 pixels
 
 
-            //Three Rows of boxes, x and y values for these boxes updated as plotting is done
+            //Three Rows of boxes, x  values for these boxes updated as plotting is done
+            //The y coordinates on these nodes are all constant as they are the three rows and their positions stay constant
 
             float xRowOne = width / 4;
             float yRowOne = height + height / 2;
@@ -391,6 +392,7 @@ namespace FamilyTree.Controllers
                     {
                         g.DrawLine(Pens.Black, xRowTwo - width / 2, (yRowTwo + (height / 2)), xRowTwo - width / 2, (yRowTwo + (height / 2) + height));
                     }
+                    // Assign location for child bus point of connection
                     childX = xRowTwo - width / 2;
                     childY = yRowTwo + height + height / 2;
 
@@ -435,6 +437,7 @@ namespace FamilyTree.Controllers
                         /// ---------------- Check For Parent Relationship -----------------
                         else if (relative.relationshipTypeID == 2)//relationship type is parent, therefore plot box above you
                         {
+                            //Load parents information ready for display
                             individualName = _treeService.GetIndividual(relative.relativeID).fullName.ToString();
                             dateBirth = _treeService.GetIndividual(relative.relativeID).dateOfBirth.ToString();
                             dateDeath = _treeService.GetIndividual(relative.relativeID).dateOfDeath.ToString();
@@ -451,6 +454,7 @@ namespace FamilyTree.Controllers
                                 SystemBrushes.WindowText,
                                 new PointF(xRowOne + 5, yRowOne + 20),
                                 new StringFormat());
+                            //Write Date of Death
                             g.DrawString(dateDeath, new Font("Arial", 10, FontStyle.Bold),
                                 SystemBrushes.WindowText,
                                 new PointF(xRowOne + 5, yRowOne + 35),
@@ -458,6 +462,7 @@ namespace FamilyTree.Controllers
                             g.FillRectangle(new SolidBrush(Color.FromArgb(alpha, red,
                                 green, blue)), xRowOne, yRowOne, width, height);
 
+                            // Load parents relationships and check for certain conditions
                             var parCheck = _treeService.GetRelationships(relative.relativeID);
                             bool Checker = parCheck.Any(p => p.relationshipTypeID == 2); //Check if any of the relationships are parents
                             if (Checker == true) //If there are parent relationships, draw a line out of their box
@@ -473,6 +478,7 @@ namespace FamilyTree.Controllers
                                 green, blue)), xRowOne, yRowOne - height, width, height / 2);
                             }
 
+                            //Update x location
                             xRowOne = xRowOne + width / 2 + width;
 
                         }
@@ -571,10 +577,12 @@ namespace FamilyTree.Controllers
                     {
                         if (relative.relationshipTypeID == 1)
                         {
+                            //Load up the individuals name
                             individualName = _treeService.GetIndividual(relative.relativeID).fullName.ToString();
                             dateBirth = _treeService.GetIndividual(relative.relativeID).dateOfBirth.ToString();
                             dateDeath = _treeService.GetIndividual(relative.relativeID).dateOfDeath.ToString();
 
+                            //Writes individual name
                             g.DrawString(individualName,
                                 new Font("Arial", 10, FontStyle.Bold),
                                 SystemBrushes.WindowText,
@@ -588,6 +596,7 @@ namespace FamilyTree.Controllers
                                 new PointF(xRowTwo + 5, yRowTwo + 20),
                                 new StringFormat());
 
+                            //Writes the Date of Death
                             g.DrawString(dateDeath, new Font("Arial", 10, FontStyle.Bold),
                                 SystemBrushes.WindowText,
                                 new PointF(xRowTwo + 5, yRowTwo + 35),
@@ -600,6 +609,7 @@ namespace FamilyTree.Controllers
                             g.DrawLine(Pens.Black, xRowTwo + width / 2, yRowTwo, xRowTwo + width / 2, siblingY);
                             g.DrawLine(Pens.Black, xRowTwo + width / 2, siblingY, siblingX, siblingY);
 
+                            //Update x coordinates for next node
                             xRowTwo = xRowTwo + 2 * width;
 
                             var partCheck = _treeService.GetRelationships(relative.relativeID); //Load up siblings relationships
@@ -607,7 +617,8 @@ namespace FamilyTree.Controllers
                             if (partnerCheck == true) //If they do, plot the marriage 
                             {
                                 g.DrawLine(Pens.Black, xRowTwo - width, yRowTwo + height / 2, xRowTwo, yRowTwo + height / 2);
-                                bool kidChecker = partCheck.Any(c => c.relationshipTypeID == 3); //Check if your children have children, if they do show boxes that can be filled 
+
+                                bool kidChecker = partCheck.Any(c => c.relationshipTypeID == 3); //Check if your sibling has children, if they do show boxes that can be filled 
                                 if (kidChecker == true)
                                 {
                                     g.DrawLine(Pens.Black, xRowTwo - width + width / 2, (yRowTwo + (height / 2)), xRowTwo - width + width / 2, (yRowTwo + (height / 2) + height));
@@ -622,7 +633,7 @@ namespace FamilyTree.Controllers
 
                                 foreach (var person in partCheck)
                                 {
-
+                                    // Fills the siblings partners node in with information
                                     if (person.relationshipTypeID == 4)
                                     {
                                         individualName = _treeService.GetIndividual(person.relativeID).fullName.ToString();
@@ -654,7 +665,7 @@ namespace FamilyTree.Controllers
                         }
 
                     }
-                    // Saves it?? Outputs an image??
+                    // Creates a file stream and saves it and outputs the image as a jpeg, accessible in the viwe
                     string filename = Server.MapPath("/") + Guid.NewGuid().ToString("N");
                     bmp.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
                     byte[] bytes;
